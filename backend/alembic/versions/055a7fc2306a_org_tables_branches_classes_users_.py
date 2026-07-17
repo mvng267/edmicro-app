@@ -7,14 +7,13 @@ Create Date: 2026-07-17 14:21:37.093603
 """
 
 from collections.abc import Sequence
-from typing import Union
 
 from alembic import op
 
 revision: str = "055a7fc2306a"
-down_revision: Union[str, Sequence[str], None] = "8649dfa4ed68"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | Sequence[str] | None = "8649dfa4ed68"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 # Bảng nghiệp vụ tenant: bật RLS + policy tenant_isolation + grant app_user
 _RLS_TABLES = [

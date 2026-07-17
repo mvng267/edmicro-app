@@ -4,10 +4,11 @@ from pathlib import Path
 import psycopg2
 import pytest
 import pytest_asyncio
-from alembic import command
 from alembic.config import Config
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from testcontainers.postgres import PostgresContainer
+
+from alembic import command
 
 _BACKEND_DIR = Path(__file__).resolve().parent.parent
 
