@@ -1,6 +1,6 @@
+import psycopg2
 import pytest
 import pytest_asyncio
-from sqlalchemy import text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from testcontainers.postgres import PostgresContainer
 
@@ -26,30 +26,31 @@ _SCHEMA_DDL = [
 
 
 @pytest.fixture(scope="session")
-def pg_container():
+def pg_dsn():
+    """Dựng Postgres 1 lần/session, tạo role app_user + schema qua kết nối sync
+    (psycopg2 — không dính event loop async). Trả về DSN cho app_user."""
     with PostgresContainer(
         "postgres:16", username="edmicro_owner", password="devpass", dbname="edmicro"
     ) as pg:
-        yield pg
-
-
-@pytest_asyncio.fixture(scope="session")
-async def app_engine(pg_container):
-    owner_dsn = pg_container.get_connection_url().replace("psycopg2", "asyncpg")
-    owner_engine = create_async_engine(owner_dsn)
-    async with owner_engine.begin() as conn:
-        await conn.execute(
-            text(
-                "DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname='app_user') "
-                "THEN CREATE ROLE app_user LOGIN PASSWORD 'appdevpass' NOBYPASSRLS; END IF; END $$;"
-            )
+        owner_dsn = pg.get_connection_url()  # postgresql+psycopg2://...
+        raw = owner_dsn.replace("postgresql+psycopg2://", "postgresql://")
+        conn = psycopg2.connect(raw)
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute(
+            "DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname='app_user') "
+            "THEN CREATE ROLE app_user LOGIN PASSWORD 'appdevpass' NOBYPASSRLS; END IF; END $$;"
         )
         for stmt in _SCHEMA_DDL:
-            await conn.execute(text(stmt))
-    await owner_engine.dispose()
+            cur.execute(stmt)
+        cur.close()
+        conn.close()
+        yield raw.replace("edmicro_owner:devpass", "app_user:appdevpass")
 
-    app_dsn = owner_dsn.replace("edmicro_owner:devpass", "app_user:appdevpass")
-    engine = create_async_engine(app_dsn)
+
+@pytest_asyncio.fixture
+async def app_engine(pg_dsn):
+    engine = create_async_engine(pg_dsn.replace("postgresql://", "postgresql+asyncpg://"))
     yield engine
     await engine.dispose()
 
