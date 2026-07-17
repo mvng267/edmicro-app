@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Cài đặt trung tâm (owner, desktop)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip secondary sm" data-c="Chip">Chủ trung tâm</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">2</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">CT</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="#">🏠 Tổng quan</a>
+    <a class="item" href="#">📊 Báo cáo</a>
+    <a class="item" href="#">🏢 Chi nhánh</a>
+    <a class="item" href="#">👥 Tài khoản quản lý</a>
+    <a class="item active" href="cai-dat-trung-tam.html">⚙️ Cài đặt trung tâm</a>
+    <a class="item" href="#">📦 Gói &amp; Usage</a>
+    <a class="item" href="#">🧾 Nhật ký hệ thống</a>
+  </aside>
+
+  <main class="page">
+    <h1 class="page-title">Cài đặt trung tâm</h1>
+    <p class="page-sub">Cấu hình thông tin, thương hiệu, kênh thông báo và tài khoản quản lý của trung tâm.</p>
+
+    <div class="tabs mb-4" data-c="Tabs">
+      <span class="tab active">Thông tin &amp; thương hiệu</span>
+      <span class="tab">Kênh thông báo</span>
+      <span class="tab">Tài khoản quản lý</span>
+      <span class="tab">Gói &amp; hạn mức</span>
+      <span class="tab">Bảo mật</span>
+    </div>
+
+    <!-- Tab đang mở: Thông tin & thương hiệu -->
+    <div class="grid cols-2 mb-4">
+
+      <section class="card" data-c="Card">
+        <div class="card-header">🏫 Thông tin</div>
+        <div class="card-body col" style="gap:14px">
+          <div class="field" data-c="Input">
+            <label>Tên trung tâm</label>
+            <input class="input" value="Trung tâm Anh ngữ Bright">
+          </div>
+          <div class="field">
+            <label>Subdomain</label>
+            <div class="row">
+              <span class="chip" data-c="Chip">bright.edmicro.app</span>
+              <span class="small muted">Không thể thay đổi sau khi tạo</span>
+            </div>
+          </div>
+          <div class="field" data-c="Select">
+            <label>Múi giờ</label>
+            <select class="select">
+              <option selected>(GMT+7) Asia/Ho_Chi_Minh</option>
+              <option>(GMT+7) Asia/Bangkok</option>
+              <option>(GMT+8) Asia/Singapore</option>
+            </select>
+          </div>
+          <div class="field" data-c="Input">
+            <label>Năm học hiện tại</label>
+            <input class="input" value="2026–2027">
+          </div>
+        </div>
+      </section>
+
+      <section class="card" data-c="Card">
+        <div class="card-header">🎨 Thương hiệu</div>
+        <div class="card-body col" style="gap:14px">
+          <div class="field">
+            <label>Logo trung tâm</label>
+            <div data-c="Button (upload)" style="border:2px dashed var(--default-300);border-radius:var(--r-md);padding:18px;text-align:center;color:var(--fg-muted)">
+              <div style="font-size:22px">🖼️</div>
+              <div class="small">Kéo thả hoặc <a href="#">chọn file</a> — PNG/SVG, tối đa 1 MB</div>
+            </div>
+          </div>
+          <div class="field" data-c="RadioGroup (màu chủ đạo)">
+            <label>Màu chủ đạo (áp vào theme HeroUI)</label>
+            <div class="row" style="gap:10px">
+              <span style="width:34px;height:34px;border-radius:10px;background:#006FEE;outline:3px solid var(--fg);outline-offset:2px;display:inline-block" title="Đang chọn"></span>
+              <span style="width:34px;height:34px;border-radius:10px;background:#7828c8;display:inline-block"></span>
+              <span style="width:34px;height:34px;border-radius:10px;background:#17c964;display:inline-block"></span>
+              <span style="width:34px;height:34px;border-radius:10px;background:#f5a524;display:inline-block"></span>
+              <span style="width:34px;height:34px;border-radius:10px;background:#f31260;display:inline-block"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Xem trước</label>
+            <div class="row">
+              <button class="btn primary sm" data-c="Button (preview theo màu)">Nút chính theo màu đã chọn</button>
+              <span class="chip primary sm" data-c="Chip">Chip primary</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Minh họa 2 tab khác (thu nhỏ) -->
+    <p class="small muted mb-2">Minh họa nội dung 2 tab khác (thu nhỏ):</p>
+    <div class="grid cols-2">
+
+      <section class="card" data-c="Card" style="font-size:13px">
+        <div class="card-header small">📣 Kênh thông báo</div>
+        <div class="card-body col" style="gap:12px">
+          <div class="row between" data-c="Listbox item">
+            <div class="row">
+              <b>Zalo OA</b>
+              <span class="chip success sm" data-c="Chip"><span class="dot"></span> Đã kết nối</span>
+            </div>
+            <button class="btn sm flat-danger" data-c="Button (variant=flat)">Ngắt</button>
+          </div>
+          <div class="divider" style="margin:0"></div>
+          <div class="row between" data-c="Listbox item">
+            <div class="row">
+              <b>SMTP Email</b>
+              <span class="chip sm" data-c="Chip">Dùng chung platform</span>
+            </div>
+            <button class="btn sm bordered" data-c="Button (variant=bordered)">Cấu hình riêng</button>
+          </div>
+          <div class="divider" style="margin:0"></div>
+          <div class="row between" data-c="Listbox item">
+            <div class="row">
+              <b>SMS fallback</b>
+              <span class="small muted">Tính phí theo quota gói</span>
+            </div>
+            <span class="switch" data-c="Switch (off)"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" data-c="Card" style="font-size:13px">
+        <div class="card-header row between small" style="width:auto">
+          <span>👥 Tài khoản quản lý</span>
+          <button class="btn primary sm" data-c="Button (color=primary)">＋ Tạo tài khoản quản lý</button>
+        </div>
+        <div class="card-body table-wrap">
+          <table class="tbl" data-c="Table" style="font-size:12.5px">
+            <thead>
+              <tr><th>Tên</th><th>Vai trò</th><th>Phạm vi</th><th>2FA</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Trần Quốc Bảo</b></td>
+                <td><span class="chip primary sm" data-c="Chip">manager</span></td>
+                <td>Chi nhánh Q7</td>
+                <td><span class="chip success sm" data-c="Chip">Đã bật</span></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Sửa phạm vi</button></td>
+              </tr>
+              <tr>
+                <td><b>Lê Thu Hà</b></td>
+                <td><span class="chip primary sm" data-c="Chip">manager</span></td>
+                <td>Toàn trung tâm</td>
+                <td><span class="chip success sm" data-c="Chip">Đã bật</span></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Sửa phạm vi</button></td>
+              </tr>
+              <tr>
+                <td><b>Phạm Văn Tùng</b></td>
+                <td><span class="chip secondary sm" data-c="Chip">it_admin</span></td>
+                <td>Chi nhánh Q7</td>
+                <td><span class="chip warning sm" data-c="Chip">Chưa bật</span></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Sửa phạm vi</button></td>
+              </tr>
+              <tr>
+                <td><b>Ngô Mai Chi</b></td>
+                <td><span class="chip warning sm" data-c="Chip">academic_head</span></td>
+                <td>Tổ tiếng Anh</td>
+                <td><span class="chip success sm" data-c="Chip">Đã bật</span></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Sửa phạm vi</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Footer lưu -->
+    <div class="row mt-6" data-c="Card (footer actions)">
+      <button class="btn primary" data-c="Button (color=primary)">Lưu thay đổi</button>
+      <span class="small muted">🧾 Mọi thay đổi được ghi nhật ký hệ thống.</span>
+    </div>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — cài đặt trung tâm của owner (desktop). Map SRS: ORG FR-ORG-03 (cấu hình tên/logo/màu chủ đạo theme HeroUI/múi giờ/năm học; subdomain không đổi ở v1 — FR-ORG-01), FR-ORG-08 + FR-ORG-23 (tạo tài khoản quản lý manager/it_admin/academic_head + gán phạm vi chi nhánh/toàn trung tâm/tổ ngôn ngữ), FR-ORG-20 (audit log mọi thay đổi cấu hình); NOTIF (owner cấu hình kênh: Zalo OA riêng tenant, SMTP per-tenant hoặc dùng chung platform, SMS fallback bật/tắt tính phí); AUTH (2FA tài khoản quản lý); PLAN (tab Gói &amp; hạn mức).</p>
+</body>
+</html>

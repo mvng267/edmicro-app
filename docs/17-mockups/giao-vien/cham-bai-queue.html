@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Hàng đợi chấm bài (giáo viên)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip primary sm" data-c="Chip">Giáo viên</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">5</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">TH</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="dashboard.html">🏠 Trang chủ</a>
+    <a class="item" href="#">👥 Lớp của tôi</a>
+    <a class="item" href="giao-bai.html">📤 Giao bài</a>
+    <a class="item active" href="cham-bai-queue.html">✅ Chấm bài <span class="chip danger sm" style="margin-left:auto" data-c="Badge">12</span></a>
+    <a class="item" href="#">📊 Báo cáo</a>
+    <a class="item" href="#">📅 Lịch dạy &amp; điểm danh</a>
+    <a class="item" href="#">🗂️ Ngân hàng câu hỏi</a>
+  </aside>
+
+  <main class="page">
+    <h1 class="page-title">Chấm bài</h1>
+    <p class="page-sub">Hàng đợi review — bài AI chấm "thiếu tự tin" được xếp lên đầu.</p>
+
+    <!-- Filter row -->
+    <div class="row wrap mb-4">
+      <select class="select" style="width:220px" data-c="Select">
+        <option selected>Tất cả lớp</option>
+        <option>IELTS 6.5 — tối T2-T4</option>
+        <option>IELTS 5.5 Foundation</option>
+        <option>TOEIC 650 — tối T3-T5</option>
+      </select>
+      <select class="select" style="width:180px" data-c="Select">
+        <option selected>Mọi loại bài</option>
+        <option>Nói (Speaking)</option>
+        <option>Viết (Writing)</option>
+      </select>
+      <div class="grow"></div>
+      <div class="tabs" data-c="Tabs">
+        <span class="tab active">Chờ duyệt AI (8)</span>
+        <span class="tab">Chấm tay (4)</span>
+        <span class="tab">Đã chốt</span>
+      </div>
+    </div>
+
+    <div class="alert primary mb-4" data-c="Alert (color=primary)">
+      <span>🤖</span>
+      <div><b>AI đã chấm sơ bộ 8 bài</b> — bạn chỉ cần xem và chốt. Bài confidence thấp được đưa lên đầu danh sách.</div>
+    </div>
+
+    <section class="card" data-c="Card">
+      <div class="card-body table-wrap">
+        <table class="tbl" data-c="Table (selectionMode=multiple)">
+          <thead>
+            <tr>
+              <th style="width:36px"><span class="check" data-c="Checkbox"></span></th>
+              <th>Học sinh</th>
+              <th>Bài</th>
+              <th>Kỹ năng</th>
+              <th>Nộp lúc</th>
+              <th>Điểm AI</th>
+              <th>Confidence</th>
+              <th>Trạng thái</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--warning-50)">
+              <td><span class="check" data-c="Checkbox"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">TH</span> Trung Hiếu</div></td>
+              <td>Speaking Part 2 — Describe a person</td>
+              <td><span class="chip secondary sm" data-c="Chip">Nói</span></td>
+              <td class="muted">Hôm qua 21:42</td>
+              <td><b>5.5</b></td>
+              <td><span class="chip warning sm" data-c="Chip (color=warning)">⚠ cần xem kỹ</span></td>
+              <td></td>
+              <td><a class="btn sm primary" href="cham-bai-review.html" data-c="Button">Chấm</a></td>
+            </tr>
+            <tr style="background:var(--warning-50)">
+              <td><span class="check" data-c="Checkbox"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">LA</span> Lan Anh</div></td>
+              <td>Writing Task 2 — Environment</td>
+              <td><span class="chip primary sm" data-c="Chip">Viết</span></td>
+              <td class="muted">Hôm qua 21:10</td>
+              <td><b>6.0</b></td>
+              <td><span class="chip warning sm" data-c="Chip (color=warning)">⚠ cần xem kỹ</span></td>
+              <td></td>
+              <td><a class="btn sm primary" href="cham-bai-review.html" data-c="Button">Chấm</a></td>
+            </tr>
+            <tr>
+              <td><span class="check on" data-c="Checkbox (checked)"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">MN</span> Minh Nguyễn</div></td>
+              <td>Speaking Part 2 — Describe a person</td>
+              <td><span class="chip secondary sm" data-c="Chip">Nói</span></td>
+              <td class="muted">Hôm qua 20:05</td>
+              <td><b>6.5</b></td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">cao</span></td>
+              <td></td>
+              <td><a class="btn sm flat-primary" href="cham-bai-review.html" data-c="Button (variant=flat)">Chấm</a></td>
+            </tr>
+            <tr>
+              <td><span class="check on" data-c="Checkbox (checked)"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">TT</span> Thu Trang</div></td>
+              <td>Writing Task 2 — Environment</td>
+              <td><span class="chip primary sm" data-c="Chip">Viết</span></td>
+              <td class="muted">Hôm qua 18:30</td>
+              <td><b>6.5</b></td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">cao</span></td>
+              <td><span class="chip sm" data-c="Chip">TA đã chấm nháp</span></td>
+              <td><a class="btn sm flat-primary" href="cham-bai-review.html" data-c="Button (variant=flat)">Chấm</a></td>
+            </tr>
+            <tr>
+              <td><span class="check on" data-c="Checkbox (checked)"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">QB</span> Quốc Bảo</div></td>
+              <td>Speaking Part 2 — Describe a person</td>
+              <td><span class="chip secondary sm" data-c="Chip">Nói</span></td>
+              <td class="muted">Hôm qua 17:55</td>
+              <td><b>7.0</b></td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">cao</span></td>
+              <td></td>
+              <td><a class="btn sm flat-primary" href="cham-bai-review.html" data-c="Button (variant=flat)">Chấm</a></td>
+            </tr>
+            <tr>
+              <td><span class="check" data-c="Checkbox"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">HM</span> Hà My</div></td>
+              <td>Writing Task 2 — Environment</td>
+              <td><span class="chip primary sm" data-c="Chip">Viết</span></td>
+              <td class="muted">Hôm qua 16:20</td>
+              <td><b>5.5</b></td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">cao</span></td>
+              <td></td>
+              <td><a class="btn sm flat-primary" href="cham-bai-review.html" data-c="Button (variant=flat)">Chấm</a></td>
+            </tr>
+            <tr>
+              <td><span class="check" data-c="Checkbox"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">GH</span> Gia Hân</div></td>
+              <td>Speaking Part 2 — Describe a person</td>
+              <td><span class="chip secondary sm" data-c="Chip">Nói</span></td>
+              <td class="muted">Hôm qua 15:47</td>
+              <td><b>6.0</b></td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">cao</span></td>
+              <td></td>
+              <td><a class="btn sm flat-primary" href="cham-bai-review.html" data-c="Button (variant=flat)">Chấm</a></td>
+            </tr>
+            <tr>
+              <td><span class="check" data-c="Checkbox"></span></td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">ĐA</span> Đức Anh</div></td>
+              <td>Writing Task 2 — Environment</td>
+              <td><span class="chip primary sm" data-c="Chip">Viết</span></td>
+              <td class="muted">Hôm qua 14:12</td>
+              <td><b>6.5</b></td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">cao</span></td>
+              <td></td>
+              <td><a class="btn sm flat-primary" href="cham-bai-review.html" data-c="Button (variant=flat)">Chấm</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer row between">
+        <button class="btn flat-success" data-c="Button (variant=flat, color=success)">✓ Chốt 3 bài đã chọn</button>
+        <div class="pagination" data-c="Pagination">
+          <span class="pg active">1</span>
+          <span class="pg">2</span>
+          <span class="pg">→</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — hàng đợi chấm (hybrid AI + GV), theo mục 5.1/5.3 SRS Chấm bài. Map SRS: FR-GRADE-06 (hàng đợi + lọc + ưu tiên confidence thấp), FR-GRADE-08 (TA chấm nháp, GV chốt hàng loạt — nút "Chốt 3 bài đã chọn"), FR-GRADE-02 (tab theo chế độ chấm).</p>
+</body>
+</html>

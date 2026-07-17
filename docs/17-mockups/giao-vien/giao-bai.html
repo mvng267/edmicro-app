@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Giao bài (wizard bước 3: Cài đặt)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip primary sm" data-c="Chip">Giáo viên</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">5</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">TH</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="dashboard.html">🏠 Trang chủ</a>
+    <a class="item" href="#">👥 Lớp của tôi</a>
+    <a class="item active" href="giao-bai.html">📤 Giao bài</a>
+    <a class="item" href="cham-bai-queue.html">✅ Chấm bài <span class="chip danger sm" style="margin-left:auto" data-c="Badge">12</span></a>
+    <a class="item" href="#">📊 Báo cáo</a>
+    <a class="item" href="#">📅 Lịch dạy &amp; điểm danh</a>
+    <a class="item" href="#">🗂️ Ngân hàng câu hỏi</a>
+  </aside>
+
+  <main class="page" style="max-width:960px">
+
+    <nav class="breadcrumbs" data-c="Breadcrumbs">
+      <a href="dashboard.html">Trang chủ</a> / <a href="#">Giao bài</a> / <b>Tạo lượt giao bài</b>
+    </nav>
+
+    <h1 class="page-title">Tạo lượt giao bài</h1>
+    <p class="page-sub">Bước 3/3 — thiết lập thời gian, số lần làm và quy tắc tính điểm.</p>
+
+    <!-- Step tabs -->
+    <div class="tabs mb-4" data-c="Tabs (steps)">
+      <span class="tab" style="color:var(--success-600)">✓ 1. Chọn nội dung</span>
+      <span class="tab" style="color:var(--success-600)">✓ 2. Đối tượng</span>
+      <span class="tab active">3. Cài đặt</span>
+    </div>
+
+    <!-- Tóm tắt nội dung đã chọn -->
+    <section class="card flat mb-4" data-c="Card (variant=flat)">
+      <div class="card-body row">
+        <span class="chip solid-primary sm" data-c="Chip">Exam</span>
+        <div class="grow">
+          <b>Thi thử IELTS Listening — Tuần 7</b>
+          <div class="muted small">40 câu · 30 phút · chấm tự động (câu đóng)</div>
+        </div>
+        <button class="btn light sm" data-c="Button (variant=light)">Đổi nội dung</button>
+      </div>
+    </section>
+
+    <!-- Đối tượng đã chọn -->
+    <section class="card flat mb-4" data-c="Card (variant=flat)">
+      <div class="card-body">
+        <div class="small muted mb-2">Giao cho <b style="color:var(--fg)">30 học sinh</b> thuộc:</div>
+        <div class="row wrap" data-c="Chip (onClose)">
+          <span class="chip primary">🏫 IELTS 6.5 — tối T2-T4 (24 HS) <b style="cursor:pointer">✕</b></span>
+          <span class="chip secondary">👥 Nhóm yếu Listening (6 HS) <b style="cursor:pointer">✕</b></span>
+          <button class="btn light sm" data-c="Button (variant=light)">+ Thêm lớp / nhóm</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form cài đặt -->
+    <section class="card" data-c="Card">
+      <div class="card-header">⚙️ Cài đặt lượt giao</div>
+      <div class="card-body">
+
+        <div class="grid cols-2">
+          <div class="field" data-c="DatePicker (mock Input)">
+            <label>Thời gian mở bài (available_from)</label>
+            <input class="input" value="16/07/2026 — 18:00" readonly>
+            <span class="small muted">Mặc định: ngay lập tức</span>
+          </div>
+          <div class="field" data-c="DatePicker (mock Input)">
+            <label>Hạn nộp (due_at) *</label>
+            <input class="input" value="23/07/2026 — 23:59" readonly>
+            <span class="small muted">Múi giờ Asia/Ho_Chi_Minh</span>
+          </div>
+
+          <div class="field" data-c="Select">
+            <label>Số lần làm tối đa</label>
+            <select class="select">
+              <option selected>1 lần (mặc định với Exam)</option>
+              <option>2 lần</option>
+              <option>3 lần</option>
+              <option>Không giới hạn</option>
+            </select>
+          </div>
+          <div class="field" data-c="Select">
+            <label>Cách tính điểm khi làm nhiều lần</label>
+            <select class="select">
+              <option selected>Điểm cao nhất</option>
+              <option>Lần làm cuối</option>
+              <option>Trung bình các lần</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid cols-2">
+          <div class="field" data-c="RadioGroup">
+            <label>Hiển thị đáp án cho học sinh</label>
+            <label class="row small" style="cursor:pointer"><span class="radio" data-c="Radio"></span> Không hiển thị</label>
+            <label class="row small" style="cursor:pointer"><span class="radio" data-c="Radio"></span> Ngay sau khi nộp</label>
+            <label class="row small" style="cursor:pointer"><span class="radio on" data-c="Radio (selected)"></span> <b>Sau deadline</b> — tránh lộ đề khi còn bạn chưa thi</label>
+          </div>
+
+          <div class="col" style="gap:14px">
+            <div class="row between" data-c="Switch">
+              <div>
+                <b class="small">Cho phép nộp muộn</b>
+                <div class="muted small">Bài nộp sau hạn bị đánh dấu <span class="chip warning sm">trễ</span></div>
+              </div>
+              <span class="switch on"></span>
+            </div>
+            <div class="row between" data-c="Switch">
+              <div>
+                <b class="small">Nhắc tự động trước 24 giờ</b>
+                <div class="muted small">Chỉ gửi cho học sinh chưa nộp (in-app / Zalo)</div>
+              </div>
+              <span class="switch on"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field mt-4" data-c="Textarea">
+          <label>Ghi chú cho học sinh</label>
+          <textarea class="textarea">Các em làm nghiêm túc như thi thật: đeo tai nghe, ngồi nơi yên tĩnh, audio chỉ phát 1 lần. Có gì thắc mắc nhắn cô trước 21h nhé.</textarea>
+        </div>
+
+      </div>
+      <div class="card-footer row between">
+        <button class="btn bordered" data-c="Button (variant=bordered)">← Quay lại</button>
+        <button class="btn primary" data-c="Button (color=primary)">Giao bài cho 30 học sinh</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — wizard giao bài bước 3 (Cài đặt), theo luồng 5.1 SRS Giao bài. Map SRS: FR-ASSIGN-01/02 (đối tượng nhiều lớp + nhóm), FR-ASSIGN-03 (available_from / due_at), FR-ASSIGN-04 (nộp muộn), FR-ASSIGN-05/06 (attempt + cách tính điểm), FR-ASSIGN-07 (hiển thị đáp án), FR-ASSIGN-08 (ghi chú), FR-ASSIGN-13 (nhắc trước 24h).</p>
+</body>
+</html>

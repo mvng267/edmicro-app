@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Báo cáo lớp (giáo viên)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip sm" data-c="Chip">Cơ sở Cầu Giấy</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">2</span>
+  </div>
+  <div class="row" style="gap:8px">
+    <div class="avatar sm" data-c="Avatar">HG</div>
+    <div class="small"><b>GV Thu Hương</b><div class="muted" style="font-size:11px">Giáo viên</div></div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" data-c="Listbox (sidebar)">
+    <div class="section-label">Giảng dạy</div>
+    <div class="item">🏠 Tổng quan</div>
+    <div class="item">👥 Lớp của tôi</div>
+    <div class="item">📝 Giao bài</div>
+    <div class="item">✅ Chấm bài</div>
+    <div class="item">📅 Lịch dạy</div>
+    <div class="item active">📊 Báo cáo</div>
+    <div class="section-label">Nội dung</div>
+    <div class="item">🗂️ Ngân hàng câu hỏi</div>
+  </aside>
+
+  <main class="page">
+
+    <div class="row between wrap mb-4">
+      <div>
+        <h1 class="page-title">Báo cáo lớp</h1>
+        <div class="page-sub" style="margin-bottom:0">Ma trận nộp bài, phân bố điểm và học sinh cần chú ý · <span class="small">số liệu tính đến 06:15 hôm nay</span></div>
+      </div>
+      <div class="row wrap">
+        <select class="select" style="width:200px" data-c="Select">
+          <option>IELTS 6.5 — tối 2·4·6</option>
+          <option>IELTS 5.0 — sáng T7</option>
+          <option>TOEIC 650 — tối 3·5</option>
+        </select>
+        <button class="btn bordered" data-c="Button (variant=bordered)">⬇ Xuất Excel</button>
+        <button class="btn flat-primary" data-c="Button (variant=flat)">📄 Gửi báo cáo phụ huynh</button>
+      </div>
+    </div>
+
+    <!-- 4 stat card -->
+    <div class="grid cols-4 mb-4">
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">Tỉ lệ nộp đúng hạn</div>
+          <div class="big">82%</div>
+          <span class="chip success sm" data-c="Chip">▲ +4% so với kỳ trước</span>
+        </div>
+      </section>
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">Điểm trung bình lớp</div>
+          <div class="big">6.4</div>
+          <span class="chip success sm" data-c="Chip">▲ +0.2 band</span>
+        </div>
+      </section>
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">Chuyên cần</div>
+          <div class="big">91%</div>
+          <span class="chip sm" data-c="Chip">6 buổi gần nhất</span>
+        </div>
+      </section>
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">HS cần chú ý</div>
+          <div class="big">3</div>
+          <span class="chip danger sm" data-c="Chip">● theo rule cảnh báo</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Ma trận bài tập × học sinh -->
+    <section class="card mb-4" data-c="Card">
+      <div class="card-header row between" style="width:auto">
+        <span>🧮 Ma trận bài tập × học sinh — 5 bài gần nhất</span>
+        <span class="small muted">trạng thái nộp realtime</span>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap" data-c="Table">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Học sinh</th>
+                <th>Thi thử Listening W7<div style="text-transform:none;font-weight:400">14/07 · Exam</div></th>
+                <th>Reading Unit 5<div style="text-transform:none;font-weight:400">11/07 · Practice</div></th>
+                <th>Vocab quiz U5<div style="text-transform:none;font-weight:400">09/07 · Practice</div></th>
+                <th>Writing Task 1<div style="text-transform:none;font-weight:400">07/07 · Practice</div></th>
+                <th>Speaking Part 2<div style="text-transform:none;font-weight:400">04/07 · Practice</div></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="row"><div class="avatar sm" data-c="Avatar">LA</div> Lan Anh</div></td>
+                <td><span class="chip success sm" data-c="Chip">8.5</span></td>
+                <td><span class="chip success sm">7.5</span></td>
+                <td><span class="chip success sm">9.0</span></td>
+                <td><span class="chip success sm">7.0</span></td>
+                <td><span class="chip success sm">8.0</span></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">MN</div> Minh Nguyễn</div></td>
+                <td><span class="chip success sm">6.5</span></td>
+                <td><span class="chip success sm">7.0</span></td>
+                <td><span class="chip warning sm">5.5</span></td>
+                <td><span class="chip primary sm" data-c="Chip">chờ chấm</span></td>
+                <td><span class="chip success sm">6.5</span></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm" style="background:var(--danger-50);color:var(--danger-600)">TH</div> Trung Hiếu</div></td>
+                <td><span class="muted">—</span></td>
+                <td><span class="muted">—</span></td>
+                <td><span class="chip danger sm">4.0</span></td>
+                <td><span class="chip warning sm">5.0</span></td>
+                <td><span class="chip warning sm">6.0</span></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">HT</div> Thu Hà</div></td>
+                <td><span class="chip warning sm">5.0</span></td>
+                <td><span class="chip warning sm">6.0</span></td>
+                <td><span class="chip success sm">7.0</span></td>
+                <td><span class="muted">—</span></td>
+                <td><span class="chip warning sm">5.5</span></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">QD</div> Quang Dũng</div></td>
+                <td><span class="chip danger sm">4.5</span></td>
+                <td><span class="chip warning sm">5.5</span></td>
+                <td><span class="muted">—</span></td>
+                <td><span class="chip warning sm">6.0</span></td>
+                <td><span class="chip success sm">7.0</span></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">MP</div> Mai Phương</div></td>
+                <td><span class="chip success sm">7.0</span></td>
+                <td><span class="chip success sm">6.5</span></td>
+                <td><span class="chip success sm">8.0</span></td>
+                <td><span class="chip success sm">7.5</span></td>
+                <td><span class="chip primary sm">chờ chấm</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row wrap mt-2 small muted">
+          Chú giải: <span class="chip success sm">≥ 6.5</span> <span class="chip warning sm">5 – 6.4</span> <span class="chip danger sm">&lt; 5</span> <span>— chưa nộp</span> <span class="chip primary sm">chờ chấm</span> · bấm vào ô điểm để mở bài làm gốc
+        </div>
+      </div>
+    </section>
+
+    <div class="grid cols-2">
+
+      <!-- Phân bố điểm thi thử -->
+      <section class="card" data-c="Card">
+        <div class="card-header">📊 Phân bố điểm — Thi thử Listening W7</div>
+        <div class="card-body">
+          <div style="display:flex;align-items:flex-end;gap:12px;height:150px;padding:0 4px" data-c="Histogram (bar chart tĩnh bằng div)">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span class="small muted">1</span><div style="width:100%;height:22px;background:var(--danger);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span class="small muted">2</span><div style="width:100%;height:40px;background:var(--danger);border-radius:6px 6px 0 0;opacity:.85"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span class="small muted">4</span><div style="width:100%;height:76px;background:var(--warning);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span class="small muted">6</span><div style="width:100%;height:112px;background:var(--warning);border-radius:6px 6px 0 0;opacity:.85"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span class="small muted">5</span><div style="width:100%;height:94px;background:var(--success);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span class="small muted">3</span><div style="width:100%;height:58px;background:var(--success);border-radius:6px 6px 0 0;opacity:.85"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span class="small muted">1</span><div style="width:100%;height:22px;background:var(--success);border-radius:6px 6px 0 0;opacity:.7"></div></div>
+          </div>
+          <div style="display:flex;gap:12px;padding:6px 4px 0" class="small muted">
+            <span style="flex:1;text-align:center">&lt;4</span><span style="flex:1;text-align:center">4–4.5</span><span style="flex:1;text-align:center">5–5.5</span><span style="flex:1;text-align:center">6</span><span style="flex:1;text-align:center">6.5</span><span style="flex:1;text-align:center">7–7.5</span><span style="flex:1;text-align:center">8+</span>
+          </div>
+          <div class="small muted mt-2">22 HS dự thi · trung vị 6.0 · bấm cột để xem danh sách bài làm</div>
+        </div>
+      </section>
+
+      <!-- HS cần chú ý -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>⚠️ Học sinh cần chú ý</span>
+          <span class="chip danger sm" data-c="Chip">3</span>
+        </div>
+        <div class="card-body col">
+          <div class="row" style="padding:6px 2px">
+            <div class="avatar" style="background:var(--danger-50);color:var(--danger-600)" data-c="Avatar">TH</div>
+            <div class="grow">
+              <b>Trung Hiếu</b>
+              <div class="small muted">2 bài liên tiếp không nộp</div>
+            </div>
+            <button class="btn sm flat-primary" data-c="Button (variant=flat)">🔔 Nhắc</button>
+          </div>
+          <div class="divider" style="margin:2px 0"></div>
+          <div class="row" style="padding:6px 2px">
+            <div class="avatar" style="background:var(--warning-50);color:var(--warning-600)">QD</div>
+            <div class="grow">
+              <b>Quang Dũng</b>
+              <div class="small muted">Điểm TB giảm 23% so với kỳ trước</div>
+            </div>
+            <button class="btn sm flat-primary">🔔 Nhắc</button>
+          </div>
+          <div class="divider" style="margin:2px 0"></div>
+          <div class="row" style="padding:6px 2px">
+            <div class="avatar" style="background:var(--warning-50);color:var(--warning-600)">HT</div>
+            <div class="grow">
+              <b>Thu Hà</b>
+              <div class="small muted">Vắng 3/6 buổi gần nhất</div>
+            </div>
+            <button class="btn sm flat-primary">🔔 Nhắc</button>
+          </div>
+          <div class="alert primary" data-c="Alert" style="margin-top:4px">ℹ️ <span>Rule cảnh báo: 2 bài liên tiếp không nộp hoặc điểm TB giảm &gt; 20% — ngưỡng do trung tâm cấu hình.</span></div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — Báo cáo lớp (giáo viên, desktop). Map SRS: FR-REPORT-06 (ma trận HS × assignment, nộp realtime), FR-REPORT-07 (tỉ lệ đúng hạn), FR-REPORT-08 (histogram điểm), FR-REPORT-09/20 (HS cần chú ý theo rule), FR-REPORT-16 (xuất Excel), FR-REPORT-17 (báo cáo phụ huynh PDF song ngữ), FR-REPORT-19 (mọi con số drill-down được).</p>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Nhật ký hệ thống (chủ trung tâm)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip warning sm" data-c="Chip">Chủ trung tâm</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">2</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">DL</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="#">🏠 Tổng quan</a>
+    <a class="item" href="#">📊 Báo cáo</a>
+    <a class="item" href="#">🏢 Chi nhánh</a>
+    <a class="item" href="#">👤 Tài khoản quản lý</a>
+    <a class="item" href="#">⚙️ Cài đặt trung tâm</a>
+    <a class="item" href="#">📦 Gói &amp; Usage</a>
+    <a class="item active" href="quan-tri-log.html">📜 Nhật ký hệ thống</a>
+  </aside>
+
+  <main class="page">
+    <h1 class="page-title">Nhật ký hệ thống</h1>
+    <p class="page-sub">Ai làm gì, lúc nào — mọi thao tác được ghi tự động, chỉ đọc, không sửa/xóa được (append-only).</p>
+
+    <!-- Tabs 2 tầng log + export -->
+    <div class="row between wrap mb-4">
+      <div class="tabs" data-c="Tabs">
+        <span class="tab active">Nhật ký hoạt động</span>
+        <span class="tab">Nhật ký bảo mật (audit)</span>
+      </div>
+      <button class="btn bordered" data-c="Button (variant=bordered)">⬇️ Xuất CSV</button>
+    </div>
+
+    <!-- Bộ lọc -->
+    <div class="card flat mb-4" data-c="Card (bộ lọc log)">
+      <div class="card-body grid" style="grid-template-columns:1fr 1fr 0.8fr 0.9fr 1.3fr;gap:12px">
+        <div class="field" data-c="Select">
+          <label>Module</label>
+          <select class="select"><option>Chấm bài</option><option>Giao bài</option><option>Nội dung</option><option>Tài khoản</option><option>Lịch học</option><option>Tất cả</option></select>
+        </div>
+        <div class="field" data-c="Select">
+          <label>Người thực hiện</label>
+          <select class="select"><option>Tất cả</option><option>GV Hương</option><option>Quản lý Minh</option><option>IT Tuấn</option></select>
+        </div>
+        <div class="field" data-c="Select">
+          <label>Hành động</label>
+          <select class="select"><option>Sửa</option><option>Tạo</option><option>Xóa</option><option>Tất cả</option></select>
+        </div>
+        <div class="field" data-c="DateRangePicker">
+          <label>Khoảng ngày</label>
+          <input class="input" value="01/07 – 17/07">
+        </div>
+        <div class="field" data-c="Input (tìm đối tượng)">
+          <label>Tìm đối tượng</label>
+          <input class="input" placeholder="VD: bài nộp #S-2024, lớp IELTS 6.5…">
+        </div>
+      </div>
+    </div>
+
+    <!-- Bảng log -->
+    <section class="card mb-4" data-c="Card">
+      <div class="card-body table-wrap">
+        <table class="tbl" data-c="Table (activity log)">
+          <thead>
+            <tr><th>Thời gian</th><th>Người thực hiện</th><th>Hành động</th><th>Module</th><th>Đối tượng</th><th>IP</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="small">17/07 09:41</td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">MI</span> Minh <span class="chip sm" data-c="Chip">Quản lý</span></div></td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">Tạo</span></td>
+              <td>Giao bài</td>
+              <td><a href="#">Bài tập "IELTS Listening tuần 8"</a></td>
+              <td class="small muted">118.70.12.34</td>
+            </tr>
+            <tr>
+              <td class="small">17/07 09:12</td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">HG</span> GV Hương <span class="chip sm" data-c="Chip">Giáo viên</span></div></td>
+              <td><span class="chip warning sm" data-c="Chip (color=warning)">Sửa</span></td>
+              <td>Giao bài</td>
+              <td><a href="#">Deadline "Thi thử Listening tuần 7"</a></td>
+              <td class="small muted">27.72.98.11</td>
+            </tr>
+            <tr style="background:var(--primary-50)" data-c="Table row (đang chọn)">
+              <td class="small">16/07 20:15</td>
+              <td><div class="row"><span class="avatar sm">HG</span> GV Hương <span class="chip sm">Giáo viên</span></div></td>
+              <td><span class="chip warning sm">Sửa</span></td>
+              <td>Chấm bài</td>
+              <td><a href="#">Bài nộp #S-2024 của Trung Hiếu</a></td>
+              <td class="small muted">27.72.98.11</td>
+            </tr>
+            <tr>
+              <td class="small">16/07 16:02</td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">TU</span> Tuấn <span class="chip sm" data-c="Chip">IT</span></div></td>
+              <td><span class="chip danger sm" data-c="Chip (color=danger)">Xóa</span></td>
+              <td>Tài khoản</td>
+              <td><a href="#">Tài khoản HS Gia Bảo (trùng)</a></td>
+              <td class="small muted">113.161.5.20</td>
+            </tr>
+            <tr>
+              <td class="small">16/07 14:30</td>
+              <td><div class="row"><span class="avatar sm">HG</span> GV Hương <span class="chip sm">Giáo viên</span></div></td>
+              <td><span class="chip success sm">Tạo</span></td>
+              <td>Chấm bài</td>
+              <td><a href="#">Điểm chốt bài nộp #S-2024 (6.5)</a></td>
+              <td class="small muted">27.72.98.11</td>
+            </tr>
+            <tr>
+              <td class="small">16/07 11:05</td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">LA</span> Cô Lan <span class="chip sm" data-c="Chip">Tổ trưởng</span></div></td>
+              <td><span class="chip warning sm">Sửa</span></td>
+              <td>Nội dung</td>
+              <td><a href="#">Câu hỏi #Q-8841 — duyệt v2</a></td>
+              <td class="small muted">42.114.33.7</td>
+            </tr>
+            <tr>
+              <td class="small">15/07 17:40</td>
+              <td><div class="row"><span class="avatar sm">MI</span> Minh <span class="chip sm">Quản lý</span></div></td>
+              <td><span class="chip warning sm">Sửa</span></td>
+              <td>Lịch học</td>
+              <td><a href="#">Buổi 18/07 lớp TOEIC 650 — đổi phòng</a></td>
+              <td class="small muted">118.70.12.34</td>
+            </tr>
+            <tr>
+              <td class="small">15/07 08:59</td>
+              <td><div class="row"><span class="avatar sm" data-c="Avatar">MQ</span> GV Quang <span class="chip sm">Giáo viên</span></div></td>
+              <td><span class="chip danger sm">Xóa</span></td>
+              <td>Nội dung</td>
+              <td><a href="#">Practice nháp "Reading B1 — Unit 3"</a></td>
+              <td class="small muted">27.72.101.9</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer row between">
+        <span class="small muted">1.284 bản ghi khớp bộ lọc</span>
+        <div class="pagination" data-c="Pagination">
+          <span class="pg active">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">…</span><span class="pg">161</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chi tiết dòng đang chọn + usage -->
+    <div class="grid" style="grid-template-columns:1.6fr 1fr;align-items:start">
+
+      <section class="card" data-c="Card (chi tiết thay đổi — diff)">
+        <div class="card-header row between" style="width:auto">
+          <span>🔍 Chi tiết thay đổi — Bài nộp #S-2024 của Trung Hiếu</span>
+          <span class="chip warning sm" data-c="Chip">Sửa · Chấm bài</span>
+        </div>
+        <div class="card-body">
+          <p class="small muted mb-2">GV Hương (Giáo viên) · 16/07/2026 20:15:07 · IP 27.72.98.11</p>
+          <div class="table-wrap">
+            <table class="tbl" data-c="Table (diff before/after)">
+              <thead>
+                <tr><th>Trường</th><th>Giá trị cũ → mới</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>final_score</code></td>
+                  <td><s style="color:var(--danger)">6.5</s> &nbsp;→&nbsp; <b style="color:var(--success-600)">7.0</b></td>
+                </tr>
+                <tr>
+                  <td><code>change_reason</code></td>
+                  <td><span class="muted">—</span> &nbsp;→&nbsp; <b style="color:var(--success-600)">"Cộng điểm nội dung sau phúc khảo"</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small muted mt-2" data-c="Metadata bản ghi">request-id: <code>req_8f3ka92c1</code> · Trình duyệt: Chrome 138 — Windows 11 · Bản ghi append-only, liên kết version điểm</p>
+        </div>
+        <div class="card-footer">
+          <button class="btn light" data-c="Button (variant=light)">Xem timeline đối tượng này →</button>
+        </div>
+      </section>
+
+      <section class="card" data-c="Card (usage 7 ngày)">
+        <div class="card-header">📈 Mức sử dụng 7 ngày</div>
+        <div class="card-body col" style="gap:12px">
+          <div>
+            <div class="row between small mb-2"><span>Giáo viên</span><b>45%</b></div>
+            <div class="progress" data-c="Progress"><i style="width:45%"></i></div>
+          </div>
+          <div>
+            <div class="row between small mb-2"><span>Học sinh</span><b>38%</b></div>
+            <div class="progress" data-c="Progress"><i style="width:38%;background:var(--secondary)"></i></div>
+          </div>
+          <div>
+            <div class="row between small mb-2"><span>Quản lý</span><b>12%</b></div>
+            <div class="progress warning" data-c="Progress (color=warning)"><i style="width:12%"></i></div>
+          </div>
+          <div>
+            <div class="row between small mb-2"><span>Khác</span><b>5%</b></div>
+            <div class="progress" data-c="Progress"><i style="width:5%;background:var(--default-300)"></i></div>
+          </div>
+          <div class="divider"></div>
+          <span class="small muted">1.284 hành động · 96 tài khoản hoạt động · <a href="#">3 tài khoản im lặng &gt; 14 ngày</a></span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — quản trị log của chủ trung tâm (owner, desktop). Map SRS: LOG (FR-LOG-06 — lọc theo module/người/hành động/thời gian + tìm đối tượng + phân trang; FR-LOG-07 — timeline theo đối tượng; FR-LOG-08 — diff trường: giá trị cũ → mới, ví dụ final_score 6.5 → 7.0 + change_reason theo US-LOG-01; FR-LOG-02 — actor/vai trò/IP/user-agent/request_id; FR-LOG-10 — xuất CSV có ghi audit; FR-LOG-11 — dashboard usage theo vai trò; 2 tầng activity/audit = 2 tab).</p>
+</body>
+</html>

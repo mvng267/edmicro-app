@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Duyệt nội dung (tổ trưởng chuyên môn)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip secondary sm" data-c="Chip">Tổ trưởng chuyên môn</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">5</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">LA</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="#">🏠 Trang chủ</a>
+    <a class="item" href="#">👥 Lớp của tôi</a>
+    <a class="item" href="#">✅ Chấm bài</a>
+    <a class="item active" href="duyet-noi-dung.html">🔎 Duyệt nội dung <span class="chip danger sm" style="margin-left:auto" data-c="Badge">5</span></a>
+    <a class="item" href="#">📊 Báo cáo tổ</a>
+    <a class="item" href="#">🗂️ Ngân hàng câu hỏi</a>
+  </aside>
+
+  <main class="page">
+    <h1 class="page-title">Duyệt nội dung</h1>
+    <p class="page-sub">5 mục do giáo viên trong tổ gửi lên đang chờ bạn duyệt — chế độ "cần duyệt" của trung tâm đang bật.</p>
+
+    <!-- Banner phạm vi duyệt -->
+    <div class="card flat mb-4" data-c="Card (banner phạm vi duyệt)">
+      <div class="card-body row wrap">
+        <span class="chip secondary" data-c="Chip (color=secondary)">🛡️ Tổ Tiếng Anh · 12 giáo viên · phạm vi duyệt: nội dung tenant tiếng Anh</span>
+        <span class="small muted">Câu hỏi/practice/đề thi của giáo viên trong tổ phải được tổ trưởng duyệt trước khi xuất bản.</span>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:340px 1fr;align-items:start">
+
+      <!-- CỘT TRÁI: hàng đợi chờ duyệt -->
+      <section class="col" style="gap:10px" data-c="Listbox (hàng đợi chờ duyệt)">
+
+        <a class="card flat" href="#" style="background:var(--content1);border:2px solid var(--primary)" data-c="Card (isPressable, đang chọn)">
+          <div class="card-body col" style="gap:6px">
+            <div class="row between">
+              <span class="chip primary sm" data-c="Chip">Câu hỏi</span>
+              <span class="small muted">gửi 16/07</span>
+            </div>
+            <b class="small">Reading B2 — The Rise of Urban Farming (trắc nghiệm 1 đáp án)</b>
+            <div class="row" style="gap:8px">
+              <span class="avatar sm" data-c="Avatar">MQ</span>
+              <span class="small muted">GV Minh Quang</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="card flat" href="#" data-c="Card (isPressable)">
+          <div class="card-body col" style="gap:6px">
+            <div class="row between">
+              <span class="chip primary sm" data-c="Chip">Câu hỏi</span>
+              <span class="small muted">gửi 16/07</span>
+            </div>
+            <b class="small">Listening B1 — Hoàn thành ghi chú: đặt phòng khách sạn</b>
+            <div class="row" style="gap:8px">
+              <span class="avatar sm" data-c="Avatar">TM</span>
+              <span class="small muted">GV Thanh Mai</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="card flat" href="#" data-c="Card (isPressable)">
+          <div class="card-body col" style="gap:6px">
+            <div class="row between">
+              <span class="chip primary sm" data-c="Chip">Câu hỏi</span>
+              <span class="small muted">gửi 15/07</span>
+            </div>
+            <b class="small">Grammar A2 — Thì hiện tại hoàn thành (trắc nghiệm)</b>
+            <div class="row" style="gap:8px">
+              <span class="avatar sm" data-c="Avatar">MQ</span>
+              <span class="small muted">GV Minh Quang</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="card flat" href="#" data-c="Card (isPressable)">
+          <div class="card-body col" style="gap:6px">
+            <div class="row between">
+              <span class="chip secondary sm" data-c="Chip">Practice</span>
+              <span class="small muted">gửi 15/07</span>
+            </div>
+            <b class="small">Practice Reading tuần 8 — lớp IELTS 6.5 (12 câu)</b>
+            <div class="row" style="gap:8px">
+              <span class="avatar sm" data-c="Avatar">AT</span>
+              <span class="small muted">GV Anh Tú</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="card flat" href="#" data-c="Card (isPressable)">
+          <div class="card-body col" style="gap:6px">
+            <div class="row between">
+              <span class="chip warning sm" data-c="Chip">Đề thi</span>
+              <span class="small muted">gửi 14/07</span>
+            </div>
+            <b class="small">Thi thử giữa khóa TOEIC 650 — Listening + Reading</b>
+            <div class="row" style="gap:8px">
+              <span class="avatar sm" data-c="Avatar">TM</span>
+              <span class="small muted">GV Thanh Mai</span>
+            </div>
+          </div>
+        </a>
+
+      </section>
+
+      <!-- CỘT PHẢI: panel duyệt mục đang chọn -->
+      <section class="card" data-c="Card (panel duyệt)">
+        <div class="card-header row between" style="width:auto">
+          <span>🔎 Reading B2 — The Rise of Urban Farming</span>
+          <span class="chip warning sm" data-c="Chip (trạng thái)">Chờ duyệt (in_review)</span>
+        </div>
+        <div class="card-body col" style="gap:16px">
+
+          <!-- Preview câu hỏi mcq_single -->
+          <div data-c="Khối preview câu hỏi (mcq_single)">
+            <div class="small muted mb-2">Đoạn đọc hiểu đính kèm</div>
+            <div class="card flat">
+              <div class="card-body small" style="font-style:italic">
+                "Urban farming has moved from rooftop hobby to serious business. Vertical farms stacked
+                inside disused warehouses now supply salad greens to supermarkets within hours of harvest,
+                cutting transport emissions and sharply reducing the need for chemical treatments…"
+              </div>
+            </div>
+            <p class="mt-2"><b>Câu hỏi:</b> According to the passage, what is one key benefit of vertical farming?</p>
+            <div class="col mt-2" style="gap:8px" data-c="RadioGroup (preview đáp án)">
+              <label class="row" style="padding:8px 10px;border-radius:var(--r-sm);background:var(--content2)">
+                <span class="radio" data-c="Radio"></span> A. It requires no electricity to operate.
+              </label>
+              <label class="row" style="padding:8px 10px;border-radius:var(--r-sm);background:var(--success-50)" data-c="Radio (đáp án đúng)">
+                <span class="radio on"></span> <b>B. It greatly reduces the amount of pesticides needed.</b>
+                <span class="chip success sm" style="margin-left:auto" data-c="Chip">Đáp án đúng</span>
+              </label>
+              <label class="row" style="padding:8px 10px;border-radius:var(--r-sm);background:var(--content2)">
+                <span class="radio" data-c="Radio"></span> C. It produces vegetables that taste better.
+              </label>
+              <label class="row" style="padding:8px 10px;border-radius:var(--r-sm);background:var(--content2)">
+                <span class="radio" data-c="Radio"></span> D. It replaces supermarkets in city centres.
+              </label>
+            </div>
+            <div class="alert success mt-2" data-c="Alert (giải thích đáp án)">
+              <span>💡</span>
+              <div><b>Giải thích:</b> Đoạn cuối viết "sharply reducing the need for chemical treatments" —
+              paraphrase của "greatly reduces the amount of pesticides needed". Các phương án A, C, D không được nhắc tới trong bài.</div>
+            </div>
+          </div>
+
+          <!-- Metadata -->
+          <div data-c="Khối metadata (Chip tags)">
+            <div class="small muted mb-2">Metadata</div>
+            <div class="row wrap">
+              <span class="chip" data-c="Chip">en</span>
+              <span class="chip" data-c="Chip">Reading</span>
+              <span class="chip" data-c="Chip">B2</span>
+              <span class="chip" data-c="Chip">IELTS</span>
+              <span class="chip" data-c="Chip">độ khó 3/5</span>
+            </div>
+          </div>
+
+          <!-- Phiên bản + diff -->
+          <div class="card flat" data-c="Khối phiên bản (diff v1 → v2)">
+            <div class="card-body">
+              <div class="row between mb-2">
+                <b class="small">Phiên bản: v2 — sửa từ v1: đổi đáp án B, sửa giải thích</b>
+                <a class="small" href="#">Lịch sử version</a>
+              </div>
+              <div class="small" style="color:var(--danger);text-decoration:line-through">B. It completely eliminates pesticides in food production.</div>
+              <div class="small" style="color:var(--success-600)">B. It greatly reduces the amount of pesticides needed.</div>
+            </div>
+          </div>
+
+          <!-- Nhận xét -->
+          <div class="field" data-c="Textarea">
+            <label>Nhận xét cho tác giả</label>
+            <textarea class="textarea" placeholder="VD: distractor C hơi yếu — cân nhắc thay bằng phương án gần nghĩa hơn với đoạn 2…"></textarea>
+          </div>
+
+          <!-- Hành động duyệt -->
+          <div class="row wrap" data-c="ButtonGroup (hành động duyệt)">
+            <button class="btn success" data-c="Button (color=success)">✓ Duyệt &amp; xuất bản</button>
+            <button class="btn flat-danger" data-c="Button (variant=flat, color=danger)">Từ chối — cần lý do</button>
+            <button class="btn light" data-c="Button (variant=light)">Xem trước như học sinh</button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — duyệt nội dung của tổ trưởng chuyên môn (academic_head, desktop). Map SRS: CONTENT (FR-CONTENT-11 — tổ trưởng duyệt nội dung teacher trong phạm vi tổ khi tenant bật "cần duyệt"; FR-CONTENT-10 — từ chối phải kèm lý do, chặn tự duyệt; FR-CONTENT-14 — versioning, so sánh diff v1 → v2), LOG (mọi quyết định duyệt/xuất bản ghi review_log + audit).</p>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Làm practice Listening (mobile)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<div class="phone">
+  <div class="screen">
+
+    <header class="navbar" data-c="Navbar">
+      <span class="btn icon sm" data-c="Button (isIconOnly)">✕</span>
+      <div class="grow">
+        <b style="font-size:14px">Luyện nghe: Environment</b>
+        <div class="muted small" style="font-size:11px">Listening · Section 1</div>
+      </div>
+      <span class="chip primary sm" data-c="Chip">Câu 3/10</span>
+    </header>
+
+    <div style="padding:10px 16px 0">
+      <div class="progress sm" data-c="Progress (tiến độ bài)"><i style="width:30%"></i></div>
+    </div>
+
+    <main style="padding:12px 16px 16px" class="col">
+
+      <!-- Audio player giả -->
+      <section class="card" data-c="Card (audio player)">
+        <div class="card-body col" style="gap:10px">
+          <div class="row">
+            <span class="btn icon primary" data-c="Button (isIconOnly)" style="border-radius:50%">▶</span>
+            <div class="grow">
+              <div class="progress" data-c="Progress (thanh thời gian)"><i style="width:35%"></i></div>
+            </div>
+            <span class="small muted" style="font-variant-numeric:tabular-nums">01:12 / 03:20</span>
+          </div>
+          <div class="row between">
+            <span class="chip warning sm" data-c="Chip">🔁 còn 1 lần nghe</span>
+            <div class="tabs" data-c="Tabs (tốc độ phát)" style="padding:3px">
+              <span class="tab" style="padding:3px 9px;font-size:12px">0.75x</span>
+              <span class="tab active" style="padding:3px 9px;font-size:12px">1x</span>
+              <span class="tab" style="padding:3px 9px;font-size:12px">1.25x</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Câu mcq_single -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>Câu 3</span>
+          <span class="chip sm" data-c="Chip">mcq_single</span>
+        </div>
+        <div class="card-body col" style="gap:8px">
+          <p class="small"><b>What does the speaker say about the recycling programme?</b></p>
+          <div class="col" data-c="RadioGroup" style="gap:6px">
+            <label class="row small" style="padding:10px 12px;border:2px solid var(--default-200);border-radius:10px">
+              <span class="radio" data-c="Radio"></span> A. It started earlier than planned.
+            </label>
+            <label class="row small" style="padding:10px 12px;border:2px solid var(--primary);background:var(--primary-50);border-radius:10px">
+              <span class="radio on" data-c="Radio (selected)"></span> <b>B. It will be expanded next year.</b>
+            </label>
+            <label class="row small" style="padding:10px 12px;border:2px solid var(--default-200);border-radius:10px">
+              <span class="radio" data-c="Radio"></span> C. It is only for local residents.
+            </label>
+            <label class="row small" style="padding:10px 12px;border:2px solid var(--default-200);border-radius:10px">
+              <span class="radio" data-c="Radio"></span> D. It has been cancelled recently.
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Khu điền từ fill_blank -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>Câu 4–5</span>
+          <span class="chip sm" data-c="Chip">fill_blank · tối đa 2 từ</span>
+        </div>
+        <div class="card-body small" style="line-height:2.4">
+          The programme collects
+          <input class="input" data-c="Input" value="plastic bottles" style="display:inline-block;width:130px;min-height:32px;padding:4px 10px;font-size:13px">
+          every <b>(4)</b> and volunteers meet at the
+          <input class="input" data-c="Input" placeholder="câu 5…" style="display:inline-block;width:120px;min-height:32px;padding:4px 10px;font-size:13px">
+          <b>(5)</b> on Saturdays.
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer điều hướng -->
+    <footer style="position:sticky;bottom:0;background:var(--content1);border-top:1px solid var(--divider);padding:10px 14px" class="col" data-c="Navbar (footer điều hướng)">
+      <div class="pagination" data-c="Pagination (lưới câu)" style="justify-content:center;width:100%">
+        <span class="pg" style="background:var(--success);color:#fff">1</span>
+        <span class="pg" style="background:var(--success);color:#fff">2</span>
+        <span class="pg" style="background:var(--content1);border:2px solid var(--primary);font-weight:700">3</span>
+        <span class="pg">4</span>
+        <span class="pg">5</span>
+        <span class="pg">6</span>
+        <span class="pg">7</span>
+        <span class="pg">8</span>
+        <span class="pg">9</span>
+        <span class="pg">10</span>
+      </div>
+      <div class="row between" style="margin-top:8px">
+        <button class="btn sm bordered" data-c="Button (variant=bordered)">← Câu trước</button>
+        <span class="chip success sm" data-c="Chip (autosave)">Đã lưu ✓</span>
+        <button class="btn sm primary" data-c="Button">Câu sau →</button>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<p style="text-align:center" class="small muted">Mockup tĩnh — làm practice Listening (mobile). Map SRS: FR-PRACTICE-04 (autosave "Đã lưu ✓"), FR-PRACTICE-09 (giới hạn số lần nghe + tốc độ 0.75x–1.25x), loại câu mcq_single + fill_blank theo catalog, lưới điều hướng câu (xanh = đã trả lời, viền = đang xem).</p>
+</body>
+</html>

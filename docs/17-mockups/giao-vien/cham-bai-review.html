@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Review bài Speaking (giáo viên chốt điểm)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip primary sm" data-c="Chip">Giáo viên</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">5</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">TH</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="dashboard.html">🏠 Trang chủ</a>
+    <a class="item" href="#">👥 Lớp của tôi</a>
+    <a class="item" href="giao-bai.html">📤 Giao bài</a>
+    <a class="item active" href="cham-bai-queue.html">✅ Chấm bài <span class="chip danger sm" style="margin-left:auto" data-c="Badge">12</span></a>
+    <a class="item" href="#">📊 Báo cáo</a>
+    <a class="item" href="#">📅 Lịch dạy &amp; điểm danh</a>
+    <a class="item" href="#">🗂️ Ngân hàng câu hỏi</a>
+  </aside>
+
+  <main class="page" style="max-width:1400px">
+
+    <!-- Header review -->
+    <div class="row wrap mb-4">
+      <a class="btn sm bordered" href="cham-bai-queue.html" data-c="Button (variant=bordered)">← Hàng đợi</a>
+      <div>
+        <h1 class="page-title" style="margin:0">Trung Hiếu — Speaking Part 2</h1>
+        <div class="muted small">Lớp IELTS 6.5 · nộp hôm qua 21:42 · <span class="chip warning sm" data-c="Chip">⚠ AI confidence thấp</span></div>
+      </div>
+      <div class="grow"></div>
+      <span class="chip" data-c="Chip">Bài 3/12</span>
+      <button class="btn icon sm" data-c="Button (isIconOnly)">←</button>
+      <button class="btn icon sm" data-c="Button (isIconOnly)">→</button>
+      <span class="small muted" data-c="Kbd">Phím tắt: <b style="border:1px solid var(--divider);border-radius:4px;padding:0 5px">←</b> <b style="border:1px solid var(--divider);border-radius:4px;padding:0 5px">→</b> chuyển bài · <b style="border:1px solid var(--divider);border-radius:4px;padding:0 5px">Ctrl+Enter</b> chốt</span>
+    </div>
+
+    <div class="grid" style="grid-template-columns:280px 1fr 360px;align-items:start">
+
+      <!-- CỘT TRÁI: đề + rubric -->
+      <div class="col">
+        <section class="card" data-c="Card">
+          <div class="card-header small">📄 Đề bài</div>
+          <div class="card-body small">
+            <b>Part 2 — Describe a person who inspired you.</b>
+            <ul class="muted" style="padding-left:18px;margin-top:6px">
+              <li>who this person is</li>
+              <li>how you know him/her</li>
+              <li>what he/she did</li>
+              <li>and explain why he/she inspired you</li>
+            </ul>
+            <div class="muted mt-2">Chuẩn bị 1 phút · nói 2 phút</div>
+          </div>
+        </section>
+
+        <section class="card" data-c="Card">
+          <div class="card-header small">📏 Rubric — IELTS Speaking</div>
+          <div class="card-body accordion" data-c="Accordion">
+            <div class="acc-item">
+              <div class="acc-title small">Fluency &amp; Coherence (FC) <span>▾</span></div>
+              <div class="acc-body small">Band 7: nói dài không gắng sức rõ rệt, dùng từ nối linh hoạt; đôi chỗ ngập ngừng liên quan nội dung, không phải tìm từ.</div>
+            </div>
+            <div class="acc-item">
+              <div class="acc-title small">Lexical Resource (LR) <span>▸</span></div>
+            </div>
+            <div class="acc-item">
+              <div class="acc-title small">Grammatical Range &amp; Accuracy (GRA) <span>▸</span></div>
+            </div>
+            <div class="acc-item" style="border-bottom:none">
+              <div class="acc-title small">Pronunciation (P) <span>▸</span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- CỘT GIỮA: bài làm -->
+      <div class="col">
+        <section class="card" data-c="Card">
+          <div class="card-header small">🎧 Bài nói của học sinh</div>
+          <div class="card-body">
+            <div class="row" data-c="Audio player (Card + Slider)">
+              <button class="btn icon primary" style="border-radius:50%" data-c="Button (isIconOnly)">▶</button>
+              <div class="progress grow" data-c="Slider"><i style="width:70%"></i></div>
+              <span class="small muted" style="white-space:nowrap">01:24 / 01:58</span>
+              <button class="btn icon sm" data-c="Button (isIconOnly)">1x</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" data-c="Card">
+          <div class="card-header row between" style="width:auto">
+            <span class="small">📝 Transcript (AI) — bấm vào từ để nghe lại đoạn đó</span>
+            <span class="chip sm danger" data-c="Chip">3 lỗi phát âm</span>
+          </div>
+          <div class="card-body" style="line-height:2" data-c="Transcript (highlight lỗi)">
+            <p>Well, the person who inspired me the most is my grandfather. He is a
+            <b style="text-decoration:underline wavy var(--danger);cursor:pointer" title="Phát âm: /ˈfəʊtəɡrɑːf/ — HS đọc /foʊtoʊˈɡræf/">photograph</b>er,
+            and he always makes people feel
+            <b style="text-decoration:underline wavy var(--danger);cursor:pointer" title="Phát âm: /ˈkʌmftəbl/ — HS đọc /kɒmˈfɔːtebəl/">comfortable</b>
+            when he takes their picture. I know him since I was a child, and he had a big, uh, a big
+            <b style="text-decoration:underline wavy var(--danger);cursor:pointer" title="Trọng âm: /ˈɪnfluəns/ — HS nhấn âm 2">influence</b>
+            on me because he taught me to be patient and to look at things, uh, in a different way.
+            That's why I want to become a good person like him.</p>
+          </div>
+        </section>
+
+        <section class="card flat" data-c="Card (variant=flat)">
+          <div class="card-body small">
+            <b>🤖 Ghi chú AI:</b> <span class="muted">Trả lời đủ 4 ý của cue card. Ngập ngừng dài ở 0:45 và 1:12 (đang tìm từ). Sai trọng âm/nguyên âm 3 từ được gạch đỏ. Từ vựng miêu tả tính cách còn lặp ("good", "big"). Confidence thấp do audio có tiếng ồn nền từ 1:30.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- CỘT PHẢI: phiếu điểm -->
+      <div class="col">
+        <section class="card" data-c="Card">
+          <div class="card-header small">🧮 Phiếu điểm — GV sửa trực tiếp</div>
+          <div class="card-body col" style="gap:12px">
+
+            <div class="row between" data-c="Input (score)">
+              <div>
+                <b class="small">FC — Fluency &amp; Coherence</b>
+                <div class="small muted">AI đề xuất: <span class="chip sm primary" data-c="Chip">7.0</span></div>
+              </div>
+              <input class="input" style="width:72px;text-align:center" value="7.0">
+            </div>
+
+            <div class="row between" data-c="Input (score)">
+              <div>
+                <b class="small">LR — Lexical Resource</b>
+                <div class="small muted">AI đề xuất: <span class="chip sm primary" data-c="Chip">6.0</span></div>
+              </div>
+              <input class="input" style="width:72px;text-align:center" value="6.0">
+            </div>
+
+            <div class="row between" data-c="Input (score, GV đã sửa)">
+              <div>
+                <b class="small">GRA — Grammar Range &amp; Accuracy</b>
+                <div class="small muted">AI đề xuất: <span class="chip sm primary" data-c="Chip">6.0</span> → <span style="color:var(--warning-600)">GV sửa 6.5</span></div>
+              </div>
+              <input class="input" style="width:72px;text-align:center;border-color:var(--warning);background:var(--warning-50)" value="6.5">
+            </div>
+
+            <div class="row between" data-c="Input (score)">
+              <div>
+                <b class="small">P — Pronunciation</b>
+                <div class="small muted">AI đề xuất: <span class="chip sm primary" data-c="Chip">6.5</span></div>
+              </div>
+              <input class="input" style="width:72px;text-align:center" value="6.5">
+            </div>
+
+            <div class="divider" style="margin:2px 0"></div>
+
+            <div class="row between" data-c="Chip (điểm tổng tự tính)">
+              <div>
+                <b>Điểm tổng (tự tính)</b>
+                <div class="small muted">Trung bình 4 tiêu chí, làm tròn 0.5</div>
+              </div>
+              <span class="chip solid-primary" style="height:36px;font-size:18px;padding:0 14px">6.5</span>
+            </div>
+
+            <div class="field" data-c="Textarea (nhận xét AI — GV sửa được)">
+              <label>Nhận xét gửi học sinh</label>
+              <textarea class="textarea" style="min-height:120px">Em trả lời đủ ý và khá mạch lạc. Cần luyện trọng âm các từ dài: photograph /ˈfəʊtəɡrɑːf/, comfortable /ˈkʌmftəbl/, influence /ˈɪnfluəns/. Thử thay "good/big" bằng generous, patient, remarkable để đa dạng từ vựng. Cô cộng GRA lên 6.5 vì em dùng đúng câu phức "he taught me to...". (Nhận xét do AI soạn — cô Hương đã chỉnh)</textarea>
+            </div>
+
+          </div>
+          <div class="card-footer col" style="gap:8px">
+            <button class="btn success" style="width:100%" data-c="Button (color=success)">Chốt điểm ✓</button>
+            <div class="row" style="gap:8px">
+              <button class="btn bordered sm grow" data-c="Button (variant=bordered)">Trả lại chấm lại</button>
+              <button class="btn light sm grow" data-c="Button (variant=light)">Bỏ qua AI, chấm tay</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — màn review 1 bài speaking, bố cục 3 cột theo mục 5.3 SRS Chấm bài. Map SRS: FR-GRADE-07 (audio + transcript + điểm AI cạnh nhau, phím tắt), FR-GRADE-03 (AI chấm phát âm + transcript), FR-GRADE-05 (rubric IELTS Speaking), luồng chốt / trả lại chấm lại / chấm tay theo flowchart 5.3.</p>
+</body>
+</html>

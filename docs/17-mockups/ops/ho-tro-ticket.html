@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Ops Platform · Hàng đợi ticket hỗ trợ (desktop)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Edmicro Ops</div>
+  <span class="chip secondary sm" data-c="Chip (color=secondary)">Platform</span>
+  <div class="grow"></div>
+  <span class="chip primary sm" data-c="Chip">Support agent</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">2</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">ML</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="quan-tri-tenant.html">🏢 Tenant</a>
+    <a class="item" href="#">📦 Gói dịch vụ</a>
+    <a class="item" href="#">📈 Usage &amp; chi phí AI</a>
+    <a class="item active" href="ho-tro-ticket.html">🎫 Ticket hỗ trợ <span class="chip danger sm" style="margin-left:auto" data-c="Badge">7</span></a>
+    <a class="item" href="#">🗂️ Nội dung global</a>
+    <a class="item" href="#">📜 Nhật ký platform</a>
+  </aside>
+
+  <main class="page" style="max-width:1400px">
+    <h1 class="page-title">Hàng đợi ticket hỗ trợ</h1>
+    <p class="page-sub">Sắp xếp theo SLA còn lại — phản hồi đầu &lt; 4h làm việc (8h00–17h30, T2–T7 sáng, trừ ngày lễ).</p>
+
+    <!-- Filter -->
+    <div class="row wrap mb-4" data-c="Toolbar lọc">
+      <div class="tabs" data-c="Tabs">
+        <span class="tab active">Mới (7)</span>
+        <span class="tab">Đang xử lý (12)</span>
+        <span class="tab">Chờ người dùng (4)</span>
+        <span class="tab">Đã giải quyết</span>
+      </div>
+      <div class="grow"></div>
+      <select class="select" style="max-width:140px" data-c="Select">
+        <option>Loại: tất cả</option><option>Lỗi</option><option>Hỏi đáp</option><option>Yêu cầu tính năng</option><option>Dữ liệu</option>
+      </select>
+      <select class="select" style="max-width:160px" data-c="Select">
+        <option>Tenant: tất cả</option><option>Anh ngữ Bright</option><option>IELTS Hub Đà Nẵng</option><option>Ngoại ngữ Việt Anh</option>
+      </select>
+      <select class="select" style="max-width:150px" data-c="Select">
+        <option>Ưu tiên: tất cả</option><option>Khẩn</option><option>Cao</option><option>Thường</option>
+      </select>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.6fr 1fr;align-items:start">
+
+      <!-- Bảng hàng đợi -->
+      <section class="card" data-c="Card">
+        <div class="card-body table-wrap">
+          <table class="tbl" data-c="Table">
+            <thead>
+              <tr><th>Mã</th><th>Tiêu đề</th><th>Tenant</th><th>Người gửi</th><th>Loại</th><th>Ưu tiên</th><th>SLA</th><th>Assignee</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:var(--primary-50)">
+                <td><b>#T-1042</b></td>
+                <td><b>Học sinh không nghe được audio bài thi</b></td>
+                <td><span class="chip sm" data-c="Chip">Anh ngữ Bright</span></td>
+                <td class="small">Trung Hiếu <span class="chip sm">Học sinh</span></td>
+                <td><span class="chip danger sm" data-c="Chip (color=danger)">Lỗi</span></td>
+                <td><span class="chip danger sm">Khẩn</span></td>
+                <td><span class="chip warning sm" data-c="Chip (color=warning)">⏱ còn 1h20</span></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Nhận</button></td>
+              </tr>
+              <tr>
+                <td><b>#T-1041</b></td>
+                <td>Sao bài Speaking chưa có điểm?</td>
+                <td><span class="chip sm">IELTS Hub Đà Nẵng</span></td>
+                <td class="small">Thu Hà <span class="chip sm">Giáo viên</span></td>
+                <td><span class="chip primary sm" data-c="Chip (color=primary)">Hỏi đáp</span></td>
+                <td><span class="chip warning sm">Cao</span></td>
+                <td><span class="chip danger sm" data-c="Chip (color=danger)">⏱ trễ 0h15</span></td>
+                <td><span class="avatar sm" data-c="Avatar">ML</span></td>
+              </tr>
+              <tr>
+                <td><b>#T-1040</b></td>
+                <td>Không gửi được ZNS cho phụ huynh</td>
+                <td><span class="chip sm">Ngoại ngữ Việt Anh</span></td>
+                <td class="small">Quốc Bảo <span class="chip sm">Quản lý</span></td>
+                <td><span class="chip danger sm">Lỗi</span></td>
+                <td><span class="chip warning sm">Cao</span></td>
+                <td><span class="chip sm">⏱ còn 2h45</span></td>
+                <td><span class="avatar sm">TP</span></td>
+              </tr>
+              <tr>
+                <td><b>#T-1039</b></td>
+                <td>Xin xuất danh sách điểm lớp TOEIC 650</td>
+                <td><span class="chip sm">Trung tâm Sao Mai</span></td>
+                <td class="small">Mai Anh <span class="chip sm">Giáo viên</span></td>
+                <td><span class="chip secondary sm" data-c="Chip (color=secondary)">Dữ liệu</span></td>
+                <td><span class="chip sm">Thường</span></td>
+                <td><span class="chip sm">⏱ còn 3h10</span></td>
+                <td><button class="btn sm flat-primary">Nhận</button></td>
+              </tr>
+              <tr>
+                <td><b>#T-1038</b></td>
+                <td>Cách tạo lớp học thử cho khóa hè?</td>
+                <td><span class="chip sm">Anh ngữ Đông Đô</span></td>
+                <td class="small">Hồng Nhung <span class="chip sm">Quản lý</span></td>
+                <td><span class="chip primary sm">Hỏi đáp</span></td>
+                <td><span class="chip sm">Thường</span></td>
+                <td><span class="chip sm">⏱ còn 3h40</span></td>
+                <td><button class="btn sm flat-primary">Nhận</button></td>
+              </tr>
+              <tr>
+                <td><b>#T-1037</b></td>
+                <td>Học sinh bị trùng tài khoản khi import</td>
+                <td><span class="chip sm">Anh văn Miền Nam</span></td>
+                <td class="small">Đức Long <span class="chip sm">IT trung tâm</span></td>
+                <td><span class="chip secondary sm">Dữ liệu</span></td>
+                <td><span class="chip sm">Thường</span></td>
+                <td><span class="chip sm">⏱ còn 3h55</span></td>
+                <td><span class="avatar sm">TP</span></td>
+              </tr>
+              <tr>
+                <td><b>#T-1036</b></td>
+                <td>Lỗi hiển thị bảng xếp hạng tuần</td>
+                <td><span class="chip sm">Ngoại ngữ Tâm Việt</span></td>
+                <td class="small">Gia Hân <span class="chip sm">Học sinh</span></td>
+                <td><span class="chip danger sm">Lỗi</span></td>
+                <td><span class="chip sm">Thường</span></td>
+                <td><span class="chip sm">⏱ còn 3h58</span></td>
+                <td><button class="btn sm flat-primary">Nhận</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Panel chi tiết ticket đang chọn (drawer giả) -->
+      <aside class="col" style="gap:16px">
+
+        <section class="card" data-c="Drawer (hiển thị tĩnh)">
+          <div class="card-header row between" style="width:auto">
+            <span>#T-1042</span>
+            <span class="row" style="gap:6px">
+              <span class="chip danger sm" data-c="Chip">Khẩn</span>
+              <span class="chip warning sm" data-c="Chip">⏱ SLA còn 1h20</span>
+            </span>
+          </div>
+          <div class="card-body col">
+            <b>Học sinh không nghe được audio bài thi</b>
+
+            <!-- Ngữ cảnh tự động -->
+            <div class="card flat" data-c="Card (flat) — ngữ cảnh tự động">
+              <div class="card-body col" style="gap:6px">
+                <b class="small">📎 Ngữ cảnh đính kèm tự động</b>
+                <div class="row between small"><span class="muted">Tenant</span><span class="chip sm">Anh ngữ Bright</span></div>
+                <div class="row between small"><span class="muted">Người gửi</span><span>Trung Hiếu <span class="chip primary sm" data-c="Chip">student</span></span></div>
+                <div class="row between small"><span class="muted">Trang</span><code style="background:var(--default-100);padding:1px 6px;border-radius:6px">/exams/ie-listening-7</code></div>
+                <div class="row between small"><span class="muted">Trình duyệt / OS</span><span>Chrome 138 · Android</span></div>
+                <div class="row between small"><span class="muted">Request-id lỗi</span><code style="background:var(--default-100);padding:1px 6px;border-radius:6px">err_8f2a</code></div>
+              </div>
+            </div>
+
+            <!-- Thread comment -->
+            <div class="row" style="align-items:flex-start" data-c="Comment">
+              <span class="avatar sm" data-c="Avatar">TH</span>
+              <div class="card flat grow"><div class="card-body" style="padding:10px 12px">
+                <div class="row between"><b class="small">Trung Hiếu</b><span class="small muted">09:12</span></div>
+                <p class="small">Em vào bài thi Listening tuần 7, bấm nút phát nhưng không nghe thấy gì. Các bạn cùng lớp nghe bình thường ạ.</p>
+              </div></div>
+            </div>
+            <div class="row" style="align-items:flex-start" data-c="Comment">
+              <span class="avatar sm">ML</span>
+              <div class="card flat grow" style="background:var(--primary-50)"><div class="card-body" style="padding:10px 12px">
+                <div class="row between"><b class="small">Minh Lan · Support</b><span class="small muted">09:26</span></div>
+                <p class="small">Chào em, em kiểm tra giúp chị tab trình duyệt có đang tắt tiếng không, và thử tai nghe khác nhé. Chị đang tra log lỗi err_8f2a song song.</p>
+              </div></div>
+            </div>
+
+            <!-- Trả lời -->
+            <div class="field" data-c="Textarea">
+              <textarea class="textarea" placeholder="Nhập phản hồi cho người dùng… (đính kèm được ảnh)"></textarea>
+            </div>
+            <div class="row between">
+              <span class="small muted">Comment mới sẽ đẩy thông báo qua NOTIF</span>
+              <button class="btn primary" data-c="Button (color=primary)">Gửi phản hồi</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Công cụ tra cứu / impersonation -->
+        <section class="card" data-c="Card">
+          <div class="card-header">🧰 Công cụ</div>
+          <div class="card-body col">
+            <button class="btn bordered" data-c="Button (variant=bordered)">🤖 Tra trạng thái job chấm AI</button>
+            <button class="btn bordered" data-c="Button (variant=bordered)">📨 Xem log gửi thông báo</button>
+            <button class="btn flat-danger" data-c="Button (variant=flat, color=danger)">🕵️ Đăng nhập thay (impersonation)</button>
+            <p class="small muted">Cần ticket đang mở · tối đa 30 phút · tenant cho phép · ghi audit</p>
+            <div class="alert warning" style="padding:8px 12px" data-c="Alert (color=warning)">
+              <span>⚠️</span><span class="small">Tenant này đã <b>TẮT</b> impersonation — chỉ xem read-only.</span>
+            </div>
+          </div>
+        </section>
+
+      </aside>
+
+    </div>
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — Ops Platform · Hàng đợi ticket (support_agent, desktop). Map SRS: SUPPORT (hàng đợi lọc trạng thái/loại/tenant/ưu tiên + sắp xếp SLA — FR-SUPPORT-05, nhận/assign + ưu tiên — FR-SUPPORT-06, đồng hồ SLA &lt; 4h + cảnh báo trễ — FR-SUPPORT-08, ngữ cảnh tự động tenant/user/URL/trình duyệt/request-id — FR-SUPPORT-02, comment 2 chiều — FR-SUPPORT-04, impersonation chỉ từ ticket mở, 30 phút, owner tắt được → read-only — FR-SUPPORT-11/12/16, tra cứu read-only job chấm AI + log thông báo — FR-SUPPORT-17/18), PLAN (tra cứu gói &amp; usage tenant — FR-PLAN-19).</p>
+</body>
+</html>

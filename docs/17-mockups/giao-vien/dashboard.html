@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Dashboard giáo viên (desktop)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip primary sm" data-c="Chip">Giáo viên</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">5</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">TH</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item active" href="dashboard.html">🏠 Trang chủ</a>
+    <a class="item" href="#">👥 Lớp của tôi</a>
+    <a class="item" href="giao-bai.html">📤 Giao bài</a>
+    <a class="item" href="cham-bai-queue.html">✅ Chấm bài <span class="chip danger sm" style="margin-left:auto" data-c="Badge">12</span></a>
+    <a class="item" href="#">📊 Báo cáo</a>
+    <a class="item" href="#">📅 Lịch dạy &amp; điểm danh</a>
+    <a class="item" href="#">🗂️ Ngân hàng câu hỏi</a>
+  </aside>
+
+  <main class="page">
+    <h1 class="page-title">Chào cô Hương 👋</h1>
+    <p class="page-sub">Thứ Năm, 16/07/2026 — hôm nay bạn có 2 buổi dạy và 12 bài chờ chấm.</p>
+
+    <!-- 4 stat card -->
+    <div class="grid cols-4 mb-4">
+      <a class="card" href="cham-bai-queue.html" data-c="Card (isPressable)">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Bài chờ chấm</span><span>📝</span></div>
+          <div class="big" style="color:var(--primary)">12</div>
+          <span class="small" style="color:var(--primary)">Vào hàng đợi chấm →</span>
+        </div>
+      </a>
+      <div class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Bài sắp hết hạn</span><span>⏰</span></div>
+          <div class="big">3</div>
+          <span class="small muted">trong 24 giờ tới</span>
+        </div>
+      </div>
+      <div class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Học sinh cần chú ý</span><span>👀</span></div>
+          <div class="big">4</div>
+          <span class="chip danger sm" data-c="Chip">2 bài quá hạn liên tiếp</span>
+        </div>
+      </div>
+      <div class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Buổi dạy hôm nay</span><span>📅</span></div>
+          <div class="big">2</div>
+          <span class="small muted">18:00 IELTS 6.5 · 19:45 TOEIC 650</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.6fr 1fr">
+
+      <!-- Lớp của tôi -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>👥 Lớp của tôi</span>
+          <a class="small" href="#">Xem tất cả</a>
+        </div>
+        <div class="card-body table-wrap">
+          <table class="tbl" data-c="Table">
+            <thead>
+              <tr><th>Lớp</th><th>Sĩ số</th><th>Nộp đúng hạn</th><th>Điểm TB</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>IELTS 6.5 — tối T2-T4</b></td>
+                <td>24</td>
+                <td style="min-width:140px">
+                  <div class="row"><div class="progress sm success grow" data-c="Progress"><i style="width:87%"></i></div><span class="small">87%</span></div>
+                </td>
+                <td><b>6.4</b></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Xem</button></td>
+              </tr>
+              <tr>
+                <td><b>IELTS 5.5 Foundation</b></td>
+                <td>18</td>
+                <td>
+                  <div class="row"><div class="progress sm grow" data-c="Progress"><i style="width:72%"></i></div><span class="small">72%</span></div>
+                </td>
+                <td><b>5.6</b></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Xem</button></td>
+              </tr>
+              <tr>
+                <td><b>TOEIC 650 — tối T3-T5</b></td>
+                <td>30</td>
+                <td>
+                  <div class="row"><div class="progress sm warning grow" data-c="Progress (color=warning)"><i style="width:64%"></i></div><span class="small">64%</span></div>
+                </td>
+                <td><b>612</b></td>
+                <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Xem</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Hoạt động gần đây -->
+      <section class="card" data-c="Card">
+        <div class="card-header">🕑 Hoạt động gần đây</div>
+        <div class="card-body col" style="gap:0">
+
+          <div class="row" style="align-items:flex-start;gap:12px">
+            <div class="col" style="align-items:center;gap:0">
+              <span style="width:10px;height:10px;border-radius:50%;background:var(--success);margin-top:5px"></span>
+              <span style="width:2px;flex:1;min-height:34px;background:var(--divider)"></span>
+            </div>
+            <div style="padding-bottom:14px">
+              <b class="small">Trung Hiếu (IELTS 6.5) đã nộp Speaking Part 2</b>
+              <div class="muted small">10 phút trước</div>
+            </div>
+          </div>
+
+          <div class="row" style="align-items:flex-start;gap:12px">
+            <div class="col" style="align-items:center;gap:0">
+              <span style="width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:5px"></span>
+              <span style="width:2px;flex:1;min-height:34px;background:var(--divider)"></span>
+            </div>
+            <div style="padding-bottom:14px">
+              <b class="small">🤖 AI chấm xong 5 bài Writing Task 2 — chờ bạn duyệt</b>
+              <div class="muted small">25 phút trước · <a href="cham-bai-queue.html">Duyệt ngay</a></div>
+            </div>
+          </div>
+
+          <div class="row" style="align-items:flex-start;gap:12px">
+            <div class="col" style="align-items:center;gap:0">
+              <span style="width:10px;height:10px;border-radius:50%;background:var(--warning);margin-top:5px"></span>
+            </div>
+            <div>
+              <b class="small">Deadline "Thi thử IELTS Listening — Tuần 7" hết hạn sau 5 giờ</b>
+              <div class="muted small">6 học sinh chưa nộp · <a href="#">Nhắc 1-chạm</a></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — dashboard giáo viên (desktop). Map SRS: GRADE (bài chờ chấm — FR-GRADE-06), ASSIGN (bài sắp hết hạn, nhắc 1-chạm — FR-ASSIGN-11/12), ORG (lớp của tôi), REPORT (điểm TB, học sinh cần chú ý).</p>
+</body>
+</html>

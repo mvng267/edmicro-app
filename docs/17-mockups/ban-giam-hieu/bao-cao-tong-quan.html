@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Dashboard tổng quan (ban giám hiệu)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip secondary sm" data-c="Chip">Gói Nâng cao</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">5</span>
+  </div>
+  <div class="row" style="gap:8px">
+    <div class="avatar sm" data-c="Avatar">QT</div>
+    <div class="small"><b>Cô Quỳnh Trang</b><div class="muted" style="font-size:11px">Ban giám hiệu</div></div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" data-c="Listbox (sidebar)">
+    <div class="section-label">Quản trị trung tâm</div>
+    <div class="item active">🏠 Tổng quan</div>
+    <div class="item">🏢 Chi nhánh</div>
+    <div class="item">👥 Lớp học</div>
+    <div class="item">🧑‍🏫 Nhân sự</div>
+    <div class="item">📊 Báo cáo</div>
+    <div class="item">💳 Gói dịch vụ &amp; usage</div>
+    <div class="item">⚙️ Cài đặt</div>
+  </aside>
+
+  <main class="page">
+
+    <div class="row between wrap mb-4">
+      <div>
+        <h1 class="page-title">Tổng quan trung tâm</h1>
+        <div class="page-sub" style="margin-bottom:0">Bấm vào bất kỳ con số nào để drill-down chi nhánh → lớp → học sinh → bài làm</div>
+      </div>
+      <button class="btn bordered" data-c="Button (variant=bordered)">📄 Xuất PDF gửi hội đồng</button>
+    </div>
+
+    <div class="row wrap mb-4">
+      <select class="select" style="width:190px" data-c="Select">
+        <option>Tất cả chi nhánh</option>
+        <option>Cầu Giấy</option>
+        <option>Hà Đông</option>
+        <option>Thanh Xuân</option>
+      </select>
+      <select class="select" style="width:150px" data-c="Select">
+        <option>30 ngày qua</option>
+        <option>7 ngày qua</option>
+        <option>Quý này</option>
+        <option>Tùy chọn…</option>
+      </select>
+      <span class="small muted">Số liệu tính đến 06:00 hôm nay (job tổng hợp nightly)</span>
+    </div>
+
+    <!-- 4 stat card -->
+    <div class="grid cols-4 mb-4">
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">Học sinh đang học</div>
+          <div class="big">1.245</div>
+          <span class="chip success sm" data-c="Chip">▲ +3% so với tháng trước</span>
+        </div>
+      </section>
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">Tỉ lệ hoàn thành bài</div>
+          <div class="big">78%</div>
+          <div class="progress mt-2" data-c="Progress"><i style="width:78%"></i></div>
+        </div>
+      </section>
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">Điểm TB toàn trung tâm</div>
+          <div class="big">6.2</div>
+          <span class="chip sm" data-c="Chip">mọi kỹ năng, mọi lớp</span>
+        </div>
+      </section>
+      <section class="card" data-c="Card (stat)">
+        <div class="card-body">
+          <div class="small muted">HS nguy cơ bỏ học</div>
+          <div class="big">17</div>
+          <span class="chip danger sm" data-c="Chip">● không hoạt động &gt; 14 ngày</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- So sánh chi nhánh -->
+    <section class="card mb-4" data-c="Card">
+      <div class="card-header row between" style="width:auto">
+        <span>🏢 So sánh chi nhánh</span>
+        <a class="small" href="#">Xem chi tiết từng chi nhánh →</a>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap" data-c="Table">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Chi nhánh</th>
+                <th>Học sinh</th>
+                <th>Lớp</th>
+                <th style="width:220px">Hoàn thành bài</th>
+                <th>Điểm TB</th>
+                <th style="width:220px">Chuyên cần</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Cầu Giấy</b></td>
+                <td>520</td>
+                <td>24</td>
+                <td><div class="row"><div class="progress sm success grow" data-c="Progress"><i style="width:82%"></i></div><b class="small">82%</b></div></td>
+                <td><span class="chip success sm" data-c="Chip">6.4</span></td>
+                <td><div class="row"><div class="progress sm success grow"><i style="width:93%"></i></div><b class="small">93%</b></div></td>
+              </tr>
+              <tr>
+                <td><b>Hà Đông</b></td>
+                <td>410</td>
+                <td>19</td>
+                <td><div class="row"><div class="progress sm grow"><i style="width:76%"></i></div><b class="small">76%</b></div></td>
+                <td><span class="chip success sm">6.1</span></td>
+                <td><div class="row"><div class="progress sm grow"><i style="width:90%"></i></div><b class="small">90%</b></div></td>
+              </tr>
+              <tr>
+                <td><b>Thanh Xuân</b></td>
+                <td>315</td>
+                <td>15</td>
+                <td><div class="row"><div class="progress sm warning grow"><i style="width:71%"></i></div><b class="small">71%</b></div></td>
+                <td><span class="chip warning sm">5.9</span></td>
+                <td><div class="row"><div class="progress sm warning grow"><i style="width:88%"></i></div><b class="small">88%</b></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid cols-2">
+
+      <!-- Xu hướng 6 tháng -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>📈 Xu hướng 6 tháng — Điểm TB toàn trung tâm</span>
+          <span class="chip primary sm" data-c="Chip">● Điểm TB</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:flex-end;gap:16px;height:180px;padding:0 6px" data-c="Line chart tĩnh (div chấm + cột)">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%"><span class="small muted">5.7</span><span style="width:10px;height:10px;border-radius:50%;background:var(--primary);margin:2px 0"></span><div style="width:60%;height:54px;background:var(--primary-50);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%"><span class="small muted">5.8</span><span style="width:10px;height:10px;border-radius:50%;background:var(--primary);margin:2px 0"></span><div style="width:60%;height:72px;background:var(--primary-50);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%"><span class="small muted">6.0</span><span style="width:10px;height:10px;border-radius:50%;background:var(--primary);margin:2px 0"></span><div style="width:60%;height:108px;background:var(--primary-50);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%"><span class="small muted">5.9</span><span style="width:10px;height:10px;border-radius:50%;background:var(--primary);margin:2px 0"></span><div style="width:60%;height:90px;background:var(--primary-50);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%"><span class="small muted">6.1</span><span style="width:10px;height:10px;border-radius:50%;background:var(--primary);margin:2px 0"></span><div style="width:60%;height:126px;background:var(--primary-50);border-radius:6px 6px 0 0"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%"><span class="small muted"><b>6.2</b></span><span style="width:12px;height:12px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px var(--primary-50);margin:2px 0"></span><div style="width:60%;height:144px;background:var(--primary-100);border-radius:6px 6px 0 0"></div></div>
+          </div>
+          <div style="display:flex;gap:16px;padding:6px 6px 0" class="small muted">
+            <span style="flex:1;text-align:center">T2</span><span style="flex:1;text-align:center">T3</span><span style="flex:1;text-align:center">T4</span><span style="flex:1;text-align:center">T5</span><span style="flex:1;text-align:center">T6</span><span style="flex:1;text-align:center">T7</span>
+          </div>
+          <div class="small muted mt-2">Tỉ lệ hoàn thành bài cùng kỳ: 71% → 78% · HS active: 1.086 → 1.245</div>
+        </div>
+      </section>
+
+      <!-- Hoạt động giáo viên -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>🧑‍🏫 Hoạt động giáo viên — 30 ngày</span>
+          <a class="small" href="#">Xem tất cả (18 GV) →</a>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap" data-c="Table">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Giáo viên</th>
+                  <th>Bài đã giao</th>
+                  <th>Tốc độ chấm TB</th>
+                  <th>Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="row"><div class="avatar sm" data-c="Avatar">HG</div> Thu Hương</div></td>
+                  <td>32</td>
+                  <td>14 giờ</td>
+                  <td><span class="chip success sm" data-c="Chip">tốt</span></td>
+                </tr>
+                <tr>
+                  <td><div class="row"><div class="avatar sm">TA</div> Tuấn Anh</div></td>
+                  <td>28</td>
+                  <td>18 giờ</td>
+                  <td><span class="chip success sm">tốt</span></td>
+                </tr>
+                <tr>
+                  <td><div class="row"><div class="avatar sm">ML</div> Mỹ Linh</div></td>
+                  <td>21</td>
+                  <td>26 giờ</td>
+                  <td><span class="chip sm">bình thường</span></td>
+                </tr>
+                <tr>
+                  <td><div class="row"><div class="avatar sm" style="background:var(--warning-50);color:var(--warning-600)">HN</div> Hải Nam</div></td>
+                  <td>17</td>
+                  <td>52 giờ</td>
+                  <td><span class="chip warning sm" data-c="Chip (cảnh báo)">⚠ chấm chậm &gt; 48h</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — Dashboard tổng quan ban giám hiệu (desktop). Map SRS: FR-REPORT-11 (tổng quan + drill-down chi nhánh → lớp → HS → bài làm), FR-REPORT-12 (so sánh chi nhánh/lớp), FR-REPORT-13 (hoạt động giáo viên: bài giao, tốc độ chấm), FR-REPORT-14 (HS nguy cơ bỏ học &gt; 14 ngày), FR-REPORT-15 (xu hướng theo tháng), FR-REPORT-16 (xuất PDF), FR-REPORT-19 (mọi con số bấm được), NFR-REPORT-04 (nhãn "tính đến" của pre-aggregate).</p>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Kết quả bài thi thử (học sinh, mobile)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<div class="phone">
+  <div class="screen">
+
+    <header class="navbar" data-c="Navbar">
+      <span class="btn icon sm" style="border-radius:50%">←</span>
+      <b>Kết quả bài thi</b>
+      <div class="grow"></div>
+      <span class="btn icon sm" style="border-radius:50%">⤴</span>
+    </header>
+
+    <main style="padding:16px" class="col">
+
+      <div style="text-align:center">
+        <b>Thi thử IELTS — Tuần 7</b>
+        <div class="muted small">Lớp IELTS 6.5 · GV Hương · nộp 14/07 lúc 20:12</div>
+      </div>
+
+      <!-- Vòng điểm tổng -->
+      <section class="card" data-c="Card">
+        <div class="card-body col" style="align-items:center;gap:8px">
+          <div class="ring" data-c="CircularProgress" style="--p:72;--ring-color:var(--primary);width:132px;height:132px">
+            <b style="width:106px;height:106px;flex-direction:column">
+              <span style="font-size:34px;font-weight:700;line-height:1.1">6.5</span>
+              <span class="small muted" style="font-weight:500">Band IELTS</span>
+            </b>
+          </div>
+          <span class="chip warning sm" data-c="Chip (color=warning)">Điểm tạm tính — Speaking chờ GV duyệt</span>
+
+          <!-- 4 điểm thành phần -->
+          <div class="grid cols-4" style="gap:8px;width:100%;grid-template-columns:repeat(4,1fr)">
+            <div class="card flat" data-c="Card">
+              <div class="card-body col" style="align-items:center;gap:3px;padding:10px 4px">
+                <span class="small muted">L</span><b style="font-size:17px">7.0</b>
+                <span class="chip sm" style="font-size:9.5px;padding:0 5px">tự động</span>
+              </div>
+            </div>
+            <div class="card flat" data-c="Card">
+              <div class="card-body col" style="align-items:center;gap:3px;padding:10px 4px">
+                <span class="small muted">R</span><b style="font-size:17px">7.0</b>
+                <span class="chip sm" style="font-size:9.5px;padding:0 5px">tự động</span>
+              </div>
+            </div>
+            <div class="card flat" data-c="Card">
+              <div class="card-body col" style="align-items:center;gap:3px;padding:10px 4px">
+                <span class="small muted">W</span><b style="font-size:17px">5.5</b>
+                <span class="chip success sm" data-c="Chip (color=success)" style="font-size:9.5px;padding:0 5px">GV đã chốt</span>
+              </div>
+            </div>
+            <div class="card flat" data-c="Card">
+              <div class="card-body col" style="align-items:center;gap:3px;padding:10px 4px">
+                <span class="small muted">S</span><b style="font-size:17px">6.0</b>
+                <span class="chip warning sm" data-c="Chip (color=warning)" style="font-size:9.5px;padding:0 5px;text-align:center">AI sơ bộ — chờ GV duyệt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Điểm thưởng gamification -->
+      <div class="row wrap" data-c="Chip group">
+        <span class="chip primary" data-c="Chip (color=primary)">+10 điểm 🎉 hoàn thành đúng hạn</span>
+        <span class="chip sm">🔥 giữ streak 12 ngày</span>
+      </div>
+
+      <!-- Nhận xét giáo viên -->
+      <section class="card" data-c="Card">
+        <div class="card-header row" style="width:auto" data-c="User">
+          <div class="avatar" data-c="Avatar">GH</div>
+          <div>
+            <div>Cô Hương — nhận xét</div>
+            <div class="small muted" style="font-weight:400">Writing · chốt điểm 15/07</div>
+          </div>
+        </div>
+        <div class="card-body small">
+          Bài Task 2 lập luận rõ nhưng em còn lặp từ "important" quá nhiều và thiếu câu kết đoạn.
+          Task 1 đọc sai xu hướng biểu đồ ở đoạn 2. Tuần này em tập trung làm lại dạng bar chart
+          và học nhóm từ đồng nghĩa cô gửi trong lớp nhé. Listening và Reading giữ phong độ tốt!
+        </div>
+      </section>
+
+      <!-- Phân tích theo loại câu hỏi -->
+      <section class="card" data-c="Card">
+        <div class="card-header">📊 Tỉ lệ đúng theo loại câu hỏi</div>
+        <div class="card-body col" style="gap:12px">
+          <div>
+            <div class="row between mb-2 small"><span>True / False / Not Given</span><b>60%</b></div>
+            <div class="progress warning" data-c="Progress (color=warning)"><i style="width:60%"></i></div>
+          </div>
+          <div>
+            <div class="row between mb-2 small"><span>Matching headings</span><b>80%</b></div>
+            <div class="progress success" data-c="Progress (color=success)"><i style="width:80%"></i></div>
+          </div>
+          <div>
+            <div class="row between mb-2 small"><span>Fill in the blank</span><b style="color:var(--danger)">45%</b></div>
+            <div class="progress danger" data-c="Progress (color=danger)"><i style="width:45%"></i></div>
+          </div>
+          <div class="alert danger small" data-c="Alert (color=danger)" style="padding:9px 12px">
+            ⚠️ Điền từ là điểm yếu nhất — 5/11 câu đúng. Ưu tiên luyện lại dạng này.
+          </div>
+        </div>
+      </section>
+
+      <!-- Xem lại từng câu -->
+      <section class="card" data-c="Card">
+        <div class="card-header">🔍 Xem lại từng câu</div>
+        <div class="card-body">
+          <div class="accordion" data-c="Accordion">
+
+            <div class="acc-item">
+              <div class="acc-title small">
+                <span><span class="chip danger sm" data-c="Chip">✕</span> &nbsp;Câu 14 · Fill in the blank</span>
+                <span>⌃</span>
+              </div>
+              <div class="acc-body" data-c="Accordion Item (expanded)">
+                <p class="small" style="color:var(--fg)">
+                  <b>Đề:</b> The number of visitors increased ______ between 2010 and 2015.
+                </p>
+                <div class="alert danger small mt-2" data-c="Alert (color=danger)" style="padding:8px 12px">
+                  ✕ Đáp án của bạn: <b>“dramatic”</b>
+                </div>
+                <div class="alert success small mt-2" data-c="Alert (color=success)" style="padding:8px 12px">
+                  ✓ Đáp án đúng: <b>“dramatically”</b>
+                </div>
+                <p class="small mt-2">
+                  <b style="color:var(--fg)">Giải thích:</b> chỗ trống bổ nghĩa cho động từ
+                  “increased” nên cần <b>trạng từ</b> (dramatically), không dùng tính từ (dramatic).
+                  Dấu hiệu: đứng ngay sau động từ thường.
+                </p>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <div class="acc-title small">
+                <span><span class="chip danger sm" data-c="Chip">✕</span> &nbsp;Câu 17 · True / False / Not Given</span>
+                <span>⌄</span>
+              </div>
+            </div>
+
+            <div class="acc-item" style="border-bottom:none">
+              <div class="acc-title small">
+                <span><span class="chip success sm" data-c="Chip">✓</span> &nbsp;Câu 18 · Matching headings</span>
+                <span>⌄</span>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn flat-primary mt-4" data-c="Button (variant=flat, color=primary)" style="width:100%">
+            ✏️ Luyện lại các câu sai (9)
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="bottom-tabs" data-c="Tabs (bottom navigation)">
+      <div class="bt"><span class="ic">🏠</span>Trang chủ</div>
+      <div class="bt"><span class="ic">📚</span>Khóa học</div>
+      <div class="bt"><span class="ic">✏️</span>Bài tập</div>
+      <div class="bt"><span class="ic">📅</span>Lịch học</div>
+      <div class="bt active"><span class="ic">📊</span>Kết quả</div>
+    </nav>
+
+  </div>
+</div>
+
+<p style="text-align:center" class="small muted">
+  Mockup tĩnh — kết quả bài thi thử của học sinh (mobile). Map SRS: EXAM (kết quả bài thi),
+  GRADE (FR-GRADE-01 chấm tự động câu đóng; FR-GRADE-09 điểm AI “sơ bộ — chờ GV duyệt” vs điểm GV đã chốt),
+  PRACTICE (luyện lại câu sai), GAME (FR-GAME-01 +10 điểm hoàn thành đúng hạn, streak).
+</p>
+</body>
+</html>

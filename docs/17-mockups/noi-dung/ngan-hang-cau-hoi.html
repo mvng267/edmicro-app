@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Ngân hàng câu hỏi (content editor)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Edmicro Content Studio</div>
+  <div class="grow"></div>
+  <span class="chip secondary sm" data-c="Chip">Kho GLOBAL</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">5</span>
+  </div>
+  <div class="row" style="gap:8px">
+    <div class="avatar sm" data-c="Avatar">NH</div>
+    <div class="small"><b>Nguyễn Hà</b><div class="muted" style="font-size:11px">Nhân viên nội dung</div></div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" data-c="Listbox (sidebar)">
+    <div class="section-label">Kho nội dung</div>
+    <div class="item active">🗂️ Ngân hàng câu hỏi</div>
+    <div class="item">📦 Bộ nội dung</div>
+    <div class="item">📄 Đề thi mẫu</div>
+    <div class="item">⬆️ Import Word/Excel</div>
+    <div class="item row between" style="width:auto" data-c="ListboxItem + Badge">
+      <span>🔍 Duyệt nội dung</span>
+      <span class="chip danger sm">5</span>
+    </div>
+  </aside>
+
+  <main class="page" style="max-width:1400px">
+
+    <div class="row between wrap mb-4">
+      <div>
+        <h1 class="page-title">Ngân hàng câu hỏi</h1>
+        <div class="page-sub" style="margin-bottom:0">Kho GLOBAL · 12.480 câu hỏi · phân phối theo bộ nội dung &amp; gói dịch vụ</div>
+      </div>
+      <div class="row wrap">
+        <button class="btn primary" data-c="Button (color=primary)">＋ Tạo câu hỏi</button>
+        <button class="btn bordered" data-c="Button (variant=bordered)">⬆ Import Word/Excel</button>
+      </div>
+    </div>
+
+    <!-- Filter row -->
+    <section class="card mb-4" data-c="Card (bộ lọc)">
+      <div class="card-body row wrap" style="gap:12px">
+        <div class="field" style="width:150px" data-c="Select">
+          <label>Ngôn ngữ</label>
+          <select class="select"><option>Tiếng Trung</option><option>Tiếng Anh</option><option>Tiếng Nhật</option><option>Tiếng Hàn</option></select>
+        </div>
+        <div class="field" style="width:130px" data-c="Select">
+          <label>Kỹ năng</label>
+          <select class="select"><option>Nghe</option><option>Nói</option><option>Đọc</option><option>Viết</option></select>
+        </div>
+        <div class="field" style="width:120px" data-c="Select">
+          <label>Level</label>
+          <select class="select"><option>HSK 4</option><option>HSK 3</option><option>HSK 5</option></select>
+        </div>
+        <div class="field" style="width:150px" data-c="Select">
+          <label>Loại câu</label>
+          <select class="select"><option>mcq_single</option><option>mcq_multi</option><option>fill_blank</option></select>
+        </div>
+        <div class="field" style="width:140px" data-c="Select">
+          <label>Trạng thái</label>
+          <select class="select"><option>Published</option><option>Chờ duyệt</option><option>Draft</option><option>Archived</option></select>
+        </div>
+        <div class="field grow" style="min-width:200px" data-c="Input (tìm kiếm)">
+          <label>Tìm kiếm</label>
+          <input class="input" placeholder="🔎 Từ khóa nội dung, mã câu hỏi…">
+        </div>
+      </div>
+    </section>
+
+    <div class="row" style="align-items:flex-start;gap:16px">
+
+      <!-- Bảng câu hỏi -->
+      <section class="card grow" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>Kết quả: 238 câu — Nghe · HSK 4 · mcq_single</span>
+          <span class="small muted">đã chọn 1</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap" data-c="Table (selectionMode=single)">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width:36px"><span class="check" data-c="Checkbox"></span></th>
+                  <th>Mã</th>
+                  <th>Đề bài</th>
+                  <th>Loại</th>
+                  <th>Tag</th>
+                  <th>Trạng thái</th>
+                  <th>Lượt dùng</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background:var(--primary-50)">
+                  <td><span class="check on" data-c="Checkbox"></span></td>
+                  <td><b>Q-ZH-1042</b></td>
+                  <td class="small">【听力】男的周末打算做什么？…</td>
+                  <td><span class="chip sm" data-c="Chip">mcq_single</span></td>
+                  <td><span class="chip secondary sm" data-c="Chip">HSK4</span> <span class="chip sm">Du lịch</span></td>
+                  <td><span class="chip success sm" data-c="Chip">Published</span></td>
+                  <td>128</td>
+                  <td><button class="btn icon sm" data-c="Button (isIconOnly)">✏️</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td><b>Q-ZH-1041</b></td>
+                  <td class="small">【听力】他们在哪里见面？…</td>
+                  <td><span class="chip sm">mcq_single</span></td>
+                  <td><span class="chip secondary sm">HSK4</span> <span class="chip sm">Sinh hoạt</span></td>
+                  <td><span class="chip success sm">Published</span></td>
+                  <td>96</td>
+                  <td><button class="btn icon sm">✏️</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td><b>Q-ZH-1038</b></td>
+                  <td class="small">【听力】男的为什么迟到了？…</td>
+                  <td><span class="chip sm">mcq_single</span></td>
+                  <td><span class="chip secondary sm">HSK4</span> <span class="chip sm">Giao thông</span></td>
+                  <td><span class="chip warning sm" data-c="Chip">Chờ duyệt</span></td>
+                  <td>0</td>
+                  <td><button class="btn icon sm">✏️</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td><b>Q-ZH-1035</b></td>
+                  <td class="small">【听力】女的对这部电影的看法是什么？…</td>
+                  <td><span class="chip sm">mcq_single</span></td>
+                  <td><span class="chip secondary sm">HSK4</span> <span class="chip sm">Giải trí</span></td>
+                  <td><span class="chip success sm">Published</span></td>
+                  <td>74</td>
+                  <td><button class="btn icon sm">✏️</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td><b>Q-ZH-1031</b></td>
+                  <td class="small">【听力】他们打算什么时候出发？…</td>
+                  <td><span class="chip sm">mcq_single</span></td>
+                  <td><span class="chip secondary sm">HSK4</span> <span class="chip sm">Du lịch</span></td>
+                  <td><span class="chip sm" data-c="Chip">Draft</span></td>
+                  <td>0</td>
+                  <td><button class="btn icon sm">✏️</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td><b>Q-ZH-1029</b></td>
+                  <td class="small">【听力】男的最喜欢哪个季节？…</td>
+                  <td><span class="chip sm">mcq_single</span></td>
+                  <td><span class="chip secondary sm">HSK4</span> <span class="chip sm">Thời tiết</span></td>
+                  <td><span class="chip success sm">Published</span></td>
+                  <td>152</td>
+                  <td><button class="btn icon sm">✏️</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row between mt-4">
+            <span class="small muted">Hiển thị 1–6 / 238 câu</span>
+            <div class="pagination" data-c="Pagination">
+              <span class="pg">«</span>
+              <span class="pg active">1</span>
+              <span class="pg">2</span>
+              <span class="pg">3</span>
+              <span class="pg">…</span>
+              <span class="pg">40</span>
+              <span class="pg">»</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel preview (drawer giả) -->
+      <aside class="card" style="width:380px;flex-shrink:0;position:sticky;top:80px" data-c="Drawer (xem trước như học sinh thấy)">
+        <div class="card-header row between" style="width:auto">
+          <span>👁 Xem trước — Q-ZH-1042</span>
+          <div class="row" style="gap:6px">
+            <span class="chip success sm" data-c="Chip">Published · v3</span>
+            <button class="btn icon sm" data-c="Button (isIconOnly)">✕</button>
+          </div>
+        </div>
+        <div class="card-body col">
+
+          <div class="row wrap" style="gap:6px">
+            <span class="chip secondary sm" data-c="Chip">Tiếng Trung</span>
+            <span class="chip sm">Nghe</span>
+            <span class="chip sm">HSK4</span>
+            <span class="chip sm">Du lịch</span>
+            <span class="chip warning sm">Độ khó 3/5</span>
+          </div>
+
+          <!-- Audio player giả -->
+          <div class="card flat" data-c="Audio player (giả)">
+            <div class="card-body row">
+              <button class="btn icon sm primary" style="border-radius:50%" data-c="Button (play)">▶</button>
+              <div class="grow">
+                <div class="progress sm" data-c="Progress (audio)"><i style="width:28%"></i></div>
+              </div>
+              <span class="small muted">00:12 / 00:45</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="small muted mb-2">Câu hỏi (học sinh nghe audio, không thấy transcript)</div>
+            <b style="font-size:15px">问：男的周末打算做什么？</b>
+          </div>
+
+          <div class="col" style="gap:8px" data-c="RadioGroup (đáp án)">
+            <label class="row" style="gap:8px;padding:8px 10px;border:1px solid var(--divider);border-radius:var(--r-md)">
+              <span class="radio" data-c="Radio"></span> A. 去图书馆
+            </label>
+            <label class="row" style="gap:8px;padding:8px 10px;border:1px solid var(--divider);border-radius:var(--r-md)">
+              <span class="radio"></span> B. 看电影
+            </label>
+            <label class="row between" style="gap:8px;padding:8px 10px;border:1px solid var(--success);background:var(--success-50);border-radius:var(--r-md)" data-c="Radio (đáp án đúng)">
+              <span class="row" style="gap:8px"><span class="radio on" style="border-color:var(--success);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--success)"></span> <b>C. 爬山</b></span>
+              <span class="chip success sm">✓ đáp án đúng</span>
+            </label>
+            <label class="row" style="gap:8px;padding:8px 10px;border:1px solid var(--divider);border-radius:var(--r-md)">
+              <span class="radio"></span> D. 在家休息
+            </label>
+          </div>
+
+          <div class="alert success" data-c="Alert (giải thích)">
+            💡 <span><b>Giải thích:</b> Trong hội thoại, người nam nói “我想去爬山” (tôi muốn đi leo núi) → chọn C. Đáp án B là hoạt động người nữ đề xuất, gây nhiễu.</span>
+          </div>
+
+          <div class="small muted">Tác giả: Nguyễn Hà · duyệt bởi Minh Đức (4 mắt) · 128 lượt dùng · tỉ lệ đúng 62%</div>
+        </div>
+        <div class="card-footer row" data-c="CardFooter">
+          <button class="btn sm bordered" data-c="Button (variant=bordered)">✏️ Sửa (tạo version mới)</button>
+          <button class="btn sm light" data-c="Button (variant=light)">📑 Lịch sử version</button>
+        </div>
+      </aside>
+
+    </div>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — Ngân hàng câu hỏi (content_editor, kho GLOBAL, desktop). Map SRS: FR-CONTENT-01 (kho global), FR-CONTENT-04 (tag ngôn ngữ/kỹ năng/level/chủ đề/độ khó + đáp án + giải thích), FR-CONTENT-05 (audio câu nghe), FR-CONTENT-08 (lọc theo mọi tag + từ khóa), FR-CONTENT-09 (xem trước như học sinh thấy), FR-CONTENT-10 (duyệt 4 mắt — badge "Duyệt nội dung 5"), FR-CONTENT-12 (import Word/Excel), FR-CONTENT-14 (versioning — sửa tạo version mới), FR-CONTENT-18 (lượt dùng, tỉ lệ đúng).</p>
+</body>
+</html>

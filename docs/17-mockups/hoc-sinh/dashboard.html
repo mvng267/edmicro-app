@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Dashboard học sinh (mobile)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<div class="phone">
+  <div class="screen">
+
+    <header class="navbar" data-c="Navbar">
+      <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+      <div class="grow"></div>
+      <span class="chip warning sm" data-c="Chip" title="Streak">🔥 12 ngày</span>
+      <div style="position:relative" data-c="Badge">
+        <span class="btn icon sm" style="border-radius:50%">🔔</span>
+        <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">3</span>
+      </div>
+      <div class="avatar sm" data-c="Avatar">MN</div>
+    </header>
+
+    <main style="padding:16px" class="col">
+
+      <div class="row between">
+        <div>
+          <div class="muted small">Chào buổi tối 👋</div>
+          <h2 style="font-size:18px">Minh Nguyễn</h2>
+        </div>
+        <span class="chip primary" data-c="Chip">⭐ 1.240 điểm</span>
+      </div>
+
+      <!-- Việc cần làm -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>📌 Việc cần làm</span>
+          <span class="chip danger sm" data-c="Chip">2 sắp hết hạn</span>
+        </div>
+        <div class="card-body col">
+
+          <div class="card flat" data-c="Card (isPressable)">
+            <div class="card-body row">
+              <span class="chip solid-primary sm">Exam</span>
+              <div class="grow">
+                <b>Thi thử IELTS Listening — Tuần 7</b>
+                <div class="muted small">Lớp IELTS 6.5 · GV Hương</div>
+              </div>
+              <div class="col" style="align-items:end;gap:2px">
+                <span class="chip danger sm" data-c="Chip">⏰ còn 5 giờ</span>
+                <span class="small muted">40 câu · 30'</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card flat" data-c="Card (isPressable)">
+            <div class="card-body row">
+              <span class="chip success sm">Practice</span>
+              <div class="grow">
+                <b>Speaking Part 2 — Describe a person</b>
+                <div class="muted small">Nói · 2 câu hỏi</div>
+              </div>
+              <span class="chip warning sm" data-c="Chip">hạn ngày mai</span>
+            </div>
+          </div>
+
+          <div class="card flat" data-c="Card (isPressable)">
+            <div class="card-body row">
+              <span class="chip secondary sm">Course</span>
+              <div class="grow">
+                <b>Unit 5: Environment — Bài 3</b>
+                <div class="muted small">Video + flashcard + quiz</div>
+              </div>
+              <span class="chip sm" data-c="Chip">hạn T6</span>
+            </div>
+          </div>
+
+          <button class="btn light sm" data-c="Button (variant=light)">Xem tất cả (6) →</button>
+        </div>
+      </section>
+
+      <!-- Tiến độ khóa học -->
+      <section class="card" data-c="Card">
+        <div class="card-header">📚 Khóa học của tôi</div>
+        <div class="card-body col">
+          <div>
+            <div class="row between mb-2"><b class="small">IELTS Intensive 6.5</b><span class="small muted">68%</span></div>
+            <div class="progress" data-c="Progress"><i style="width:68%"></i></div>
+          </div>
+          <div>
+            <div class="row between mb-2"><b class="small">Ngữ pháp nền tảng B1</b><span class="small muted">100%</span></div>
+            <div class="progress success" data-c="Progress (color=success)"><i style="width:100%"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kỹ năng + flashcard -->
+      <div class="grid cols-2">
+        <section class="card" data-c="Card">
+          <div class="card-header small">🎯 Kỹ năng</div>
+          <div class="card-body col" style="gap:7px">
+            <div class="row small"><span style="width:38px">Nghe</span><div class="progress sm grow" data-c="Progress"><i style="width:72%"></i></div><b>7.2</b></div>
+            <div class="row small"><span style="width:38px">Nói</span><div class="progress sm warning grow"><i style="width:55%"></i></div><b>5.5</b></div>
+            <div class="row small"><span style="width:38px">Đọc</span><div class="progress sm success grow"><i style="width:78%"></i></div><b>7.8</b></div>
+            <div class="row small"><span style="width:38px">Viết</span><div class="progress sm danger grow"><i style="width:48%"></i></div><b>4.8</b></div>
+          </div>
+        </section>
+        <section class="card" data-c="Card (isPressable)">
+          <div class="card-header small">🃏 Flashcard</div>
+          <div class="card-body col" style="align-items:center">
+            <div class="big">23</div>
+            <div class="small muted" style="text-align:center">thẻ đến hạn ôn</div>
+            <button class="btn flat-primary sm" data-c="Button (variant=flat)">Ôn ngay</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Xếp hạng tuần -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>🏆 Xếp hạng tuần — Lớp IELTS 6.5</span>
+          <a class="small" href="bang-xep-hang.html">Xem hết</a>
+        </div>
+        <div class="card-body col" style="gap:8px">
+          <div class="row small"><b style="width:20px">1</b><div class="avatar sm">LA</div> Lan Anh <div class="grow"></div><b>320</b></div>
+          <div class="row small" style="background:var(--primary-50);border-radius:8px;padding:4px 6px"><b style="width:20px">2</b><div class="avatar sm">MN</div> <b>Minh (bạn)</b> <div class="grow"></div><b>305</b></div>
+          <div class="row small"><b style="width:20px">3</b><div class="avatar sm">TH</div> Trung Hiếu <div class="grow"></div><b>287</b></div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="bottom-tabs" data-c="Tabs (bottom navigation)">
+      <div class="bt active"><span class="ic">🏠</span>Trang chủ</div>
+      <div class="bt"><span class="ic">📚</span>Khóa học</div>
+      <div class="bt"><span class="ic">✏️</span>Bài tập</div>
+      <div class="bt"><span class="ic">📅</span>Lịch học</div>
+      <div class="bt"><span class="ic">📊</span>Kết quả</div>
+    </nav>
+
+  </div>
+</div>
+
+<p style="text-align:center" class="small muted">Mockup tĩnh — dashboard học sinh (mobile-first). Map SRS: ASSIGN (việc cần làm), COURSE (tiến độ), REPORT (kỹ năng), GAME (điểm, streak, xếp hạng).</p>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Điểm danh buổi học (giáo viên)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip sm" data-c="Chip">Cơ sở Cầu Giấy</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">2</span>
+  </div>
+  <div class="row" style="gap:8px">
+    <div class="avatar sm" data-c="Avatar">HG</div>
+    <div class="small"><b>GV Thu Hương</b><div class="muted" style="font-size:11px">Giáo viên</div></div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" data-c="Listbox (sidebar)">
+    <div class="section-label">Giảng dạy</div>
+    <div class="item">🏠 Tổng quan</div>
+    <div class="item">👥 Lớp của tôi</div>
+    <div class="item">📝 Giao bài</div>
+    <div class="item">✅ Chấm bài</div>
+    <div class="item active">📅 Lịch dạy</div>
+    <div class="item">📊 Báo cáo</div>
+    <div class="section-label">Nội dung</div>
+    <div class="item">🗂️ Ngân hàng câu hỏi</div>
+  </aside>
+
+  <main class="page" style="max-width:980px">
+
+    <div class="breadcrumbs" data-c="Breadcrumbs">Lịch dạy <span>/</span> Tuần 14–20/07 <span>/</span> <b>Điểm danh buổi học</b></div>
+
+    <div class="row between wrap mb-4">
+      <div>
+        <h1 class="page-title">Điểm danh — IELTS 6.5</h1>
+        <div class="row wrap mt-2">
+          <span class="chip" data-c="Chip">📅 Thứ 4, 16/07</span>
+          <span class="chip">🕕 18:00 – 19:30</span>
+          <span class="chip">🚪 Phòng 201</span>
+          <span class="chip primary" data-c="Chip (link online)">🔗 Link Zoom</span>
+        </div>
+      </div>
+      <button class="btn flat-success" data-c="Button (variant=flat, color=success)">✓✓ Tất cả có mặt</button>
+    </div>
+
+    <section class="card mb-4" data-c="Card">
+      <div class="card-header row between" style="width:auto">
+        <span>Danh sách lớp — 8 học sinh</span>
+        <span class="row small muted" style="gap:6px">
+          <span class="chip success sm" data-c="Chip">4 có mặt</span>
+          <span class="chip danger sm">2 vắng</span>
+          <span class="chip warning sm">1 muộn</span>
+          <span class="chip sm">1 có phép</span>
+        </span>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap" data-c="Table">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th style="width:220px">Học sinh</th>
+                <th>Trạng thái</th>
+                <th style="width:240px">Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="row"><div class="avatar sm" data-c="Avatar">LA</div> Lan Anh</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio on" style="border-color:var(--success);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--success)" data-c="Radio"></span><b class="small" style="color:var(--success-600)">Có mặt ✓</b></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Vắng</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Muộn</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có phép</span></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" placeholder="Ghi chú…" data-c="Input"></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">MN</div> Minh Nguyễn</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio on" style="border-color:var(--success);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--success)"></span><b class="small" style="color:var(--success-600)">Có mặt ✓</b></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Vắng</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Muộn</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có phép</span></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" placeholder="Ghi chú…"></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm" style="background:var(--danger-50);color:var(--danger-600)">TH</div> Trung Hiếu</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có mặt</span></label>
+                    <label class="row" style="gap:6px"><span class="radio on" style="border-color:var(--danger);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--danger)"></span><b class="small" style="color:var(--danger-600)">Vắng</b></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Muộn</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có phép</span></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" placeholder="Ghi chú…"></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">HT</div> Thu Hà</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có mặt</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Vắng</span></label>
+                    <label class="row" style="gap:6px"><span class="radio on" style="border-color:var(--warning);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--warning)"></span><b class="small" style="color:var(--warning-600)">Muộn</b></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có phép</span></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" value="Kẹt xe, đến 18:15"></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">QD</div> Quang Dũng</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio on" style="border-color:var(--success);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--success)"></span><b class="small" style="color:var(--success-600)">Có mặt ✓</b></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Vắng</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Muộn</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có phép</span></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" placeholder="Ghi chú…"></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">MP</div> Mai Phương</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có mặt</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Vắng</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Muộn</span></label>
+                    <label class="row" style="gap:6px"><span class="radio on"></span><b class="small" style="color:var(--primary)">Có phép</b></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" value="Báo ốm" data-c="Input"></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm" style="background:var(--danger-50);color:var(--danger-600)">DA</div> Đức Anh</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có mặt</span></label>
+                    <label class="row" style="gap:6px"><span class="radio on" style="border-color:var(--danger);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--danger)"></span><b class="small" style="color:var(--danger-600)">Vắng</b></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Muộn</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có phép</span></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" placeholder="Ghi chú…"></td>
+              </tr>
+              <tr>
+                <td><div class="row"><div class="avatar sm">HN</div> Hồng Nhung</div></td>
+                <td>
+                  <div class="row wrap" style="gap:16px" data-c="RadioGroup">
+                    <label class="row" style="gap:6px"><span class="radio on" style="border-color:var(--success);box-shadow:inset 0 0 0 4px var(--content1), inset 0 0 0 12px var(--success)"></span><b class="small" style="color:var(--success-600)">Có mặt ✓</b></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Vắng</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Muộn</span></label>
+                    <label class="row" style="gap:6px"><span class="radio"></span><span class="small muted">Có phép</span></label>
+                  </div>
+                </td>
+                <td><input class="input" style="min-height:32px;padding:4px 10px;font-size:13px" placeholder="Ghi chú…"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert warning mt-4" data-c="Alert (color=warning)">
+          ⚠️ <span><b>2 học sinh vắng</b> — phụ huynh sẽ nhận thông báo Zalo/SMS tự động khi lưu điểm danh. Nếu sửa từ vắng sang trạng thái khác trong 48 giờ, hệ thống gửi tin đính chính.</span>
+        </div>
+      </div>
+
+      <div class="card-footer row between" data-c="CardFooter">
+        <span class="small muted">🔒 Kết quả điểm danh sửa được trong <b>48 giờ</b> sau giờ kết thúc buổi, quá hạn sẽ khóa.</span>
+        <div class="row">
+          <button class="btn bordered" data-c="Button (variant=bordered)">Hủy</button>
+          <button class="btn primary" data-c="Button (color=primary)">💾 Lưu điểm danh</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — Điểm danh buổi học (giáo viên, desktop). Map SRS: FR-SCHED-03 (link Zoom, phòng, giờ), FR-SCHED-07 (4 trạng thái có mặt/vắng/muộn/có phép + ghi chú), FR-SCHED-08 (nút "Tất cả có mặt" rồi chỉnh lệch), FR-SCHED-09 (cửa sổ sửa 48h), FR-SCHED-10 (thông báo vắng tới phụ huynh qua Zalo/SMS + tin đính chính).</p>
+</body>
+</html>

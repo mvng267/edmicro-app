@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Quản lý tài khoản (IT trung tâm, desktop)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip secondary sm" data-c="Chip">IT trung tâm</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">2</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">QT</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item active" href="quan-ly-tai-khoan.html">👤 Tài khoản</a>
+    <a class="item" href="import-hoc-sinh.html">📥 Import Excel</a>
+    <a class="item" href="#">🏫 Lớp &amp; phân lớp</a>
+    <a class="item" href="#">👪 Tài khoản phụ huynh</a>
+    <a class="item" href="#">📜 Nhật ký thao tác</a>
+  </aside>
+
+  <main class="page">
+
+    <div class="alert primary mb-4" style="padding:7px 14px;align-items:center" data-c="Alert (color=primary)">
+      <span>🛡️</span>
+      <span class="small"><b>Phạm vi: Chi nhánh Quận 7</b> · Vai trò IT — không truy cập dữ liệu học tập</span>
+    </div>
+
+    <div class="row between mb-4" style="align-items:flex-start">
+      <div>
+        <h1 class="page-title">Quản lý tài khoản</h1>
+        <p class="page-sub" style="margin-bottom:0">128 tài khoản trong phạm vi chi nhánh Quận 7 — lọc theo vai trò, lớp, trạng thái.</p>
+      </div>
+      <div class="row" data-c="ButtonGroup">
+        <button class="btn primary" data-c="Button (color=primary)">＋ Tạo tài khoản</button>
+        <a class="btn bordered" href="import-hoc-sinh.html" data-c="Button (variant=bordered)">📥 Import Excel</a>
+      </div>
+    </div>
+
+    <section class="card" data-c="Card">
+      <div class="card-body">
+
+        <!-- Hàng filter -->
+        <div class="row wrap mb-4" data-c="Toolbar (filter)">
+          <input class="input" style="max-width:260px" type="text" placeholder="🔍 Tìm theo tên / username…" data-c="Input">
+          <select class="select" style="max-width:160px" data-c="Select">
+            <option>Vai trò: Học sinh</option>
+            <option>Giáo viên</option>
+            <option>Trợ giảng</option>
+            <option>Phụ huynh</option>
+            <option>Tất cả vai trò</option>
+          </select>
+          <select class="select" style="max-width:170px" data-c="Select">
+            <option>Lớp: Tất cả</option>
+            <option>IELTS 6.5 — tối T2-T4</option>
+            <option>TOEIC 650 — tối T3-T5</option>
+            <option>Starters B2</option>
+          </select>
+          <select class="select" style="max-width:180px" data-c="Select">
+            <option>Trạng thái: Tất cả</option>
+            <option>Hoạt động</option>
+            <option>Chưa kích hoạt</option>
+            <option>Bị khóa</option>
+            <option>Đã xóa mềm</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table class="tbl" data-c="Table (selectionMode=multiple)">
+            <thead>
+              <tr>
+                <th style="width:36px"><span class="check" data-c="Checkbox"></span></th>
+                <th>Người dùng</th>
+                <th>Username</th>
+                <th>Vai trò</th>
+                <th>Lớp</th>
+                <th>Trạng thái</th>
+                <th>Đăng nhập gần nhất</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="check on" data-c="Checkbox (isSelected)"></span></td>
+                <td><div class="row"><span class="avatar sm">MN</span><b>Minh Nguyễn</b></div></td>
+                <td class="muted">hs20260142</td>
+                <td><span class="chip primary sm" data-c="Chip">Học sinh</span></td>
+                <td>IELTS 6.5 — tối T2-T4</td>
+                <td><span class="chip success sm" data-c="Chip (color=success)"><span class="dot"></span>Hoạt động</span></td>
+                <td class="muted small">Hôm nay, 08:12</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn icon sm" title="Reset mật khẩu">🔑</button>
+                    <button class="btn icon sm" title="Khóa tài khoản">🔒</button>
+                    <button class="btn icon sm" title="Sửa">✏️</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="check" data-c="Checkbox"></span></td>
+                <td><div class="row"><span class="avatar sm">TA</span><b>Trần Thị Ánh</b></div></td>
+                <td class="muted">hs20260143</td>
+                <td><span class="chip primary sm" data-c="Chip">Học sinh</span></td>
+                <td>IELTS 6.5 — tối T2-T4</td>
+                <td><span class="chip warning sm" data-c="Chip (color=warning)"><span class="dot"></span>Chưa kích hoạt</span></td>
+                <td class="muted small">Chưa đăng nhập</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn icon sm" title="Reset mật khẩu">🔑</button>
+                    <button class="btn icon sm" title="Khóa tài khoản">🔒</button>
+                    <button class="btn icon sm" title="Sửa">✏️</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="check on" data-c="Checkbox (isSelected)"></span></td>
+                <td><div class="row"><span class="avatar sm">GB</span><b>Lê Gia Bảo</b></div></td>
+                <td class="muted">hs20260177</td>
+                <td><span class="chip primary sm" data-c="Chip">Học sinh</span></td>
+                <td>TOEIC 650 — tối T3-T5</td>
+                <td><span class="chip success sm" data-c="Chip (color=success)"><span class="dot"></span>Hoạt động</span></td>
+                <td class="muted small">Hôm qua, 20:44</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn icon sm" title="Reset mật khẩu">🔑</button>
+                    <button class="btn icon sm" title="Khóa tài khoản">🔒</button>
+                    <button class="btn icon sm" title="Sửa">✏️</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="check" data-c="Checkbox"></span></td>
+                <td><div class="row"><span class="avatar sm">HP</span><b>Phạm Hồng Phúc</b></div></td>
+                <td class="muted">hs20260201</td>
+                <td><span class="chip primary sm" data-c="Chip">Học sinh</span></td>
+                <td>Starters B2</td>
+                <td><span class="chip danger sm" data-c="Chip (color=danger)"><span class="dot"></span>Bị khóa</span></td>
+                <td class="muted small">12/07/2026</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn icon sm" title="Reset mật khẩu">🔑</button>
+                    <button class="btn icon sm" title="Mở khóa">🔓</button>
+                    <button class="btn icon sm" title="Sửa">✏️</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="check" data-c="Checkbox"></span></td>
+                <td><div class="row" style="opacity:.55"><span class="avatar sm">TT</span><b>Đỗ Thanh Trúc</b></div></td>
+                <td class="muted">hs20260118</td>
+                <td><span class="chip primary sm" data-c="Chip">Học sinh</span></td>
+                <td>Starters B2</td>
+                <td><span class="chip sm" data-c="Chip (color=default)"><span class="dot"></span>Xóa mềm — còn 21 ngày</span></td>
+                <td class="muted small">30/06/2026</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn sm flat-success" title="Khôi phục trong 30 ngày">↩️ Khôi phục</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="check" data-c="Checkbox"></span></td>
+                <td><div class="row"><span class="avatar sm">TH</span><b>Nguyễn Thu Hương</b></div></td>
+                <td class="muted">gv.huong</td>
+                <td><span class="chip secondary sm" data-c="Chip (color=secondary)">Giáo viên</span></td>
+                <td>IELTS 6.5 · TOEIC 650</td>
+                <td><span class="chip success sm" data-c="Chip (color=success)"><span class="dot"></span>Hoạt động</span></td>
+                <td class="muted small">Hôm nay, 07:55</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn icon sm" title="Reset mật khẩu">🔑</button>
+                    <button class="btn icon sm" title="Khóa tài khoản">🔒</button>
+                    <button class="btn icon sm" title="Sửa">✏️</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="check" data-c="Checkbox"></span></td>
+                <td><div class="row"><span class="avatar sm">VL</span><b>Võ Nhật Linh</b></div></td>
+                <td class="muted">tg.linh</td>
+                <td><span class="chip sm" style="background:var(--secondary-50);color:var(--secondary)" data-c="Chip">Trợ giảng</span></td>
+                <td>Starters B2</td>
+                <td><span class="chip success sm" data-c="Chip (color=success)"><span class="dot"></span>Hoạt động</span></td>
+                <td class="muted small">Hôm nay, 09:03</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn icon sm" title="Reset mật khẩu">🔑</button>
+                    <button class="btn icon sm" title="Khóa tài khoản">🔒</button>
+                    <button class="btn icon sm" title="Sửa">✏️</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="check" data-c="Checkbox"></span></td>
+                <td><div class="row"><span class="avatar sm">KL</span><b>Lê Thị Kim Loan</b></div></td>
+                <td class="muted">ph.loan0903</td>
+                <td><span class="chip warning sm" data-c="Chip">Phụ huynh</span></td>
+                <td class="muted small">2 con liên kết</td>
+                <td><span class="chip warning sm" data-c="Chip (color=warning)"><span class="dot"></span>Chưa kích hoạt</span></td>
+                <td class="muted small">Chưa đăng nhập</td>
+                <td>
+                  <span class="row" style="gap:4px" data-c="ButtonGroup (icon)">
+                    <button class="btn icon sm" title="Reset mật khẩu">🔑</button>
+                    <button class="btn icon sm" title="Khóa tài khoản">🔒</button>
+                    <button class="btn icon sm" title="Sửa">✏️</button>
+                  </span>
+                </td>
+              </tr>
+              <!-- Dòng manager: it_admin không được thao tác (FR-ORG-12/13/15 — chỉ owner) -->
+              <tr style="opacity:.5" data-c="TableRow (isDisabled)">
+                <td><span class="check" style="border-color:var(--default-200)"></span></td>
+                <td><div class="row"><span class="avatar sm">MH</span><b>Trần Minh Hòa</b></div></td>
+                <td class="muted">ql.hoa</td>
+                <td><span class="chip sm" data-c="Chip">Quản lý</span></td>
+                <td class="muted small">Chi nhánh Quận 7</td>
+                <td><span class="chip success sm" data-c="Chip (color=success)"><span class="dot"></span>Hoạt động</span></td>
+                <td class="muted small">Hôm nay, 08:40</td>
+                <td><span class="chip sm" title="it_admin không thao tác được tài khoản vai trò quản lý" data-c="Tooltip + Chip">🔒 Chỉ chủ trung tâm thao tác</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="card-footer row between" data-c="CardFooter">
+        <button class="btn sm flat-danger" data-c="Button (variant=flat, color=danger)">🔒 Khóa 2 tài khoản đã chọn</button>
+        <nav class="pagination" data-c="Pagination">
+          <span class="pg">‹</span>
+          <span class="pg active">1</span>
+          <span class="pg">2</span>
+          <span class="pg">3</span>
+          <span class="pg">…</span>
+          <span class="pg">13</span>
+          <span class="pg">›</span>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal reset mật khẩu (mở sẵn — trạng thái tĩnh) -->
+<div class="modal-backdrop" data-c="Modal (backdrop=opaque)">
+  <div class="modal" data-c="ModalContent">
+    <div class="modal-header">🔑 Reset mật khẩu — Minh Nguyễn <span class="muted small" style="font-weight:400">(hs20260142)</span></div>
+    <div class="modal-body col">
+      <div class="alert warning" data-c="Alert (color=warning)">
+        <span>⚠️</span>
+        <span>Học sinh sẽ <b>buộc phải đổi mật khẩu ở lần đăng nhập kế tiếp</b>. Mật khẩu cũ mất hiệu lực ngay khi bạn xác nhận. Thao tác được ghi vào nhật ký.</span>
+      </div>
+      <div class="card flat" data-c="Card (variant=flat)">
+        <div class="card-body row between">
+          <div>
+            <div class="muted small">Mật khẩu mới (sinh ngẫu nhiên)</div>
+            <div style="font-size:20px;letter-spacing:4px;font-weight:700">●●●●●●●●</div>
+          </div>
+          <button class="btn sm flat-primary" data-c="Button (variant=flat)">👁️ Chỉ hiện 1 lần</button>
+        </div>
+      </div>
+      <p class="muted small">Sau khi đóng cửa sổ này, hệ thống chỉ lưu bản băm — không thể xem lại mật khẩu.</p>
+    </div>
+    <div class="modal-footer" data-c="ModalFooter">
+      <button class="btn bordered" data-c="Button (variant=bordered)">Hủy</button>
+      <button class="btn primary" data-c="Button (color=primary)">Xác nhận reset</button>
+    </div>
+  </div>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — quản lý tài khoản, vai trò IT trung tâm (desktop). Map SRS ORG: FR-ORG-08 (tạo user), FR-ORG-11 (mật khẩu ban đầu chỉ hiện 1 lần + buộc đổi), FR-ORG-12 (reset mật khẩu — vai trò quản lý chỉ owner), FR-ORG-13 (khóa/mở khóa), FR-ORG-14 (chuyển lớp), FR-ORG-15 (xóa mềm 30 ngày + khôi phục), FR-ORG-22 (tài khoản phụ huynh), FR-ORG-23 (phạm vi chi nhánh — banner đầu trang), FR-ORG-20 (audit log — menu Nhật ký thao tác), luồng 5.3 (vòng đời tài khoản). it_admin không thấy dữ liệu học tập (US-ORG-11, SRS Phân quyền).</p>
+</body>
+</html>

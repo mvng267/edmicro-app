@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Cổng phụ huynh (mobile)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<div class="phone">
+  <div class="screen">
+
+    <header class="navbar" data-c="Navbar">
+      <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+      <div class="grow"></div>
+      <div class="avatar sm" data-c="Avatar">PH</div>
+    </header>
+
+    <main style="padding:16px" class="col">
+
+      <!-- Chọn con -->
+      <div class="row between">
+        <div class="tabs" data-c="Tabs (chọn con)">
+          <span class="tab active">Minh</span>
+          <span class="tab">Thảo</span>
+        </div>
+        <span class="small muted">Lớp IELTS 6.5</span>
+      </div>
+
+      <!-- Điểm TB gần nhất -->
+      <section class="card" data-c="Card">
+        <div class="card-body row" style="gap:16px">
+          <div class="ring" style="--p:65" data-c="CircularProgress"><b>6.5</b></div>
+          <div class="col grow" style="gap:6px">
+            <div class="muted small">Điểm trung bình kỳ gần nhất</div>
+            <b>Nguyễn Nhật Minh</b>
+            <span class="chip success sm" data-c="Chip"><span class="dot"></span> Điểm đã chốt</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kết quả gần đây -->
+      <section class="card" data-c="Card">
+        <div class="card-header">📊 Kết quả gần đây</div>
+        <div class="card-body col" style="gap:10px">
+          <div class="row" data-c="Listbox item">
+            <div class="grow">
+              <b class="small">Thi thử IELTS Listening — Tuần 7</b>
+              <div class="muted small">Kỳ thi thử · GV Hương chấm</div>
+            </div>
+            <span class="chip success sm" data-c="Chip">7.5</span>
+            <span class="small muted">14/07</span>
+          </div>
+          <div class="row" data-c="Listbox item">
+            <div class="grow">
+              <b class="small">Writing Task 2 — Environment</b>
+              <div class="muted small">Bài tập viết · đã duyệt</div>
+            </div>
+            <span class="chip warning sm" data-c="Chip">5.5</span>
+            <span class="small muted">11/07</span>
+          </div>
+          <div class="row" data-c="Listbox item">
+            <div class="grow">
+              <b class="small">Reading Unit 5 — Quiz</b>
+              <div class="muted small">Bài tập đọc · tự động chấm</div>
+            </div>
+            <span class="chip danger sm" data-c="Chip">4.0</span>
+            <span class="small muted">08/07</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chuyên cần -->
+      <section class="card" data-c="Card">
+        <div class="card-header row between" style="width:auto">
+          <span>🗓️ Chuyên cần tháng này</span>
+          <b style="color:var(--success-600)">91%</b>
+        </div>
+        <div class="card-body">
+          <div class="progress success mb-2" data-c="Progress (color=success)"><i style="width:91%"></i></div>
+          <div class="row wrap" style="gap:6px">
+            <span class="chip success sm" data-c="Chip">18 có mặt</span>
+            <span class="chip danger sm" data-c="Chip">1 vắng</span>
+            <span class="chip warning sm" data-c="Chip">1 muộn</span>
+            <span class="chip sm" data-c="Chip">0 phép</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lịch học tuần này -->
+      <section class="card" data-c="Card">
+        <div class="card-header">📅 Lịch học tuần này</div>
+        <div class="card-body col" style="gap:10px">
+          <div class="row" data-c="Listbox item">
+            <span class="chip primary sm" style="width:44px;justify-content:center">T3</span>
+            <div class="grow">
+              <b class="small">18:00 – 19:30</b>
+              <div class="muted small">Phòng 201 · Chi nhánh Q7</div>
+            </div>
+          </div>
+          <div class="row" data-c="Listbox item">
+            <span class="chip primary sm" style="width:44px;justify-content:center">T5</span>
+            <div class="grow">
+              <b class="small">18:00 – 19:30</b>
+              <div class="muted small">Phòng 201 · Chi nhánh Q7</div>
+            </div>
+          </div>
+          <div class="row" data-c="Listbox item">
+            <span class="chip secondary sm" style="width:44px;justify-content:center">T7</span>
+            <div class="grow">
+              <b class="small">09:00 – 10:30</b>
+              <div class="muted small">Học online · <a href="#">Link Zoom</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Nhận xét của giáo viên -->
+      <section class="card" data-c="Card">
+        <div class="card-header">💬 Nhận xét của giáo viên</div>
+        <div class="card-body row" style="align-items:flex-start">
+          <div class="avatar" data-c="Avatar">HT</div>
+          <div class="grow small">
+            <b>Cô Hương — GV chủ nhiệm</b>
+            <p class="muted mt-2" style="margin-top:4px">Minh nghe và đọc tiến bộ rõ trong tháng qua. Kỹ năng viết cần luyện thêm phần mở bài và từ nối; gia đình nhắc con hoàn thành bài viết đúng hạn giúp cô nhé.</p>
+          </div>
+        </div>
+      </section>
+
+      <button class="btn bordered" style="width:100%" data-c="Button (variant=bordered)">⬇️ Tải báo cáo PDF kỳ gần nhất</button>
+
+      <div class="alert primary small" data-c="Alert (color=primary)">
+        <span>ℹ️</span>
+        <span>Bạn chỉ xem được kết quả đã chốt — nội dung bài học/đề thi không hiển thị.</span>
+      </div>
+
+    </main>
+
+    <nav class="bottom-tabs" data-c="Tabs (bottom navigation)">
+      <div class="bt active"><span class="ic">📊</span>Kết quả</div>
+      <div class="bt"><span class="ic">📅</span>Lịch học</div>
+      <div class="bt"><span class="ic">🔔</span>Thông báo</div>
+      <div class="bt"><span class="ic">👤</span>Tài khoản</div>
+    </nav>
+
+  </div>
+</div>
+
+<p style="text-align:center" class="small muted">Mockup tĩnh — cổng phụ huynh (mobile, vai trò parent). Map SRS: REPORT mục 5.4 Cổng phụ huynh, FR-REPORT-23 (kết quả đã chốt + chuyên cần + lịch học + nhận xét GV, không xem bài làm/đề), FR-REPORT-24 (tải PDF kỳ gần nhất), SCHED (chuyên cần, lịch học), ORG FR-ORG-22 (1 tài khoản parent liên kết nhiều con → Tabs chọn con).</p>
+</body>
+</html>

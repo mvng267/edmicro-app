@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Đăng nhập theo tenant (desktop)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body style="background:linear-gradient(160deg, var(--primary-50), var(--bg) 45%, var(--secondary-50));min-height:100vh">
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;gap:20px">
+
+  <section class="card" data-c="Card" style="width:420px;max-width:100%">
+    <div class="card-body col" style="padding:32px 28px 24px;gap:16px">
+
+      <!-- Logo + tên trung tâm (tenant) -->
+      <div class="col" style="align-items:center;gap:8px">
+        <div class="logo" data-c="Avatar (logo tenant)" style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg, var(--primary), var(--secondary))"></div>
+        <h1 style="font-size:22px">Anh ngữ Bright</h1>
+        <span class="chip primary sm" data-c="Chip (subdomain tenant)">bright.edmicro.app</span>
+      </div>
+
+      <!-- Form đăng nhập -->
+      <div class="field" data-c="Input">
+        <label>Tên đăng nhập hoặc email</label>
+        <input class="input" type="text" placeholder="vd: minh.nguyen hoặc minh@email.com">
+      </div>
+
+      <div class="field" data-c="Input (type=password, endContent)">
+        <label>Mật khẩu</label>
+        <div style="position:relative">
+          <input class="input" type="password" placeholder="••••••••" style="padding-right:44px">
+          <span class="btn icon sm" data-c="Button (isIconOnly, variant=light)" style="position:absolute;right:5px;top:50%;transform:translateY(-50%);background:transparent">👁</span>
+        </div>
+      </div>
+
+      <label class="row" style="gap:8px;cursor:pointer" data-c="Checkbox">
+        <span class="check on"></span>
+        <span class="small">Ghi nhớ đăng nhập</span>
+      </label>
+
+      <button class="btn primary lg" data-c="Button (color=primary, size=lg)" style="width:100%">Đăng nhập</button>
+
+      <div class="small" style="text-align:center" data-c="Link">
+        <a href="#">Quên mật khẩu?</a> <span class="muted">Liên hệ giáo viên hoặc trung tâm.</span>
+      </div>
+
+      <div class="alert primary small" data-c="Alert (color=primary)" style="padding:10px 12px">
+        ℹ️ Học sinh dùng tài khoản do trung tâm cấp.
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="small muted" data-c="Footer" style="text-align:center">
+    Powered by <b>Edmicro</b> · <a href="#">Điều khoản</a> · <a href="#">Bảo mật dữ liệu theo NĐ 13/2023</a>
+  </footer>
+
+</div>
+
+<p style="text-align:center;padding-bottom:16px" class="small muted">
+  Mockup tĩnh — đăng nhập theo tenant (desktop, subdomain riêng từng trung tâm).
+  Map SRS: AUTH (đăng nhập bằng tài khoản trung tâm cấp, ghi nhớ phiên),
+  ORG (tenant theo subdomain, branding logo + tên trung tâm).
+</p>
+</body>
+</html>

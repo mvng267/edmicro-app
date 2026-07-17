@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Ops Platform · Quản trị tenant (desktop)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Edmicro Ops</div>
+  <span class="chip secondary sm" data-c="Chip (color=secondary)">Platform</span>
+  <div class="grow"></div>
+  <span class="chip primary sm" data-c="Chip">Admin hệ thống</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">3</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">AD</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item active" href="quan-tri-tenant.html">🏢 Tenant</a>
+    <a class="item" href="#">📦 Gói dịch vụ</a>
+    <a class="item" href="#">📈 Usage &amp; chi phí AI</a>
+    <a class="item" href="ho-tro-ticket.html">🎫 Ticket hỗ trợ <span class="chip danger sm" style="margin-left:auto" data-c="Badge">7</span></a>
+    <a class="item" href="#">🗂️ Nội dung global</a>
+    <a class="item" href="#">📜 Nhật ký platform</a>
+  </aside>
+
+  <main class="page" style="max-width:1400px">
+    <h1 class="page-title">Quản trị tenant</h1>
+    <p class="page-sub">Toàn bộ trung tâm trên platform — gói, hạn mức, hợp đồng. Giá tiền không nằm trong hệ thống.</p>
+
+    <!-- 4 stat card -->
+    <div class="grid cols-4 mb-4">
+      <div class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Tenant hoạt động</span><span>🏢</span></div>
+          <div class="big">42</div>
+          <span class="small muted">trên toàn platform</span>
+        </div>
+      </div>
+      <div class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Sắp hết hạn hợp đồng</span><span>⏳</span></div>
+          <div class="big">3</div>
+          <span class="chip warning sm" data-c="Chip (color=warning)">trong 30 ngày tới</span>
+        </div>
+      </div>
+      <div class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Chạm ≥90% quota</span><span>🚨</span></div>
+          <div class="big">5</div>
+          <span class="chip danger sm" data-c="Chip (color=danger)">cần upsell / nới hạn mức</span>
+        </div>
+      </div>
+      <div class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row between"><span class="muted small">Doanh thu gói tháng này</span><span>💼</span></div>
+          <div class="big muted">—</div>
+          <span class="small muted">xem CRM — giá không lưu trong hệ thống</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.7fr 1fr;align-items:start">
+
+      <!-- Danh sách tenant -->
+      <section class="card" data-c="Card">
+        <div class="card-body">
+          <div class="row wrap mb-4" data-c="Toolbar lọc">
+            <input class="input" style="max-width:220px" placeholder="🔍 Tìm tên / slug…" data-c="Input">
+            <select class="select" style="max-width:150px" data-c="Select">
+              <option>Gói: tất cả</option><option>Cơ bản</option><option>Chuẩn</option><option>Nâng cao</option>
+            </select>
+            <select class="select" style="max-width:170px" data-c="Select">
+              <option>Trạng thái: tất cả</option><option>Hoạt động</option><option>Ân hạn</option><option>Read-only</option><option>Tạm ngưng</option>
+            </select>
+            <div class="grow"></div>
+            <button class="btn primary" data-c="Button (color=primary)">＋ Tạo tenant</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="tbl" data-c="Table">
+              <thead>
+                <tr><th>Tenant</th><th>Gói</th><th>Học sinh active</th><th>Lưu trữ</th><th>AI tháng này</th><th>Hạn hợp đồng</th><th>Trạng thái</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr style="background:var(--primary-50)">
+                  <td><b>Anh ngữ Bright</b><br><span class="chip sm" data-c="Chip">bright.edmicro.app</span></td>
+                  <td><span class="chip primary sm">Chuẩn</span></td>
+                  <td style="min-width:120px"><span class="small">412/500</span>
+                    <div class="progress sm" data-c="Progress"><i style="width:82%"></i></div></td>
+                  <td class="small">45/100 GB</td>
+                  <td style="min-width:100px"><div class="row"><div class="progress sm danger grow" data-c="Progress (color=danger)"><i style="width:91%"></i></div><span class="small">91%</span></div></td>
+                  <td class="small">15/01/2027</td>
+                  <td><span class="chip success sm" data-c="Chip (color=success)"><span class="dot"></span> Hoạt động</span></td>
+                  <td><button class="btn sm flat-primary" data-c="Button (variant=flat)">Chi tiết</button></td>
+                </tr>
+                <tr>
+                  <td><b>Ngoại ngữ Việt Anh</b><br><span class="chip sm">vietanh.edmicro.app</span></td>
+                  <td><span class="chip secondary sm">Nâng cao</span></td>
+                  <td><span class="small">1.440/1.500</span>
+                    <div class="progress sm danger" data-c="Progress (color=danger)"><i style="width:96%"></i></div></td>
+                  <td class="small">210/500 GB</td>
+                  <td><div class="row"><div class="progress sm grow"><i style="width:62%"></i></div><span class="small">62%</span></div></td>
+                  <td class="small">30/11/2026</td>
+                  <td><span class="chip success sm"><span class="dot"></span> Hoạt động</span></td>
+                  <td><button class="btn sm flat-primary">Chi tiết</button></td>
+                </tr>
+                <tr>
+                  <td><b>Trung tâm Sao Mai</b><br><span class="chip sm">saomai.edmicro.app</span></td>
+                  <td><span class="chip sm">Cơ bản</span></td>
+                  <td><span class="small">118/200</span>
+                    <div class="progress sm"><i style="width:59%"></i></div></td>
+                  <td class="small">8/20 GB</td>
+                  <td><div class="row"><div class="progress sm grow"><i style="width:34%"></i></div><span class="small">34%</span></div></td>
+                  <td><span class="chip warning sm" data-c="Chip (color=warning)">còn 12 ngày</span></td>
+                  <td><span class="chip success sm"><span class="dot"></span> Hoạt động</span></td>
+                  <td><button class="btn sm flat-primary">Chi tiết</button></td>
+                </tr>
+                <tr>
+                  <td><b>Anh ngữ Đông Đô</b><br><span class="chip sm">dongdo.edmicro.app</span></td>
+                  <td><span class="chip primary sm">Chuẩn</span></td>
+                  <td><span class="small">305/500</span>
+                    <div class="progress sm"><i style="width:61%"></i></div></td>
+                  <td class="small">52/100 GB</td>
+                  <td><div class="row"><div class="progress sm grow"><i style="width:47%"></i></div><span class="small">47%</span></div></td>
+                  <td><span class="chip danger sm" data-c="Chip (color=danger)">ân hạn read-only</span></td>
+                  <td><span class="chip warning sm"><span class="dot"></span> Ân hạn</span></td>
+                  <td><button class="btn sm flat-primary">Chi tiết</button></td>
+                </tr>
+                <tr>
+                  <td><b>IELTS Hub Đà Nẵng</b><br><span class="chip sm">ieltshub.edmicro.app</span></td>
+                  <td><span class="chip secondary sm">Nâng cao</span></td>
+                  <td><span class="small">820/1.500</span>
+                    <div class="progress sm"><i style="width:55%"></i></div></td>
+                  <td class="small">145/500 GB</td>
+                  <td><div class="row"><div class="progress sm warning grow" data-c="Progress (color=warning)"><i style="width:78%"></i></div><span class="small">78%</span></div></td>
+                  <td class="small">28/02/2027</td>
+                  <td><span class="chip success sm"><span class="dot"></span> Hoạt động</span></td>
+                  <td><button class="btn sm flat-primary">Chi tiết</button></td>
+                </tr>
+                <tr>
+                  <td><b>Ngoại ngữ Tâm Việt</b><br><span class="chip sm">tamviet.edmicro.app</span></td>
+                  <td><span class="chip sm">Cơ bản</span></td>
+                  <td><span class="small">64/200</span>
+                    <div class="progress sm"><i style="width:32%"></i></div></td>
+                  <td class="small">5/20 GB</td>
+                  <td><div class="row"><div class="progress sm grow"><i style="width:12%"></i></div><span class="small">12%</span></div></td>
+                  <td class="small">01/10/2026</td>
+                  <td><span class="chip sm" data-c="Chip (color=default)"><span class="dot"></span> Tạm ngưng</span></td>
+                  <td><button class="btn sm flat-primary">Chi tiết</button></td>
+                </tr>
+                <tr>
+                  <td><b>Anh văn Miền Nam</b><br><span class="chip sm">avmn.edmicro.app</span></td>
+                  <td><span class="chip primary sm">Chuẩn</span></td>
+                  <td><span class="small">233/500</span>
+                    <div class="progress sm"><i style="width:47%"></i></div></td>
+                  <td class="small">61/100 GB</td>
+                  <td><div class="row"><div class="progress sm grow"><i style="width:55%"></i></div><span class="small">55%</span></div></td>
+                  <td class="small">15/10/2026</td>
+                  <td><span class="chip success sm"><span class="dot"></span> Hoạt động</span></td>
+                  <td><button class="btn sm flat-primary">Chi tiết</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="row between mt-4">
+            <span class="small muted">Hiển thị 7/42 tenant</span>
+            <div class="pagination" data-c="Pagination">
+              <span class="pg active">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">…</span><span class="pg">6</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel chi tiết tenant đang chọn (drawer giả) -->
+      <aside class="card" data-c="Drawer (hiển thị tĩnh)">
+        <div class="card-header row between" style="width:auto">
+          <span>🏢 Anh ngữ Bright</span>
+          <span class="chip sm" data-c="Chip">bright.edmicro.app</span>
+        </div>
+        <div class="card-body col">
+
+          <div class="row between small">
+            <span class="muted">Gói hiện tại</span>
+            <span class="chip primary sm" data-c="Chip">Chuẩn</span>
+          </div>
+          <div class="row between small">
+            <span class="muted">Hợp đồng</span>
+            <b>01/08/2025 → 15/01/2027</b>
+          </div>
+          <div class="row between small">
+            <span class="muted">Trạng thái</span>
+            <span class="chip success sm"><span class="dot"></span> Hoạt động</span>
+          </div>
+
+          <div class="divider"></div>
+          <b class="small">Mức dùng so hạn mức hiệu lực (gói + override)</b>
+
+          <div data-c="Progress (label)">
+            <div class="row between small"><span>👥 Học sinh active</span><span><b>412/500</b> · 82%</span></div>
+            <div class="progress"><i style="width:82%"></i></div>
+          </div>
+          <div data-c="Progress (label)">
+            <div class="row between small"><span>💾 Lưu trữ</span><span><b>45/100 GB</b> · 45%</span></div>
+            <div class="progress"><i style="width:45%"></i></div>
+          </div>
+          <div data-c="Progress (color=danger)">
+            <div class="row between small"><span>🎙️ Chấm AI speaking / tháng</span><span style="color:var(--danger)"><b>3.640/4.000</b> · 91%</span></div>
+            <div class="progress danger"><i style="width:91%"></i></div>
+            <span class="small muted">Đã cảnh báo ngưỡng 90% cho owner + admin</span>
+          </div>
+          <div data-c="Progress (label)">
+            <div class="row between small"><span>💬 Zalo ZNS / tháng</span><span><b>600/2.000</b> · 30%</span></div>
+            <div class="progress"><i style="width:30%"></i></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <button class="btn primary" data-c="Button (color=primary)">Gán gói khác</button>
+          <button class="btn bordered" data-c="Button (variant=bordered)">Nới hạn mức tạm</button>
+          <button class="btn flat-danger" data-c="Button (variant=flat, color=danger)">Tạm ngưng</button>
+          <p class="small muted">🔒 Mọi thay đổi gói / hạn mức / nới tạm đều ghi audit log bất biến.</p>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — Ops Platform · Quản trị tenant (admin, desktop). Map SRS: PLAN (gán/đổi gói + hợp đồng — FR-PLAN-05/07/08, override — FR-PLAN-06, nới hạn mức tạm — FR-PLAN-18, usage mọi tenant + sắp chạm trần ≥80/90% — FR-PLAN-16, ân hạn/read-only hết hạn hợp đồng — FR-PLAN-14, không lưu giá tiền — §7, audit log — FR-PLAN-17).</p>
+</body>
+</html>

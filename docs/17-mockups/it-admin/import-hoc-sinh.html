@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Import học sinh Excel, bước 2/3 (IT trung tâm, desktop)</title>
+<link rel="stylesheet" href="../_shared/heroui.css">
+</head>
+<body>
+<label class="annot-toggle"><input type="checkbox" id="annot"> Hiện tên component HeroUI</label>
+
+<header class="navbar" data-c="Navbar">
+  <div class="brand"><div class="logo"></div> Anh ngữ Bright</div>
+  <div class="grow"></div>
+  <span class="chip secondary sm" data-c="Chip">IT trung tâm</span>
+  <div style="position:relative" data-c="Badge">
+    <span class="btn icon sm" style="border-radius:50%">🔔</span>
+    <span class="chip sm solid-primary" style="position:absolute;top:-6px;right:-6px;height:16px;padding:0 5px;font-size:10px">2</span>
+  </div>
+  <div class="avatar sm" data-c="Avatar">QT</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" data-c="Listbox">
+    <a class="item" href="quan-ly-tai-khoan.html">👤 Tài khoản</a>
+    <a class="item active" href="import-hoc-sinh.html">📥 Import Excel</a>
+    <a class="item" href="#">🏫 Lớp &amp; phân lớp</a>
+    <a class="item" href="#">👪 Tài khoản phụ huynh</a>
+    <a class="item" href="#">📜 Nhật ký thao tác</a>
+  </aside>
+
+  <main class="page">
+
+    <div class="alert primary mb-4" style="padding:7px 14px;align-items:center" data-c="Alert (color=primary)">
+      <span>🛡️</span>
+      <span class="small"><b>Phạm vi: Chi nhánh Quận 7</b> · Vai trò IT — không truy cập dữ liệu học tập</span>
+    </div>
+
+    <h1 class="page-title">Import học sinh từ Excel</h1>
+    <p class="page-sub">Kiểm tra kết quả validate từng dòng, sửa lỗi tại chỗ trước khi cấp tài khoản.</p>
+
+    <!-- Bước wizard -->
+    <div class="tabs mb-4" data-c="Tabs (wizard steps)">
+      <span class="tab">✓ 1 · Tải file</span>
+      <span class="tab active">2 · Kiểm tra &amp; sửa lỗi</span>
+      <span class="tab">3 · Cấp tài khoản</span>
+    </div>
+
+    <!-- Tóm tắt phiên import -->
+    <section class="card mb-4" data-c="Card">
+      <div class="card-body row wrap between">
+        <div class="row">
+          <span style="font-size:26px">📄</span>
+          <div>
+            <b>hs-khai-giang-T9.xlsx</b>
+            <div class="muted small">156 dòng · tải lên 09:14 hôm nay · phiên chưa commit tự hủy sau 24 giờ</div>
+          </div>
+        </div>
+        <div class="row wrap" data-c="ChipGroup">
+          <span class="chip success" data-c="Chip (color=success)"><span class="dot"></span>142 hợp lệ</span>
+          <span class="chip danger" data-c="Chip (color=danger)"><span class="dot"></span>9 lỗi</span>
+          <span class="chip warning" data-c="Chip (color=warning)"><span class="dot"></span>5 trùng — cần xác nhận</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="alert primary mb-4" data-c="Alert (color=primary)">
+      <span>ℹ️</span>
+      <span><b>Chưa có gì được ghi vào hệ thống</b> — chỉ commit sau khi bạn xác nhận ở bước 3.</span>
+    </div>
+
+    <!-- Bảng preview validate -->
+    <section class="card" data-c="Card">
+      <div class="card-header row between" style="width:auto">
+        <span>Preview kết quả validate <span class="muted small" style="font-weight:400">(hiển thị 7 / 156 dòng)</span></span>
+        <select class="select sm" style="max-width:190px;min-height:32px;padding:4px 32px 4px 10px" data-c="Select">
+          <option>Hiện: Lỗi &amp; trùng trước</option>
+          <option>Chỉ dòng lỗi</option>
+          <option>Chỉ dòng trùng</option>
+          <option>Tất cả theo thứ tự file</option>
+        </select>
+      </div>
+      <div class="card-body table-wrap">
+        <table class="tbl" data-c="Table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Họ tên</th>
+              <th>Ngày sinh</th>
+              <th>SĐT phụ huynh</th>
+              <th>Mã lớp</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="muted">1</td>
+              <td><b>Nguyễn An Khang</b></td>
+              <td>05/02/2016</td>
+              <td>0903 442 118</td>
+              <td>B2-2026</td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">✓ Hợp lệ</span></td>
+            </tr>
+            <tr>
+              <td class="muted">2</td>
+              <td><b>Trần Bảo Ngọc</b></td>
+              <td>18/09/2015</td>
+              <td>0912 883 007</td>
+              <td>B2-2026</td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">✓ Hợp lệ</span></td>
+            </tr>
+            <!-- Dòng lỗi 1: mã lớp không tồn tại — sửa inline tại ô lỗi -->
+            <tr data-c="TableRow (lỗi)">
+              <td class="muted" style="background:var(--danger-50)">12</td>
+              <td style="background:var(--danger-50)"><b>Phạm Quốc Duy</b></td>
+              <td style="background:var(--danger-50)">22/11/2014</td>
+              <td style="background:var(--danger-50)">0987 220 415</td>
+              <td style="background:var(--danger-50)">
+                <input class="input" style="min-height:32px;padding:4px 10px;max-width:130px;border-color:var(--danger);background:var(--content1)" type="text" value="A1-2026" data-c="Input (isInvalid, sửa inline)">
+              </td>
+              <td style="background:var(--danger-50)"><span class="chip danger sm" data-c="Chip (color=danger)">✕ Mã lớp A1-2026 không tồn tại</span></td>
+            </tr>
+            <tr>
+              <td class="muted">27</td>
+              <td><b>Lý Gia Hân</b></td>
+              <td>30/07/2016</td>
+              <td>0938 671 550</td>
+              <td>ST-A-2026</td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">✓ Hợp lệ</span></td>
+            </tr>
+            <!-- Dòng lỗi 2: sai định dạng ngày sinh — sửa inline tại ô lỗi -->
+            <tr data-c="TableRow (lỗi)">
+              <td class="muted" style="background:var(--danger-50)">41</td>
+              <td style="background:var(--danger-50)"><b>Hoàng Minh Quân</b></td>
+              <td style="background:var(--danger-50)">
+                <input class="input" style="min-height:32px;padding:4px 10px;max-width:120px;border-color:var(--danger);background:var(--content1)" type="text" value="31-13-2015" data-c="Input (isInvalid, sửa inline)">
+              </td>
+              <td style="background:var(--danger-50)">0902 118 664</td>
+              <td style="background:var(--danger-50)">B2-2026</td>
+              <td style="background:var(--danger-50)"><span class="chip danger sm" data-c="Chip (color=danger)">✕ Sai định dạng ngày sinh</span></td>
+            </tr>
+            <!-- Dòng trùng: cảnh báo, cho phép xác nhận tạo tiếp -->
+            <tr data-c="TableRow (trùng)">
+              <td class="muted" style="background:var(--warning-50)">58</td>
+              <td style="background:var(--warning-50)"><b>Lê Thị Thảo</b></td>
+              <td style="background:var(--warning-50)">12/03/2015</td>
+              <td style="background:var(--warning-50)">0909 445 210</td>
+              <td style="background:var(--warning-50)">ST-A-2026</td>
+              <td style="background:var(--warning-50)">
+                <div class="col" style="gap:6px;align-items:flex-start">
+                  <span class="chip warning sm" data-c="Chip (color=warning)">⚠ Trùng: Lê Thị Thảo 12/03/2015 đã có ở lớp B2</span>
+                  <label class="row small" style="gap:6px;cursor:pointer"><span class="check" data-c="Checkbox"></span> Vẫn tạo</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="muted">73</td>
+              <td><b>Đặng Tuệ Nhi</b></td>
+              <td>09/01/2017</td>
+              <td>0916 300 782</td>
+              <td>ST-A-2026</td>
+              <td><span class="chip success sm" data-c="Chip (color=success)">✓ Hợp lệ</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer" data-c="CardFooter">
+        <div class="row between wrap">
+          <a class="btn bordered" href="#" data-c="Button (variant=bordered)">← Tải lại file khác</a>
+          <button class="btn primary" data-c="Button (color=primary)">Bỏ qua 9 dòng lỗi, tiếp tục với 147 dòng →</button>
+        </div>
+        <p class="muted small mt-2" style="text-align:right">🔐 File kết quả chứa mật khẩu ban đầu chỉ tải được <b>một lần</b> — sau đó hệ thống chỉ lưu bản băm.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<p style="text-align:center;padding:12px" class="small muted">Mockup tĩnh — wizard import học sinh Excel bước 2/3, vai trò IT trung tâm (desktop). Map SRS ORG: luồng 5.2 (upload → validate → preview → commit), FR-ORG-09 (template chuẩn), FR-ORG-10 (validate từng dòng, preview lỗi chi tiết, chưa ghi DB trước khi commit, commit riêng dòng hợp lệ), FR-ORG-11 (mật khẩu ban đầu tải một lần), FR-ORG-23 (phạm vi chi nhánh — banner đầu trang); trùng họ tên + ngày sinh → cảnh báo cho xác nhận (mục 5.2 bước 2); phiên chưa commit tự hủy sau 24 giờ (mục 7). US-ORG-04, US-ORG-11.</p>
+</body>
+</html>
