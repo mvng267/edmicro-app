@@ -1,5 +1,7 @@
 # Milestone 0 — Nền tảng (Foundation) Implementation Plan
 
+**Trạng thái thực thi:** 🟢 Đã chốt (tự chốt 2026-07-17) — đang thực thi M0.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Dựng bộ khung monorepo chạy được với 1 lát cắt dọc: đăng nhập bằng tài khoản `owner` đã seed trên subdomain tenant, JWT + refresh, và **RLS chứng minh chặn rò rỉ chéo tenant** — cùng CI, activity-log core, và trang login Next.js/HeroUI.

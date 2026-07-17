@@ -16,7 +16,7 @@ lint:
     cd backend && uv run ruff check . && uv run ruff format --check . && uv run pyright && uv run lint-imports
 
 seed:
-    cd backend && uv run python ../scripts/seed.py
+    cd backend && PYTHONPATH=. uv run python ../scripts/seed.py
 
 gen-api:
     cd frontend && pnpm gen-api
