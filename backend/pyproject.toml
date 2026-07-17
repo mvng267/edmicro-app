@@ -32,7 +32,7 @@ line-length = 100
 select = ["E", "F", "I", "UP", "B"]
 
 [tool.ruff.lint.flake8-bugbear]
-extend-immutable-calls = ["fastapi.Depends", "fastapi.Header"]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Header", "app.core.authn.require_roles"]
 
 [tool.pyright]
 include = ["app"]
