@@ -1,5 +1,7 @@
 # Milestone 0 — Nền tảng (Foundation) Implementation Plan
 
+**Trạng thái thực thi:** ✅ HOÀN TẤT 2026-07-17 — backend 7 test + E2E 2 test PASS; login owner chạy thật tại bright.localhost. Khác biệt so plan: port dev 5433/6380/8010/3001 (tránh xung đột edmicro-tools); HeroUI v3 (compound components); CORS middleware bổ sung; pyright hoãn sang M1 (chạy ruff+import-linter trong CI).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Dựng bộ khung monorepo chạy được với 1 lát cắt dọc: đăng nhập bằng tài khoản `owner` đã seed trên subdomain tenant, JWT + refresh, và **RLS chứng minh chặn rò rỉ chéo tenant** — cùng CI, activity-log core, và trang login Next.js/HeroUI.

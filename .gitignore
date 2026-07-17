@@ -24,3 +24,10 @@ minio-data/
 
 # Claude Code local
 .claude/
+
+# uv/python
+.python-version
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/

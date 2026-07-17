@@ -1,0 +1,51 @@
+[project]
+name = "edmicro-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.18.5",
+    "argon2-cffi>=25.1.0",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.139.2",
+    "psycopg2-binary>=2.9.12",
+    "pydantic-settings>=2.14.2",
+    "pyjwt>=2.13.0",
+    "sqlalchemy[asyncio]>=2.0",
+    "uvicorn[standard]>=0.51.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "import-linter>=2.13",
+    "pyright>=1.1.411",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.15.22",
+    "testcontainers>=4.14.2",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Header"]
+
+[tool.pyright]
+include = ["app"]
+typeCheckingMode = "standard"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.importlinter]
+root_package = "app"
+
+[[tool.importlinter.contracts]]
+name = "Modules khong import cheo repository/models"
+type = "forbidden"
+source_modules = ["app.modules"]
+forbidden_modules = ["app.modules.authz.repository", "app.modules.org.models"]
