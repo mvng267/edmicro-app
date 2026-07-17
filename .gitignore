@@ -24,3 +24,6 @@ minio-data/
 
 # Claude Code local
 .claude/
+
+# uv/python
+.python-version
