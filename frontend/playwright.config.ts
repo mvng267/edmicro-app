@@ -4,6 +4,6 @@ export default defineConfig({
   testDir: "./e2e",
   timeout: 30_000,
   use: {
-    baseURL: "http://bright.localhost:3001",
+    baseURL: "http://bright.localhost:3005",
   },
 });
