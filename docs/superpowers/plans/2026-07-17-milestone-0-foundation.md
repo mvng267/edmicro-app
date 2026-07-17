@@ -1,6 +1,6 @@
 # Milestone 0 — Nền tảng (Foundation) Implementation Plan
 
-**Trạng thái thực thi:** 🟢 Đã chốt (tự chốt 2026-07-17) — đang thực thi M0.
+**Trạng thái thực thi:** ✅ HOÀN TẤT 2026-07-17 — backend 7 test + E2E 2 test PASS; login owner chạy thật tại bright.localhost. Khác biệt so plan: port dev 5433/6380/8010/3001 (tránh xung đột edmicro-tools); HeroUI v3 (compound components); CORS middleware bổ sung; pyright hoãn sang M1 (chạy ruff+import-linter trong CI).
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
