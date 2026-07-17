@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import jwt
 from argon2 import PasswordHasher
@@ -21,7 +21,7 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 
 def _create_token(*, sub: str, tenant_id: str | None, role: str, ttl: int, ttype: str) -> str:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     payload = {
         "sub": sub,
         "tenant_id": tenant_id,
@@ -35,15 +35,21 @@ def _create_token(*, sub: str, tenant_id: str | None, role: str, ttl: int, ttype
 
 def create_access_token(*, user_id: str, tenant_id: str | None, role: str) -> str:
     return _create_token(
-        sub=user_id, tenant_id=tenant_id, role=role,
-        ttl=settings.jwt_access_ttl_seconds, ttype="access",
+        sub=user_id,
+        tenant_id=tenant_id,
+        role=role,
+        ttl=settings.jwt_access_ttl_seconds,
+        ttype="access",
     )
 
 
 def create_refresh_token(*, user_id: str, tenant_id: str | None, role: str) -> str:
     return _create_token(
-        sub=user_id, tenant_id=tenant_id, role=role,
-        ttl=settings.jwt_refresh_ttl_seconds, ttype="refresh",
+        sub=user_id,
+        tenant_id=tenant_id,
+        role=role,
+        ttl=settings.jwt_refresh_ttl_seconds,
+        ttype="refresh",
     )
 
 

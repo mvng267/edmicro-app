@@ -2,6 +2,7 @@ import uuid
 
 import pytest
 from sqlalchemy import text
+from sqlalchemy.exc import DBAPIError
 
 from app.db import set_tenant
 
@@ -44,7 +45,7 @@ async def test_rls_blocks_cross_tenant_read(session_factory):
 async def test_rls_blocks_write_into_other_tenant(session_factory):
     # Set context A nhưng cố insert tenant_id B -> WITH CHECK của policy chặn
     async with session_factory() as s:
-        with pytest.raises(Exception):
+        with pytest.raises(DBAPIError):
             async with s.begin():
                 await set_tenant(s, TENANT_A)
                 await s.execute(

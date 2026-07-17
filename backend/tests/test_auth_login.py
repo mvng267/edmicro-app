@@ -46,9 +46,7 @@ async def test_login_success_and_me(session_factory):
         assert r.status_code == 200, r.text
         token = r.json()["access_token"]
 
-        me = await client.get(
-            "/api/v1/authz/me", headers={"Authorization": f"Bearer {token}"}
-        )
+        me = await client.get("/api/v1/authz/me", headers={"Authorization": f"Bearer {token}"})
         assert me.status_code == 200
         assert me.json()["role"] == "owner"
 
