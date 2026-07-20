@@ -155,3 +155,33 @@ export const importCommit = (jobId: string) =>
 		"POST",
 		`/api/v1/org/users/import/${jobId}/commit`,
 	);
+
+// ---- CONTENT ----
+export interface QuestionRow {
+	id: string;
+	type: string;
+	language: string;
+	skill: string | null;
+	level: string | null;
+	exam_tag: string | null;
+	topic: string | null;
+	status: string;
+}
+export const listQuestions = (filters: {
+	skill?: string;
+	language?: string;
+	status?: string;
+}) => {
+	const p = new URLSearchParams();
+	for (const [k, v] of Object.entries(filters)) if (v) p.set(k, v);
+	return req<QuestionRow[]>("GET", `/api/v1/content/questions?${p.toString()}`);
+};
+export const createQuestion = (payload: {
+	type: string;
+	language: string;
+	skill?: string;
+	content: Record<string, unknown>;
+	answer_key: Record<string, unknown>;
+}) => req<{ id: string }>("POST", "/api/v1/content/questions", payload);
+export const publishQuestion = (id: string) =>
+	req<{ ok: boolean }>("POST", `/api/v1/content/questions/${id}/publish`);
