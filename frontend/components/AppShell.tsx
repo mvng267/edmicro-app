@@ -7,6 +7,7 @@ const NAV = [
 	{ href: "/org/classes", label: "Lớp học" },
 	{ href: "/org/users", label: "Tài khoản" },
 	{ href: "/org/import", label: "Import học sinh" },
+	{ href: "/content", label: "Ngân hàng câu hỏi" },
 ];
 
 export function AppShell({
