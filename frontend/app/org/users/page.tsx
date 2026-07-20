@@ -14,19 +14,24 @@ import { AppShell } from "@/components/AppShell";
 import {
 	type Credential,
 	createUser,
+	type Klass,
+	listClasses,
 	listUsers,
 	type UserRow,
 } from "@/lib/api";
 
 export default function UsersPage() {
 	const [users, setUsers] = useState<UserRow[]>([]);
+	const [classes, setClasses] = useState<Klass[]>([]);
 	const [fullName, setFullName] = useState("");
 	const [role, setRole] = useState("student");
+	const [classId, setClassId] = useState("");
 	const [cred, setCred] = useState<Credential | null>(null);
 	const [err, setErr] = useState("");
 
 	async function refresh() {
 		setUsers(await listUsers());
+		setClasses(await listClasses());
 	}
 	useEffect(() => {
 		refresh().catch((e) => setErr(String(e)));
@@ -35,7 +40,11 @@ export default function UsersPage() {
 	async function add() {
 		setErr("");
 		try {
-			const c = await createUser({ full_name: fullName, role });
+			const c = await createUser({
+				full_name: fullName,
+				role,
+				class_id: role === "student" && classId ? classId : undefined,
+			});
 			setCred(c);
 			setFullName("");
 			await refresh();
@@ -67,6 +76,21 @@ export default function UsersPage() {
 							<option value="assistant">Trợ giảng</option>
 							<option value="parent">Phụ huynh</option>
 						</select>
+						{role === "student" && (
+							<select
+								data-testid="user-class"
+								className="h-10 rounded-lg border px-2 bg-transparent"
+								value={classId}
+								onChange={(e) => setClassId(e.target.value)}
+							>
+								<option value="">— Chưa xếp lớp —</option>
+								{classes.map((c) => (
+									<option key={c.id} value={c.id}>
+										{c.name}
+									</option>
+								))}
+							</select>
+						)}
 						<Button onPress={add} data-testid="add-user">
 							Tạo tài khoản
 						</Button>

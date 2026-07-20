@@ -127,9 +127,10 @@ async def submit_attempt(s: AsyncSession, attempt_id: str, student_id: str) -> N
     # cập nhật assignee: submitted + is_late nếu quá hạn
     await s.execute(
         text(
-            "UPDATE assignment_assignees aa SET derived_status = 'submitted', submitted_at = :now, "
-            "is_late = COALESCE((SELECT a.due_at FROM assignments a "
-            "JOIN attempts at ON at.assignee_id = aa.id WHERE at.id = :att) < :now, false) "
+            "UPDATE assignment_assignees aa "
+            "SET derived_status = 'submitted', submitted_at = :now, "
+            "is_late = COALESCE("
+            "(SELECT a.due_at < :now FROM assignments a WHERE a.id = aa.assignment_id), false) "
             "FROM attempts at WHERE at.id = :att AND aa.id = at.assignee_id"
         ),
         {"now": now, "att": attempt_id},

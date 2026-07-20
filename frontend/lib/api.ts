@@ -185,3 +185,69 @@ export const createQuestion = (payload: {
 }) => req<{ id: string }>("POST", "/api/v1/content/questions", payload);
 export const publishQuestion = (id: string) =>
 	req<{ ok: boolean }>("POST", `/api/v1/content/questions/${id}/publish`);
+
+// ---- PRACTICE + ASSIGN ----
+export interface Practice {
+	id: string;
+	name: string;
+	skill: string | null;
+	language: string;
+	status: string;
+	n_q: number;
+}
+export const listPractices = () => req<Practice[]>("GET", "/api/v1/practices");
+export const createPractice = (
+	name: string,
+	skill: string,
+	question_ids: string[],
+) =>
+	req<{ id: string }>("POST", "/api/v1/practices", {
+		name,
+		skill,
+		language: "en",
+		question_ids,
+	});
+export const createAssignment = (
+	content_id: string,
+	class_id: string,
+	due_at: string,
+) =>
+	req<{ id: string; assignee_count: number }>("POST", "/api/v1/assignments", {
+		content_id,
+		class_id,
+		due_at,
+	});
+
+export interface TodoItem {
+	assignee_id: string;
+	assignment_id: string;
+	practice_name: string;
+	due_at: string | null;
+	status: string;
+}
+export const myAssignments = () =>
+	req<TodoItem[]>("GET", "/api/v1/me/assignments");
+
+export interface AttemptQuestion {
+	question_version_id: string;
+	type: string;
+	content: { prompt: string; options?: string[] };
+	sort_order: number;
+}
+export interface AttemptStart {
+	attempt_id: string;
+	practice: { id: string; name: string; questions: AttemptQuestion[] };
+}
+export const startAttempt = (assigneeId: string) =>
+	req<AttemptStart>("POST", `/api/v1/assignments/${assigneeId}/start`);
+export const saveAnswer = (
+	attemptId: string,
+	question_version_id: string,
+	payload: object,
+) =>
+	req<{ saved: boolean }>("PUT", `/api/v1/attempts/${attemptId}/answers`, {
+		question_version_id,
+		payload,
+	});
+export const submitAttempt = (attemptId: string) =>
+	req<{ submitted: boolean }>("POST", `/api/v1/attempts/${attemptId}/submit`);
