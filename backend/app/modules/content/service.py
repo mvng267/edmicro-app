@@ -148,14 +148,17 @@ async def publish_question(s: AsyncSession, qid: str) -> None:
 
 async def list_questions(s: AsyncSession, filters: dict[str, Any]) -> list[dict]:
     sql = (
-        "SELECT id, type, language, skill, level, exam_tag, topic, status FROM questions WHERE 1=1"
+        "SELECT q.id, q.type, q.language, q.skill, q.level, q.exam_tag, q.topic, q.status, "
+        "v.content->>'prompt' AS prompt "
+        "FROM questions q LEFT JOIN question_versions v ON v.id = q.current_version_id "
+        "WHERE 1=1"
     )
     p: dict[str, Any] = {}
     for col in ("language", "skill", "level", "status", "exam_tag"):
         if filters.get(col):
-            sql += f" AND {col} = :{col}"
+            sql += f" AND q.{col} = :{col}"
             p[col] = filters[col]
-    sql += " ORDER BY created_at DESC LIMIT 200"
+    sql += " ORDER BY q.created_at DESC LIMIT 200"
     rows = (await s.execute(text(sql), p)).mappings().all()
     return [{**r, "id": str(r["id"])} for r in rows]
 

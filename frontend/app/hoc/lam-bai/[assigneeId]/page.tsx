@@ -43,7 +43,7 @@ export default function DoPracticePage() {
 	async function submit() {
 		try {
 			await submitAttempt(attemptId);
-			router.push("/hoc");
+			router.push(`/hoc/ket-qua/${attemptId}`);
 		} catch (e) {
 			setErr(String(e));
 		}

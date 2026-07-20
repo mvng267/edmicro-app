@@ -31,6 +31,7 @@ class QuestionRow(BaseModel):
     exam_tag: str | None
     topic: str | None
     status: str
+    prompt: str | None = None
 
 
 class QuestionDetail(QuestionRow):

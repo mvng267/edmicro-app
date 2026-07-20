@@ -83,7 +83,10 @@ async def list_student_assignments(s: AsyncSession, student_id: str) -> list[dic
             await s.execute(
                 text(
                     "SELECT aa.id AS assignee_id, aa.derived_status, aa.submitted_at, "
-                    "a.id AS assignment_id, a.due_at, p.name AS practice_name "
+                    "a.id AS assignment_id, a.due_at, p.name AS practice_name, "
+                    "(SELECT at.id FROM attempts at WHERE at.assignee_id = aa.id "
+                    "AND at.status = 'submitted' ORDER BY at.submitted_at DESC LIMIT 1"
+                    ") AS attempt_id "
                     "FROM assignment_assignees aa "
                     "JOIN assignments a ON a.id = aa.assignment_id "
                     "JOIN practices p ON p.id = a.content_id "
@@ -109,6 +112,7 @@ async def list_student_assignments(s: AsyncSession, student_id: str) -> list[dic
                 "practice_name": r["practice_name"],
                 "due_at": r["due_at"].isoformat() if r["due_at"] else None,
                 "status": status,
+                "attempt_id": str(r["attempt_id"]) if r["attempt_id"] else None,
             }
         )
     return out
