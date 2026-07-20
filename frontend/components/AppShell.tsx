@@ -9,7 +9,9 @@ const NAV = [
 	{ href: "/org/import", label: "Import học sinh" },
 	{ href: "/content", label: "Ngân hàng câu hỏi" },
 	{ href: "/practices", label: "Bài luyện tập" },
+	{ href: "/bao-cao", label: "Báo cáo lớp" },
 	{ href: "/hoc", label: "Việc cần làm (HS)" },
+	{ href: "/hoc/bao-cao", label: "Báo cáo của tôi (HS)" },
 ];
 
 export function AppShell({

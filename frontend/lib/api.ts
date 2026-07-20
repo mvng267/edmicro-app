@@ -276,3 +276,40 @@ export interface AttemptResult {
 }
 export const getResult = (attemptId: string) =>
 	req<AttemptResult>("GET", `/api/v1/attempts/${attemptId}/result`);
+
+// ── Báo cáo (M5) ──────────────────────────────────────────────
+export interface StudentReportItem {
+	practice_name: string;
+	score: number | null;
+	correct_count: number;
+	total_count: number;
+	submitted_at: string | null;
+	attempt_id: string;
+}
+export interface StudentReport {
+	summary: { assigned: number; submitted: number; avg_score: number | null };
+	items: StudentReportItem[];
+}
+export const myReport = () => req<StudentReport>("GET", "/api/v1/me/report");
+export const studentReport = (studentId: string) =>
+	req<StudentReport>("GET", `/api/v1/reports/students/${studentId}`);
+
+export interface ClassReportStudent {
+	student_id: string;
+	full_name: string;
+	assigned: number;
+	submitted: number;
+	avg_score: number | null;
+}
+export interface ClassReport {
+	summary: {
+		student_count: number;
+		assigned_total: number;
+		submitted_total: number;
+		class_avg: number | null;
+		completion_rate: number | null;
+	};
+	students: ClassReportStudent[];
+}
+export const classReport = (classId: string) =>
+	req<ClassReport>("GET", `/api/v1/reports/classes/${classId}`);
