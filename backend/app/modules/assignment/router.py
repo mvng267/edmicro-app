@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.activity_log import log_activity
 from app.core.authn import CurrentUser, get_current_user, get_tenant_session
 from app.modules.assignment import service as svc
+from app.modules.grading import service as grading
 from app.modules.practice import attempt_service as att
 from app.modules.practice import service as psvc
 
@@ -129,9 +130,43 @@ async def submit(
     if current.role != "student":
         raise HTTPException(403, "students_only")
     try:
-        await att.submit_attempt(s, attempt_id, current.user_id)
+        result = await att.submit_attempt(s, current.tenant_id, attempt_id, current.user_id)
     except att.NotFound:
         raise HTTPException(404, "not_found") from None
     except att.Forbidden:
         raise HTTPException(403, "not_your_attempt") from None
-    return {"submitted": True}
+    await log_activity(
+        s,
+        tenant_id=current.tenant_id,
+        actor_id=current.user_id,
+        actor_role=current.role,
+        action="auto_grade",
+        module="GRADE",
+        entity_type="attempt",
+        entity_id=attempt_id,
+        diff=result,
+    )
+    return {"submitted": True, **result}
+
+
+@router.get("/attempts/{attempt_id}/result")
+async def get_result(
+    attempt_id: str,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    if current.role != "student":
+        raise HTTPException(403, "students_only")
+    # xác thực attempt thuộc student + đã nộp
+    info = await att._attempt_owner_and_status(s, attempt_id)
+    if info is None:
+        raise HTTPException(404, "not_found")
+    owner, status = info
+    if owner != current.user_id:
+        raise HTTPException(403, "not_your_attempt")
+    if status != "submitted":
+        raise HTTPException(409, "not_submitted")
+    result = await grading.get_result(s, attempt_id)
+    if result is None:
+        raise HTTPException(404, "not_graded")
+    return result

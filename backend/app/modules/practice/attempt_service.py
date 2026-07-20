@@ -10,6 +10,8 @@ from typing import Any
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.modules.grading import service as grading
+
 
 class Forbidden(Exception):
     pass
@@ -112,7 +114,7 @@ async def save_answer(
     )
 
 
-async def submit_attempt(s: AsyncSession, attempt_id: str, student_id: str) -> None:
+async def submit_attempt(s: AsyncSession, tenant_id: str, attempt_id: str, student_id: str) -> dict:
     info = await _attempt_owner_and_status(s, attempt_id)
     if info is None:
         raise NotFound("attempt_not_found")
@@ -135,3 +137,5 @@ async def submit_attempt(s: AsyncSession, attempt_id: str, student_id: str) -> N
         ),
         {"now": now, "att": attempt_id},
     )
+    # chấm tự động câu đóng ngay khi nộp (M4)
+    return await grading.grade_attempt(s, tenant_id, attempt_id)

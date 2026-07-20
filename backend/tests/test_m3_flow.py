@@ -224,3 +224,54 @@ async def test_enroll_backfill_late_join(client, session_factory):
     _as("student", late)
     todo = await client.get("/api/v1/me/assignments")
     assert len(todo.json()) == 1
+
+
+@pytest.mark.asyncio
+async def test_auto_grade_and_result(client, session_factory):
+    class_id, students, qids = await _seed(session_factory)
+    teacher = str(uuid.uuid4())
+    s1, s2 = students
+
+    # practice 1 câu (q0: correct_index=0)
+    _as("teacher", teacher)
+    pid = (
+        await client.post("/api/v1/practices", json={"name": "Chấm", "question_ids": [qids[0]]})
+    ).json()["id"]
+    due = (datetime.now(UTC) + timedelta(days=1)).isoformat()
+    await client.post(
+        "/api/v1/assignments", json={"content_id": pid, "class_id": class_id, "due_at": due}
+    )
+
+    _as("student", s1)
+    aid = (await client.get("/api/v1/me/assignments")).json()[0]["assignee_id"]
+    start = (await client.post(f"/api/v1/assignments/{aid}/start")).json()
+    attempt_id = start["attempt_id"]
+    qv = start["practice"]["questions"][0]["question_version_id"]
+
+    # chưa nộp -> result 409
+    early = await client.get(f"/api/v1/attempts/{attempt_id}/result")
+    assert early.status_code == 409
+
+    # trả lời đúng (selected=0) rồi nộp -> chấm 1/1
+    await client.put(
+        f"/api/v1/attempts/{attempt_id}/answers",
+        json={"question_version_id": qv, "payload": {"selected": 0}},
+    )
+    sub = await client.post(f"/api/v1/attempts/{attempt_id}/submit")
+    assert sub.status_code == 200
+    assert sub.json()["correct_count"] == 1
+    assert sub.json()["total_count"] == 1
+    assert sub.json()["score"] == 100.0
+
+    # xem kết quả: review lộ đáp án đúng
+    res = await client.get(f"/api/v1/attempts/{attempt_id}/result")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["score"] == 100.0
+    assert body["review"][0]["is_correct"] is True
+    assert body["review"][0]["answer_key"] == {"correct_index": 0}
+
+    # student2 KHÔNG xem được kết quả của student1
+    _as("student", s2)
+    other = await client.get(f"/api/v1/attempts/{attempt_id}/result")
+    assert other.status_code == 403
