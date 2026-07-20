@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.tenant import TenantMiddleware
 from app.modules.authz.router import router as authz_router
+from app.modules.content.router import router as content_router
 from app.modules.health.router import router as health_router
 from app.modules.org.import_router import router as org_import_router
 from app.modules.org.router import router as org_router
@@ -24,3 +25,4 @@ app.include_router(authz_router)
 app.include_router(org_router)
 app.include_router(org_users_router)
 app.include_router(org_import_router)
+app.include_router(content_router)
