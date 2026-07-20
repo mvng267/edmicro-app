@@ -108,4 +108,37 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 	await expect(
 		page.getByTestId("todo-list").getByRole("button", { name: "Xem kết quả" }),
 	).toBeVisible();
+
+	// HS xem BÁO CÁO CỦA MÌNH: điểm TB 100 + có bài vừa làm
+	await page.goto("/hoc/bao-cao");
+	await expect(page.getByTestId("avg-score")).toHaveText("100");
+	await expect(page.getByTestId("submitted-count")).toHaveText("1/1");
+	await expect(page.getByTestId("report-items")).toContainText(`Bài ${stamp}`);
+
+	// logout → owner xem BÁO CÁO LỚP
+	await page.getByTestId("logout").click();
+	await expect(page).toHaveURL(/\/login/);
+	await page.waitForLoadState("networkidle");
+	const ou = page.getByLabel("Tên đăng nhập");
+	await ou.fill("owner");
+	await expect(ou).toHaveValue("owner");
+	await page.getByLabel("Mật khẩu").fill("owner123");
+	await page.getByRole("button", { name: "Đăng nhập" }).click();
+	await expect(page).toHaveURL(/\/dashboard/);
+
+	await page.goto("/bao-cao");
+	await page.getByTestId("class-select").selectOption({ label: `Lớp ${stamp}` });
+	await expect(page.getByTestId("class-avg")).toHaveText("100");
+	await expect(page.getByTestId("completion-rate")).toHaveText("100%");
+	const srow = page
+		.getByTestId("student-table")
+		.locator("tr")
+		.filter({ hasText: `HS ${stamp}` });
+	await expect(srow).toContainText("1/1");
+
+	// drill xuống báo cáo học sinh
+	await srow.getByRole("link", { name: `HS ${stamp}` }).click();
+	await expect(page).toHaveURL(/\/bao-cao\/hoc-sinh\//);
+	await expect(page.getByTestId("avg-score")).toHaveText("100");
+	await expect(page.getByTestId("report-items")).toContainText(`Bài ${stamp}`);
 });
