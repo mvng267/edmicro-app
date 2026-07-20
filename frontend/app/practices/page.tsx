@@ -104,6 +104,7 @@ export default function PracticesPage() {
 								<Chip>
 									<ChipLabel>{q.type}</ChipLabel>
 								</Chip>
+								<span className="font-medium">{q.prompt}</span>
 								<span className="text-neutral-500">{q.skill}</span>
 							</li>
 						))}

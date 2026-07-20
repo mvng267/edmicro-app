@@ -112,6 +112,7 @@ async def list_student_assignments(s: AsyncSession, student_id: str) -> list[dic
                 "practice_name": r["practice_name"],
                 "due_at": r["due_at"].isoformat() if r["due_at"] else None,
                 "status": status,
+                "attempt_id": str(r["attempt_id"]) if r["attempt_id"] else None,
             }
         )
     return out

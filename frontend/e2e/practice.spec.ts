@@ -50,10 +50,12 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 	// practice + giao cho lớp
 	await page.goto("/practices");
 	await page.getByTestId("practice-name").fill(`Bài ${stamp}`);
+	// chọn ĐÚNG câu vừa tạo (không .first() vì DB dev còn câu của test khác)
 	await page
 		.getByTestId("pick-list")
+		.locator("li")
+		.filter({ hasText: `Câu ${stamp}?` })
 		.locator("input[type=checkbox]")
-		.first()
 		.check();
 	await page.getByTestId("save-practice").click();
 	const row = page
@@ -88,12 +90,22 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 		.click();
 	await expect(page).toHaveURL(/\/hoc\/lam-bai\//);
 
-	// chọn đáp án → thấy "Đã lưu" (autosave) → nộp
+	// chọn đáp án ĐÚNG (option 0) → thấy "Đã lưu" (autosave) → nộp
 	await page.getByTestId("ans-0-0").check();
 	await expect(page.getByTestId("saved")).toBeVisible();
 	await page.getByTestId("submit-attempt").click();
 
-	// quay lại việc cần làm, trạng thái submitted
+	// tự động chấm → trang kết quả: điểm 100, câu 1 Đúng, lộ đáp án đúng
+	await expect(page).toHaveURL(/\/hoc\/ket-qua\//);
+	await expect(page.getByTestId("score")).toHaveText("100");
+	await expect(page.getByTestId("verdict-0")).toContainText("Đúng");
+	await expect(page.getByTestId("review-0")).toContainText("đáp án đúng");
+
+	// quay lại việc cần làm: trạng thái submitted + có nút Xem kết quả
+	await page.getByTestId("back-hoc").click();
 	await expect(page).toHaveURL(/\/hoc$/);
 	await expect(page.getByTestId("todo-list")).toContainText("submitted");
+	await expect(
+		page.getByTestId("todo-list").getByRole("button", { name: "Xem kết quả" }),
+	).toBeVisible();
 });

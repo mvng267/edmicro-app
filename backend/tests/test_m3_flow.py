@@ -263,6 +263,11 @@ async def test_auto_grade_and_result(client, session_factory):
     assert sub.json()["total_count"] == 1
     assert sub.json()["score"] == 100.0
 
+    # danh sách việc: đã nộp + có attempt_id để mở trang kết quả
+    todo = (await client.get("/api/v1/me/assignments")).json()[0]
+    assert todo["status"] == "submitted"
+    assert todo["attempt_id"] == attempt_id
+
     # xem kết quả: review lộ đáp án đúng
     res = await client.get(f"/api/v1/attempts/{attempt_id}/result")
     assert res.status_code == 200

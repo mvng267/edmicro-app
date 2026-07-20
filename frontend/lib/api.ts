@@ -166,6 +166,7 @@ export interface QuestionRow {
 	exam_tag: string | null;
 	topic: string | null;
 	status: string;
+	prompt: string | null;
 }
 export const listQuestions = (filters: {
 	skill?: string;
@@ -224,6 +225,7 @@ export interface TodoItem {
 	practice_name: string;
 	due_at: string | null;
 	status: string;
+	attempt_id: string | null;
 }
 export const myAssignments = () =>
 	req<TodoItem[]>("GET", "/api/v1/me/assignments");
@@ -250,4 +252,27 @@ export const saveAnswer = (
 		payload,
 	});
 export const submitAttempt = (attemptId: string) =>
-	req<{ submitted: boolean }>("POST", `/api/v1/attempts/${attemptId}/submit`);
+	req<{
+		submitted: boolean;
+		correct_count: number;
+		total_count: number;
+		score: number;
+	}>("POST", `/api/v1/attempts/${attemptId}/submit`);
+
+export interface ReviewItem {
+	sort_order: number;
+	type: string;
+	content: { prompt: string; options?: string[] };
+	answer_key: { correct_index?: number; blanks?: string[][] } | null;
+	explanation: string | null;
+	your_answer: { selected?: number; blanks?: string[] } | null;
+	is_correct: boolean | null;
+}
+export interface AttemptResult {
+	correct_count: number;
+	total_count: number;
+	score: number;
+	review: ReviewItem[];
+}
+export const getResult = (attemptId: string) =>
+	req<AttemptResult>("GET", `/api/v1/attempts/${attemptId}/result`);

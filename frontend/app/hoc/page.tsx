@@ -30,13 +30,25 @@ export default function TodoPage() {
 								<Chip>
 									<ChipLabel>{t.status}</ChipLabel>
 								</Chip>
-								{t.status !== "submitted" && (
+								{t.status !== "submitted" ? (
 									<Button
 										onPress={() => router.push(`/hoc/lam-bai/${t.assignee_id}`)}
 										data-testid={`do-${t.assignee_id}`}
 									>
 										Làm bài
 									</Button>
+								) : (
+									t.attempt_id && (
+										<Button
+											variant="ghost"
+											onPress={() =>
+												router.push(`/hoc/ket-qua/${t.attempt_id}`)
+											}
+											data-testid={`result-${t.assignee_id}`}
+										>
+											Xem kết quả
+										</Button>
+									)
 								)}
 							</CardContent>
 						</Card>
