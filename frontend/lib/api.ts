@@ -239,6 +239,8 @@ export interface AttemptQuestion {
 export interface AttemptStart {
 	attempt_id: string;
 	practice: { id: string; name: string; questions: AttemptQuestion[] };
+	deadline_at: string | null;
+	duration_minutes: number | null;
 }
 export const startAttempt = (assigneeId: string) =>
 	req<AttemptStart>("POST", `/api/v1/assignments/${assigneeId}/start`);
@@ -276,6 +278,9 @@ export interface AttemptResult {
 	total_count: number;
 	score: number;
 	status: string;
+	is_exam: boolean;
+	band: string | null;
+	duration_minutes: number | null;
 	review: ReviewItem[];
 }
 export const getResult = (attemptId: string) =>
@@ -361,3 +366,26 @@ export interface ClassReport {
 }
 export const classReport = (classId: string) =>
 	req<ClassReport>("GET", `/api/v1/reports/classes/${classId}`);
+
+// ── Đề thi (M7) ───────────────────────────────────────────────
+export interface BandRow {
+	min: number;
+	band: string;
+}
+export interface ExamRow {
+	id: string;
+	name: string;
+	language: string;
+	status: string;
+	duration_minutes: number;
+	n_q: number;
+}
+export const listExams = () => req<ExamRow[]>("GET", "/api/v1/exams");
+export const createExam = (payload: {
+	name: string;
+	skill?: string;
+	question_ids: string[];
+	duration_minutes: number;
+	band_scale: BandRow[];
+}) =>
+	req<{ id: string }>("POST", "/api/v1/exams", { language: "en", ...payload });

@@ -2,7 +2,7 @@
 
 import { Button, Card, CardContent } from "@heroui/react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
 	type AttemptQuestion,
@@ -20,15 +20,36 @@ export default function DoPracticePage() {
 	const [texts, setTexts] = useState<Record<string, string>>({});
 	const [saved, setSaved] = useState(false);
 	const [err, setErr] = useState("");
+	const [deadline, setDeadline] = useState<number | null>(null);
+	const [remaining, setRemaining] = useState<number | null>(null);
+	const submittingRef = useRef(false);
 
 	useEffect(() => {
 		startAttempt(params.assigneeId)
 			.then((r) => {
 				setAttemptId(r.attempt_id);
 				setQuestions(r.practice.questions);
+				if (r.deadline_at) setDeadline(new Date(r.deadline_at).getTime());
 			})
 			.catch((e) => setErr(String(e)));
 	}, [params.assigneeId]);
+
+	// đồng hồ đề thi: đếm ngược theo deadline server; hết giờ tự nộp
+	// biome-ignore lint/correctness/useExhaustiveDependencies: chỉ chạy khi có deadline+attempt
+	useEffect(() => {
+		if (deadline === null || !attemptId) return;
+		const tick = () => {
+			const rem = Math.max(0, Math.round((deadline - Date.now()) / 1000));
+			setRemaining(rem);
+			if (rem <= 0) {
+				clearInterval(id);
+				submit();
+			}
+		};
+		tick();
+		const id = setInterval(tick, 1000);
+		return () => clearInterval(id);
+	}, [deadline, attemptId]);
 
 	async function choose(qv: string, idx: number) {
 		setAnswers((a) => ({ ...a, [qv]: idx }));
@@ -53,12 +74,21 @@ export default function DoPracticePage() {
 	}
 
 	async function submit() {
+		if (submittingRef.current) return;
+		submittingRef.current = true;
 		try {
 			await submitAttempt(attemptId);
 			router.push(`/hoc/ket-qua/${attemptId}`);
 		} catch (e) {
+			submittingRef.current = false;
 			setErr(String(e));
 		}
+	}
+
+	function fmt(sec: number) {
+		const m = Math.floor(sec / 60);
+		const s = sec % 60;
+		return `${m}:${String(s).padStart(2, "0")}`;
 	}
 
 	return (
@@ -66,11 +96,25 @@ export default function DoPracticePage() {
 			<div className="max-w-lg mx-auto flex flex-col gap-4">
 				<div className="flex items-center justify-between">
 					<h1 className="text-lg font-semibold">Làm bài</h1>
-					{saved && (
-						<span className="text-success-600 text-sm" data-testid="saved">
-							Đã lưu ✓
-						</span>
-					)}
+					<div className="flex items-center gap-3">
+						{remaining !== null && (
+							<span
+								className={`text-sm font-mono font-semibold ${
+									remaining <= 60
+										? "text-danger"
+										: "text-neutral-600 dark:text-neutral-300"
+								}`}
+								data-testid="exam-timer"
+							>
+								⏱ {fmt(remaining)}
+							</span>
+						)}
+						{saved && (
+							<span className="text-success-600 text-sm" data-testid="saved">
+								Đã lưu ✓
+							</span>
+						)}
+					</div>
 				</div>
 				{err && <p className="text-danger text-sm">{err}</p>}
 				{questions.map((q, qi) => (

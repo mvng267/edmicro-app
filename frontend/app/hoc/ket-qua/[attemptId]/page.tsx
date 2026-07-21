@@ -45,6 +45,14 @@ export default function ResultPage() {
 								<span className="text-sm text-neutral-500">
 									Đúng {result.correct_count}/{result.total_count} câu
 								</span>
+								{result.is_exam && result.band && (
+									<span
+										className="ml-auto text-sm font-semibold rounded-lg px-3 py-1 bg-primary-100 dark:bg-primary-950 text-primary"
+										data-testid="band"
+									>
+										Band {result.band}
+									</span>
+								)}
 							</CardContent>
 						</Card>
 						{result.status === "provisional" && (
