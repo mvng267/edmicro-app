@@ -11,5 +11,11 @@ class Settings(BaseSettings):
     jwt_access_ttl_seconds: int = 900
     jwt_refresh_ttl_seconds: int = 2592000
 
+    # AI chấm writing: có key thật thì dùng Claude, không thì FakeGrader (dev/test/degrade).
+    anthropic_api_key: str = ""
+    ai_grader_model: str = "claude-opus-4-8"
+    # hạn mức chấm AI mặc định cho tenant mới trong kỳ (lượt writing/tháng).
+    ai_writing_quota_default: int = 100
+
 
 settings = Settings()

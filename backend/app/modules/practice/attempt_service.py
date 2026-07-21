@@ -137,5 +137,7 @@ async def submit_attempt(s: AsyncSession, tenant_id: str, attempt_id: str, stude
         ),
         {"now": now, "att": attempt_id},
     )
-    # chấm tự động câu đóng ngay khi nộp (M4)
-    return await grading.grade_attempt(s, tenant_id, attempt_id)
+    # chấm tự động câu đóng ngay khi nộp (M4) + rút hàng đợi chấm AI câu mở (M6)
+    result = await grading.grade_attempt(s, tenant_id, attempt_id)
+    await grading.process_attempt_ai(s, tenant_id, attempt_id)
+    return result

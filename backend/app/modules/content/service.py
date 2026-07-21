@@ -9,7 +9,9 @@ from typing import Any
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-SUPPORTED_TYPES = {"mcq_single", "fill_blank"}
+SUPPORTED_TYPES = {"mcq_single", "fill_blank", "writing"}
+# Loại câu mở (không có đáp án cố định) — chấm AI sơ bộ → GV chốt (M6).
+OPEN_TYPES = {"writing"}
 
 
 class InvalidContent(Exception):
@@ -30,6 +32,15 @@ def validate_content(qtype: str, content: dict[str, Any], answer_key: dict[str, 
         idx = answer_key.get("correct_index")
         if not isinstance(idx, int) or not (0 <= idx < len(options)):
             raise InvalidContent("correct_index_out_of_range")
+
+    elif qtype == "writing":
+        prompt = content.get("prompt")
+        if not isinstance(prompt, str) or not prompt.strip():
+            raise InvalidContent("missing_prompt")
+        rubric = content.get("rubric")
+        if rubric is not None and not isinstance(rubric, str):
+            raise InvalidContent("rubric_must_be_text")
+        # câu mở: không có answer_key cố định
 
     elif qtype == "fill_blank":
         prompt = content.get("prompt")
