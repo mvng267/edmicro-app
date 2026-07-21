@@ -195,6 +195,7 @@ export default function ContentPage() {
 						<Chip>
 							<ChipLabel>{q.type}</ChipLabel>
 						</Chip>
+						<span className="font-medium text-sm">{q.prompt}</span>
 						<span className="text-neutral-500 text-sm">{q.skill}</span>
 						<Chip>
 							<ChipLabel>{q.status}</ChipLabel>
