@@ -53,11 +53,33 @@ async def start_attempt(s: AsyncSession, tenant_id: str, assignee_id: str, stude
     if existing is not None:
         return str(existing)
 
+    # đề thi (có exam_meta) → đặt đồng hồ server: hạn nộp cố định từ lúc bắt đầu
+    duration = (
+        await s.execute(
+            text(
+                "SELECT em.duration_minutes FROM assignment_assignees aa "
+                "JOIN assignments a ON a.id = aa.assignment_id "
+                "JOIN exam_meta em ON em.content_id = a.content_id "
+                "WHERE aa.id = :a"
+            ),
+            {"a": assignee_id},
+        )
+    ).scalar_one_or_none()
+
     aid = str(uuid.uuid4())
-    await s.execute(
-        text("INSERT INTO attempts (id, tenant_id, assignee_id) VALUES (:id, :t, :a)"),
-        {"id": aid, "t": tenant_id, "a": assignee_id},
-    )
+    if duration is not None:
+        await s.execute(
+            text(
+                "INSERT INTO attempts (id, tenant_id, assignee_id, kind, deadline_at) "
+                "VALUES (:id, :t, :a, 'exam', now() + (:dur * interval '1 minute'))"
+            ),
+            {"id": aid, "t": tenant_id, "a": assignee_id, "dur": duration},
+        )
+    else:
+        await s.execute(
+            text("INSERT INTO attempts (id, tenant_id, assignee_id) VALUES (:id, :t, :a)"),
+            {"id": aid, "t": tenant_id, "a": assignee_id},
+        )
     await s.execute(
         text(
             "UPDATE assignment_assignees SET derived_status = 'in_progress' "
@@ -98,6 +120,18 @@ async def save_answer(
         raise Forbidden("not_your_attempt")
     if status != "in_progress":
         raise NotEditable("attempt_submitted")
+    # đề thi: quá hạn nộp thì khóa lưu (đồng hồ server không dừng)
+    expired = (
+        await s.execute(
+            text(
+                "SELECT deadline_at IS NOT NULL AND now() > deadline_at "
+                "FROM attempts WHERE id = :id"
+            ),
+            {"id": attempt_id},
+        )
+    ).scalar_one()
+    if expired:
+        raise NotEditable("time_expired")
     await s.execute(
         text(
             "INSERT INTO answers (tenant_id, attempt_id, question_version_id, payload) "
