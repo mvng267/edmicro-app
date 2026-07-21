@@ -82,7 +82,35 @@ async def start(
         )
     ).scalar_one()
     practice = await psvc.get_practice(s, str(practice_id), for_attempt=True)
-    return {"attempt_id": attempt_id, "practice": practice}
+    # đề thi: kèm đồng hồ server (hạn nộp + thời lượng) để client đếm ngược
+    exam = (
+        (
+            await s.execute(
+                _exam_clock_of_attempt(),
+                {"att": attempt_id},
+            )
+        )
+        .mappings()
+        .first()
+    )
+    return {
+        "attempt_id": attempt_id,
+        "practice": practice,
+        "deadline_at": exam["deadline_at"].isoformat() if exam and exam["deadline_at"] else None,
+        "duration_minutes": exam["duration_minutes"] if exam else None,
+    }
+
+
+def _exam_clock_of_attempt():
+    from sqlalchemy import text
+
+    return text(
+        "SELECT at.deadline_at, em.duration_minutes FROM attempts at "
+        "JOIN assignment_assignees aa ON aa.id = at.assignee_id "
+        "JOIN assignments a ON a.id = aa.assignment_id "
+        "JOIN exam_meta em ON em.content_id = a.content_id "
+        "WHERE at.id = :att"
+    )
 
 
 def _practice_of_assignee():

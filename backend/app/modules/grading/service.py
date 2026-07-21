@@ -22,6 +22,21 @@ def _period() -> str:
     return datetime.now(UTC).strftime("%Y-%m")
 
 
+def _band_for(scale: list[dict[str, Any]] | None, pct: float) -> str | None:
+    """Quy đổi % → band: mốc có min lớn nhất mà ≤ pct (đồng bộ exam.service.band_for)."""
+    if not scale:
+        return None
+    best: dict[str, Any] | None = None
+    for row in scale:
+        try:
+            m = float(row.get("min"))
+        except (TypeError, ValueError):
+            continue
+        if m <= pct and (best is None or m > float(best["min"])):
+            best = row
+    return str(best["band"]) if best else None
+
+
 def grade_answer(
     qtype: str, payload: dict[str, Any] | None, answer_key: dict[str, Any]
 ) -> bool | None:
@@ -348,11 +363,34 @@ async def get_result(s: AsyncSession, attempt_id: str) -> dict | None:
     def _num(v):
         return float(v) if v is not None else None
 
+    # đề thi: quy đổi điểm % → band theo bảng của exam_meta
+    exam = (
+        (
+            await s.execute(
+                text(
+                    "SELECT em.band_scale, em.duration_minutes FROM attempts at "
+                    "JOIN assignment_assignees aa ON aa.id = at.assignee_id "
+                    "JOIN assignments a ON a.id = aa.assignment_id "
+                    "JOIN exam_meta em ON em.content_id = a.content_id "
+                    "WHERE at.id = :att"
+                ),
+                {"att": attempt_id},
+            )
+        )
+        .mappings()
+        .first()
+    )
+    is_exam = exam is not None
+    band = _band_for(exam["band_scale"], float(sub["score"])) if is_exam else None
+
     return {
         "correct_count": sub["correct_count"],
         "total_count": sub["total_count"],
         "score": float(sub["score"]),
         "status": sub["status"],
+        "is_exam": is_exam,
+        "band": band,
+        "duration_minutes": exam["duration_minutes"] if is_exam else None,
         "review": [
             {
                 "sort_order": r["sort_order"],
