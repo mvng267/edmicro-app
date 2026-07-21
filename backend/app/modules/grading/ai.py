@@ -70,9 +70,7 @@ class ClaudeGrader:
             '"confidence": <0..1>}.'
         )
         rubric_txt = rubric or "(không có — chấm theo chuẩn chung)"
-        user = (
-            f"ĐỀ BÀI:\n{prompt}\n\nRUBRIC:\n{rubric_txt}\n\nBÀI LÀM:\n{answer_text}"
-        )
+        user = f"ĐỀ BÀI:\n{prompt}\n\nRUBRIC:\n{rubric_txt}\n\nBÀI LÀM:\n{answer_text}"
         msg = client.messages.create(
             model=self._model,
             max_tokens=1024,

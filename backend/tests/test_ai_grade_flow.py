@@ -219,6 +219,62 @@ async def test_finalize_open_answer_makes_final(client, session_factory):
     assert witem["final_score"] == 0.8
 
 
+async def _add_staff(session_factory, class_id, user_id):
+    async with session_factory() as s, s.begin():
+        await set_tenant(s, TID)
+        await s.execute(
+            text(
+                "INSERT INTO class_staff (tenant_id, class_id, user_id, role) "
+                "VALUES (:t, :c, :u, 'teacher')"
+            ),
+            {"t": TID, "c": class_id, "u": user_id},
+        )
+
+
+@pytest.mark.asyncio
+async def test_review_queue_finalize_and_rbac(client, session_factory):
+    class_id, student, qids = await _seed(session_factory)
+    attempt_id, _ = await _assign_and_submit(client, class_id, qids, student)
+
+    # student KHÔNG được vào hàng đợi chấm
+    _as("student", student)
+    assert (await client.get("/api/v1/grading/queue")).status_code == 403
+
+    # teacher KHÔNG dạy lớp -> không thấy trong queue + 403 khi mở chi tiết
+    outsider = str(uuid.uuid4())
+    _as("teacher", outsider)
+    assert (await client.get("/api/v1/grading/queue")).json() == []
+    assert (await client.get(f"/api/v1/grading/attempts/{attempt_id}")).status_code == 403
+
+    # homeroom teacher (class_staff) -> thấy hàng đợi + chốt điểm
+    homeroom = str(uuid.uuid4())
+    await _add_staff(session_factory, class_id, homeroom)
+    _as("teacher", homeroom)
+
+    q = (await client.get("/api/v1/grading/queue")).json()
+    assert any(row["attempt_id"] == attempt_id and row["pending_count"] == 1 for row in q)
+
+    detail = (await client.get(f"/api/v1/grading/attempts/{attempt_id}")).json()
+    assert len(detail["items"]) == 1
+    item = detail["items"][0]
+    assert item["grade_status"] == "ai_graded"
+    assert item["ai_score"] is not None
+    answer_id = item["answer_id"]
+
+    fin = await client.post(
+        f"/api/v1/grading/answers/{answer_id}/finalize",
+        json={"final_score": 0.9, "feedback": "Ý tốt, cần liên kết đoạn."},
+    )
+    assert fin.status_code == 200, fin.text
+    body = fin.json()
+    assert body["status"] == "final"
+    assert body["score"] == 95.0  # (closed 1 + 0.9) / 2 * 100
+
+    # đã chốt -> rời hàng đợi
+    q2 = (await client.get("/api/v1/grading/queue")).json()
+    assert all(row["attempt_id"] != attempt_id for row in q2)
+
+
 @pytest.mark.asyncio
 async def test_quota_exceeded_degrades_to_manual(client, session_factory):
     class_id, student, qids = await _seed(session_factory)
