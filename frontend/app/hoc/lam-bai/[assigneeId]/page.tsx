@@ -17,6 +17,7 @@ export default function DoPracticePage() {
 	const [attemptId, setAttemptId] = useState("");
 	const [questions, setQuestions] = useState<AttemptQuestion[]>([]);
 	const [answers, setAnswers] = useState<Record<string, number>>({});
+	const [texts, setTexts] = useState<Record<string, string>>({});
 	const [saved, setSaved] = useState(false);
 	const [err, setErr] = useState("");
 
@@ -34,6 +35,17 @@ export default function DoPracticePage() {
 		setSaved(false);
 		try {
 			await saveAnswer(attemptId, qv, { selected: idx });
+			setSaved(true);
+		} catch (e) {
+			setErr(String(e));
+		}
+	}
+
+	async function write(qv: string, value: string) {
+		setTexts((t) => ({ ...t, [qv]: value }));
+		setSaved(false);
+		try {
+			await saveAnswer(attemptId, qv, { text: value });
 			setSaved(true);
 		} catch (e) {
 			setErr(String(e));
@@ -67,19 +79,29 @@ export default function DoPracticePage() {
 							<p className="font-medium">
 								Câu {qi + 1}. {q.content.prompt}
 							</p>
-							{(q.content.options ?? []).map((opt, oi) => (
-								// biome-ignore lint/suspicious/noArrayIndexKey: option cố định theo vị trí
-								<label key={oi} className="flex gap-2 items-center text-sm">
-									<input
-										type="radio"
-										name={q.question_version_id}
-										checked={answers[q.question_version_id] === oi}
-										onChange={() => choose(q.question_version_id, oi)}
-										data-testid={`ans-${qi}-${oi}`}
-									/>
-									{opt}
-								</label>
-							))}
+							{q.type === "writing" ? (
+								<textarea
+									className="min-h-32 rounded-lg border p-2 text-sm bg-white dark:bg-neutral-900"
+									placeholder="Viết bài của bạn ở đây…"
+									value={texts[q.question_version_id] ?? ""}
+									onChange={(e) => write(q.question_version_id, e.target.value)}
+									data-testid={`write-${qi}`}
+								/>
+							) : (
+								(q.content.options ?? []).map((opt, oi) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: option cố định theo vị trí
+									<label key={oi} className="flex gap-2 items-center text-sm">
+										<input
+											type="radio"
+											name={q.question_version_id}
+											checked={answers[q.question_version_id] === oi}
+											onChange={() => choose(q.question_version_id, oi)}
+											data-testid={`ans-${qi}-${oi}`}
+										/>
+										{opt}
+									</label>
+								))
+							)}
 						</CardContent>
 					</Card>
 				))}
