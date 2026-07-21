@@ -265,17 +265,65 @@ export interface ReviewItem {
 	content: { prompt: string; options?: string[] };
 	answer_key: { correct_index?: number; blanks?: string[][] } | null;
 	explanation: string | null;
-	your_answer: { selected?: number; blanks?: string[] } | null;
+	your_answer: { selected?: number; blanks?: string[]; text?: string } | null;
 	is_correct: boolean | null;
+	grade_status: string | null;
+	ai_feedback: string | null;
+	final_score: number | null;
 }
 export interface AttemptResult {
 	correct_count: number;
 	total_count: number;
 	score: number;
+	status: string;
 	review: ReviewItem[];
 }
 export const getResult = (attemptId: string) =>
 	req<AttemptResult>("GET", `/api/v1/attempts/${attemptId}/result`);
+
+// ── Chấm AI writing + review GV (M6) ──────────────────────────
+export interface GradingQueueItem {
+	attempt_id: string;
+	student_id: string;
+	student_name: string;
+	class_id: string;
+	class_name: string;
+	practice_name: string;
+	pending_count: number;
+	priority: number;
+	has_manual: boolean;
+}
+export const gradingQueue = () =>
+	req<GradingQueueItem[]>("GET", "/api/v1/grading/queue");
+
+export interface ReviewOpenItem {
+	answer_id: string;
+	sort_order: number;
+	prompt: string | null;
+	rubric: string | null;
+	your_answer: string | null;
+	ai_score: number | null;
+	ai_feedback: string | null;
+	ai_confidence: number | null;
+	final_score: number | null;
+	grade_status: string;
+}
+export interface ReviewDetail {
+	attempt_id: string;
+	items: ReviewOpenItem[];
+}
+export const reviewDetail = (attemptId: string) =>
+	req<ReviewDetail>("GET", `/api/v1/grading/attempts/${attemptId}`);
+export const finalizeAnswer = (
+	answerId: string,
+	final_score: number,
+	feedback?: string,
+) =>
+	req<{ score: number; status: string }>(
+		"POST",
+		`/api/v1/grading/answers/${answerId}/finalize`,
+		{ final_score, feedback },
+	);
 
 // ── Báo cáo (M5) ──────────────────────────────────────────────
 export interface StudentReportItem {

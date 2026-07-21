@@ -30,6 +30,7 @@ export default function ContentPage() {
 	const [options, setOptions] = useState(["", ""]);
 	const [correct, setCorrect] = useState(0);
 	const [blankAnswer, setBlankAnswer] = useState("");
+	const [rubric, setRubric] = useState("");
 
 	async function refresh() {
 		setQuestions(await listQuestions({ skill: skillFilter || undefined }));
@@ -47,6 +48,9 @@ export default function ContentPage() {
 			if (type === "mcq_single") {
 				content = { prompt, options: options.filter((o) => o.trim()) };
 				answer_key = { correct_index: correct };
+			} else if (type === "writing") {
+				content = { prompt, rubric };
+				answer_key = {};
 			} else {
 				content = { prompt };
 				answer_key = { blanks: [blankAnswer.split("|").map((s) => s.trim())] };
@@ -62,6 +66,7 @@ export default function ContentPage() {
 			setPrompt("");
 			setOptions(["", ""]);
 			setBlankAnswer("");
+			setRubric("");
 			await refresh();
 		} catch (e) {
 			setErr(String(e));
@@ -81,6 +86,7 @@ export default function ContentPage() {
 						>
 							<option value="mcq_single">Trắc nghiệm 1 đáp án</option>
 							<option value="fill_blank">Điền vào chỗ trống</option>
+							<option value="writing">Viết (AI chấm → GV duyệt)</option>
 						</select>
 						<select
 							data-testid="q-skill"
@@ -135,6 +141,14 @@ export default function ContentPage() {
 								+ Thêm đáp án
 							</Button>
 						</div>
+					) : type === "writing" ? (
+						<Input
+							aria-label="Rubric chấm"
+							placeholder="Rubric / tiêu chí chấm (tuỳ chọn) — VD: IELTS Writing Task 2"
+							data-testid="q-rubric"
+							value={rubric}
+							onChange={(e) => setRubric(e.target.value)}
+						/>
 					) : (
 						<Input
 							aria-label="Đáp án chỗ trống"
