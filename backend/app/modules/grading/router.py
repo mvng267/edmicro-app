@@ -43,6 +43,19 @@ async def _attempt_class(s: AsyncSession, attempt_id: str) -> str | None:
     ).scalar_one_or_none()
 
 
+async def _attempt_student(s: AsyncSession, attempt_id: str) -> str | None:
+    r = (
+        await s.execute(
+            text(
+                "SELECT aa.student_id FROM attempts at "
+                "JOIN assignment_assignees aa ON aa.id = at.assignee_id WHERE at.id = :att"
+            ),
+            {"att": attempt_id},
+        )
+    ).scalar_one_or_none()
+    return str(r) if r else None
+
+
 async def _answer_attempt(s: AsyncSession, answer_id: str) -> str | None:
     return (
         await s.execute(
@@ -205,4 +218,21 @@ async def finalize(
         entity_id=answer_id,
         diff={"final_score": body.final_score},
     )
+    # NOTIF: báo HS đã có điểm chốt (chỉ khi bài đã final — hết câu chờ)
+    if result.get("status") == "final":
+        from app.modules.notify import service as notify
+
+        student = await _attempt_student(s, str(attempt_id))
+        if student:
+            await notify.notify(
+                s,
+                current.tenant_id,
+                [student],
+                notify.EVT_GRADE_FINALIZED,
+                "Đã có kết quả chấm",
+                "Giáo viên đã chốt điểm bài của bạn. Xem kết quả và nhận xét.",
+                entity_type="attempt",
+                entity_id=str(attempt_id),
+                extra_channels=["email"],
+            )
     return result

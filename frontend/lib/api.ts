@@ -389,3 +389,63 @@ export const createExam = (payload: {
 	band_scale: BandRow[];
 }) =>
 	req<{ id: string }>("POST", "/api/v1/exams", { language: "en", ...payload });
+
+// ── Thông báo (M8) ────────────────────────────────────────────
+export interface Notification {
+	id: string;
+	event_code: string;
+	title: string;
+	body: string;
+	entity_type: string | null;
+	entity_id: string | null;
+	read: boolean;
+	created_at: string;
+}
+export const myNotifications = () =>
+	req<Notification[]>("GET", "/api/v1/me/notifications");
+export const unreadCount = () =>
+	req<{ count: number }>("GET", "/api/v1/me/notifications/unread-count");
+export const markNotifRead = (id: string) =>
+	req<{ read: boolean }>("POST", `/api/v1/notifications/${id}/read`);
+export const markAllNotifRead = () =>
+	req<{ marked: number }>("POST", "/api/v1/notifications/read-all");
+
+// ── Lịch học & điểm danh (M8) ─────────────────────────────────
+export interface ClassSession {
+	id: string;
+	class_id: string;
+	class_name?: string | null;
+	starts_at: string;
+	ends_at: string;
+	topic: string;
+	online_link: string | null;
+}
+export const listSessions = (classId: string) =>
+	req<ClassSession[]>("GET", `/api/v1/sessions?class_id=${classId}`);
+export const mySessions = () =>
+	req<ClassSession[]>("GET", "/api/v1/me/sessions");
+export const createSession = (payload: {
+	class_id: string;
+	starts_at: string;
+	ends_at: string;
+	topic?: string;
+	online_link?: string;
+}) => req<{ id: string }>("POST", "/api/v1/sessions", payload);
+
+export interface AttendanceRow {
+	student_id: string;
+	full_name: string;
+	status: string | null;
+	note: string | null;
+}
+export const getAttendance = (sessionId: string) =>
+	req<AttendanceRow[]>("GET", `/api/v1/sessions/${sessionId}/attendance`);
+export const markAttendance = (
+	sessionId: string,
+	records: { student_id: string; status: string; note?: string }[],
+) =>
+	req<{ marked: number; absent: number }>(
+		"POST",
+		`/api/v1/sessions/${sessionId}/attendance`,
+		{ records },
+	);

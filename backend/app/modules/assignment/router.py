@@ -47,6 +47,39 @@ async def create_assignment(
         entity_id=result["id"],
         diff={"assignees": result["assignee_count"]},
     )
+    # NOTIF: báo HS được giao bài mới (in-app + email stub)
+    from sqlalchemy import text
+
+    from app.modules.notify import service as notify
+
+    info = (
+        (
+            await s.execute(
+                text(
+                    "SELECT p.name, array_agg(aa.student_id::text) AS students "
+                    "FROM assignment_assignees aa "
+                    "JOIN assignments a ON a.id = aa.assignment_id "
+                    "JOIN practices p ON p.id = a.content_id "
+                    "WHERE aa.assignment_id = :aid GROUP BY p.name"
+                ),
+                {"aid": result["id"]},
+            )
+        )
+        .mappings()
+        .first()
+    )
+    if info and info["students"]:
+        await notify.notify(
+            s,
+            current.tenant_id,
+            info["students"],
+            notify.EVT_ASSIGNMENT_CREATED,
+            "Bài mới được giao",
+            f"Bạn được giao bài “{info['name']}”.",
+            entity_type="assignment",
+            entity_id=result["id"],
+            extra_channels=["email"],
+        )
     return result
 
 
