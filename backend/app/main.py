@@ -10,6 +10,7 @@ from app.modules.exam.router import router as exam_router
 from app.modules.game.router import router as game_router
 from app.modules.grading.router import router as grading_router
 from app.modules.health.router import router as health_router
+from app.modules.logadmin.router import router as logadmin_router
 from app.modules.notify.router import router as notify_router
 from app.modules.org.import_router import router as org_import_router
 from app.modules.org.router import router as org_router
@@ -18,6 +19,8 @@ from app.modules.parent.router import router as parent_router
 from app.modules.practice.router import router as practice_router
 from app.modules.report.router import router as report_router
 from app.modules.sched.router import router as sched_router
+from app.modules.support.router import router as support_router
+from app.modules.usage.router import router as usage_router
 
 app = FastAPI(title="Edmicro App API", version="0.1.0")
 
@@ -46,3 +49,6 @@ app.include_router(sched_router)
 app.include_router(course_router)
 app.include_router(game_router)
 app.include_router(parent_router)
+app.include_router(logadmin_router)
+app.include_router(usage_router)
+app.include_router(support_router)
