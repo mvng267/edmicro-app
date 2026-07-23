@@ -22,6 +22,9 @@ const NAV = [
 	{ href: "/hoc/khoa-hoc", label: "Khóa học của tôi (HS)" },
 	{ href: "/hoc/bao-cao", label: "Báo cáo của tôi (HS)" },
 	{ href: "/phu-huynh", label: "Cổng phụ huynh" },
+	{ href: "/ho-tro", label: "Hỗ trợ" },
+	{ href: "/quan-tri/usage", label: "Mức dùng" },
+	{ href: "/quan-tri/log", label: "Quản trị log" },
 ];
 
 export function AppShell({

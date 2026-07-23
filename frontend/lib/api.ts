@@ -547,3 +547,61 @@ export const linkChild = (parentId: string, studentId: string) =>
 		"POST",
 		`/api/v1/org/parents/${parentId}/children/${studentId}`,
 	);
+
+// ── Quản trị log + Usage (M10) ────────────────────────────────
+export interface ActivityLog {
+	id: string;
+	actor_id: string | null;
+	actor_role: string | null;
+	action: string;
+	module: string;
+	entity_type: string | null;
+	entity_id: string | null;
+	entity_label: string | null;
+	at: string;
+}
+export const listLogs = (filters: { module?: string }) => {
+	const p = new URLSearchParams();
+	if (filters.module) p.set("module", filters.module);
+	return req<ActivityLog[]>("GET", `/api/v1/admin/logs?${p.toString()}`);
+};
+export interface Usage {
+	students: number;
+	classes: number;
+	submissions: number;
+	courses: number;
+	period: string;
+	ai_writing: { limit: number; used: number };
+}
+export const getUsage = () => req<Usage>("GET", "/api/v1/usage");
+
+// ── Hỗ trợ / ticket (M10) ─────────────────────────────────────
+export interface TicketRow {
+	id: string;
+	subject: string;
+	status: string;
+	created_by: string;
+	created_at: string;
+}
+export interface TicketComment {
+	id: string;
+	author_id: string;
+	body: string;
+	created_at: string;
+}
+export interface TicketDetail extends TicketRow {
+	body: string;
+	comments: TicketComment[];
+}
+export const listTickets = () =>
+	req<TicketRow[]>("GET", "/api/v1/support/tickets");
+export const getTicket = (id: string) =>
+	req<TicketDetail>("GET", `/api/v1/support/tickets/${id}`);
+export const createTicket = (subject: string, body: string) =>
+	req<{ id: string }>("POST", "/api/v1/support/tickets", { subject, body });
+export const addTicketComment = (id: string, body: string) =>
+	req<{ id: string }>("POST", `/api/v1/support/tickets/${id}/comments`, {
+		body,
+	});
+export const closeTicket = (id: string) =>
+	req<{ closed: boolean }>("POST", `/api/v1/support/tickets/${id}/close`);
