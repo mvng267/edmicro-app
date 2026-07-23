@@ -5,13 +5,16 @@ from app.core.tenant import TenantMiddleware
 from app.modules.assignment.router import router as assignment_router
 from app.modules.authz.router import router as authz_router
 from app.modules.content.router import router as content_router
+from app.modules.course.router import router as course_router
 from app.modules.exam.router import router as exam_router
+from app.modules.game.router import router as game_router
 from app.modules.grading.router import router as grading_router
 from app.modules.health.router import router as health_router
 from app.modules.notify.router import router as notify_router
 from app.modules.org.import_router import router as org_import_router
 from app.modules.org.router import router as org_router
 from app.modules.org.users_router import router as org_users_router
+from app.modules.parent.router import router as parent_router
 from app.modules.practice.router import router as practice_router
 from app.modules.report.router import router as report_router
 from app.modules.sched.router import router as sched_router
@@ -40,3 +43,6 @@ app.include_router(grading_router)
 app.include_router(exam_router)
 app.include_router(notify_router)
 app.include_router(sched_router)
+app.include_router(course_router)
+app.include_router(game_router)
+app.include_router(parent_router)

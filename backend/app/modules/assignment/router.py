@@ -207,6 +207,10 @@ async def submit(
         entity_id=attempt_id,
         diff=result,
     )
+    # GAME: cộng điểm khi nộp (lần đầu theo assignment) + điểm cao
+    from app.modules.game import service as game
+
+    await game.award_for_submission(s, current.tenant_id, attempt_id, float(result["score"]))
     return {"submitted": True, **result}
 
 
