@@ -449,3 +449,101 @@ export const markAttendance = (
 		`/api/v1/sessions/${sessionId}/attendance`,
 		{ records },
 	);
+
+// ── Khóa học (M9) ─────────────────────────────────────────────
+export interface CourseRow {
+	id: string;
+	name: string;
+	language: string;
+	status: string;
+	n_lessons: number;
+}
+export interface Lesson {
+	id: string;
+	sort_order: number;
+	title: string;
+	kind: string;
+	body: string;
+	content_ref: string | null;
+	done: boolean;
+}
+export interface CourseDetail {
+	id: string;
+	name: string;
+	language: string;
+	status: string;
+	lessons: Lesson[];
+}
+export interface StudentCourse {
+	id: string;
+	name: string;
+	language: string;
+	total: number;
+	done: number;
+	progress: number;
+}
+export const listCourses = () => req<CourseRow[]>("GET", "/api/v1/courses");
+export const getCourse = (id: string) =>
+	req<CourseDetail>("GET", `/api/v1/courses/${id}`);
+export const createCourse = (name: string, language = "en") =>
+	req<{ id: string }>("POST", "/api/v1/courses", { name, language });
+export const addLesson = (
+	courseId: string,
+	payload: {
+		title: string;
+		kind?: string;
+		body?: string;
+		content_ref?: string;
+	},
+) =>
+	req<{ id: string }>("POST", `/api/v1/courses/${courseId}/lessons`, payload);
+export const assignCourse = (courseId: string, class_id: string) =>
+	req<{ assigned: boolean }>("POST", `/api/v1/courses/${courseId}/assign`, {
+		class_id,
+	});
+export const myCourses = () =>
+	req<StudentCourse[]>("GET", "/api/v1/me/courses");
+export const myCourseDetail = (id: string) =>
+	req<CourseDetail>("GET", `/api/v1/me/courses/${id}`);
+export const completeLesson = (lessonId: string) =>
+	req<{ done: number; total: number; progress: number }>(
+		"POST",
+		`/api/v1/lessons/${lessonId}/complete`,
+	);
+
+// ── Gamification (M9) ─────────────────────────────────────────
+export interface Badge {
+	code: string;
+	name: string;
+	desc: string;
+}
+export interface PointsSummary {
+	total: number;
+	streak: number;
+	badges: Badge[];
+}
+export const myPoints = () => req<PointsSummary>("GET", "/api/v1/me/points");
+export interface LeaderRow {
+	rank: number;
+	student_id: string;
+	full_name: string;
+	points: number;
+}
+export const leaderboard = (classId: string) =>
+	req<LeaderRow[]>("GET", `/api/v1/classes/${classId}/leaderboard`);
+
+// ── Cổng phụ huynh (M9) ───────────────────────────────────────
+export interface Child {
+	student_id: string;
+	full_name: string;
+}
+export const myChildren = () => req<Child[]>("GET", "/api/v1/me/children");
+export const childReport = (studentId: string) =>
+	req<StudentReport>("GET", `/api/v1/me/children/${studentId}/report`);
+export const childPoints = (studentId: string) =>
+	req<PointsSummary>("GET", `/api/v1/me/children/${studentId}/points`);
+export const linkChild = (parentId: string, studentId: string) =>
+	req<{ linked: boolean }>(
+		"POST",
+		`/api/v1/org/parents/${parentId}/children/${studentId}`,
+	);
