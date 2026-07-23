@@ -13,11 +13,15 @@ const NAV = [
 	{ href: "/content", label: "Ngân hàng câu hỏi" },
 	{ href: "/practices", label: "Bài luyện tập" },
 	{ href: "/exams", label: "Đề thi" },
+	{ href: "/khoa-hoc", label: "Khóa học" },
 	{ href: "/cham-bai", label: "Chấm bài (GV)" },
 	{ href: "/lich-hoc", label: "Lịch học" },
 	{ href: "/bao-cao", label: "Báo cáo lớp" },
+	{ href: "/bang-xep-hang", label: "Bảng xếp hạng" },
 	{ href: "/hoc", label: "Việc cần làm (HS)" },
+	{ href: "/hoc/khoa-hoc", label: "Khóa học của tôi (HS)" },
 	{ href: "/hoc/bao-cao", label: "Báo cáo của tôi (HS)" },
+	{ href: "/phu-huynh", label: "Cổng phụ huynh" },
 ];
 
 export function AppShell({
