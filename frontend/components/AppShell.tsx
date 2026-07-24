@@ -3,28 +3,107 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { unreadCount } from "@/lib/api";
+import { apiMe, unreadCount } from "@/lib/api";
 
-const NAV = [
-	{ href: "/org/branches", label: "Chi nhánh" },
-	{ href: "/org/classes", label: "Lớp học" },
-	{ href: "/org/users", label: "Tài khoản" },
-	{ href: "/org/import", label: "Import học sinh" },
-	{ href: "/content", label: "Ngân hàng câu hỏi" },
-	{ href: "/practices", label: "Bài luyện tập" },
-	{ href: "/exams", label: "Đề thi" },
-	{ href: "/khoa-hoc", label: "Khóa học" },
-	{ href: "/cham-bai", label: "Chấm bài (GV)" },
-	{ href: "/lich-hoc", label: "Lịch học" },
-	{ href: "/bao-cao", label: "Báo cáo lớp" },
-	{ href: "/bang-xep-hang", label: "Bảng xếp hạng" },
-	{ href: "/hoc", label: "Việc cần làm (HS)" },
-	{ href: "/hoc/khoa-hoc", label: "Khóa học của tôi (HS)" },
-	{ href: "/hoc/bao-cao", label: "Báo cáo của tôi (HS)" },
-	{ href: "/phu-huynh", label: "Cổng phụ huynh" },
-	{ href: "/ho-tro", label: "Hỗ trợ" },
-	{ href: "/quan-tri/usage", label: "Mức dùng" },
-	{ href: "/quan-tri/log", label: "Quản trị log" },
+// Nhóm vai trò dùng lại cho menu (API vẫn là nơi chặn thật — đây chỉ để đỡ rối màn hình).
+const STAFF = ["owner", "manager", "academic_head", "teacher", "assistant"];
+const ADMIN_ORG = ["owner", "manager", "it_admin"];
+const AUTHOR = [
+	"owner",
+	"manager",
+	"academic_head",
+	"teacher",
+	"content_editor",
+];
+
+type NavItem = { href: string; label: string; roles?: string[]; group: string };
+
+const NAV: NavItem[] = [
+	{ href: "/dashboard", label: "Tổng quan", group: "Chung" },
+	{
+		href: "/org/branches",
+		label: "Chi nhánh",
+		roles: ADMIN_ORG,
+		group: "Tổ chức",
+	},
+	{
+		href: "/org/classes",
+		label: "Lớp học",
+		roles: ADMIN_ORG,
+		group: "Tổ chức",
+	},
+	{
+		href: "/org/users",
+		label: "Tài khoản",
+		roles: ADMIN_ORG,
+		group: "Tổ chức",
+	},
+	{
+		href: "/org/import",
+		label: "Import học sinh",
+		roles: ADMIN_ORG,
+		group: "Tổ chức",
+	},
+	{
+		href: "/content",
+		label: "Ngân hàng câu hỏi",
+		roles: AUTHOR,
+		group: "Dạy học",
+	},
+	{
+		href: "/practices",
+		label: "Bài luyện tập",
+		roles: AUTHOR,
+		group: "Dạy học",
+	},
+	{ href: "/exams", label: "Đề thi", roles: AUTHOR, group: "Dạy học" },
+	{ href: "/khoa-hoc", label: "Khóa học", roles: AUTHOR, group: "Dạy học" },
+	{ href: "/cham-bai", label: "Chấm bài", roles: STAFF, group: "Dạy học" },
+	{
+		href: "/lich-hoc",
+		label: "Lịch học & điểm danh",
+		roles: STAFF,
+		group: "Dạy học",
+	},
+	{ href: "/bao-cao", label: "Báo cáo lớp", roles: STAFF, group: "Theo dõi" },
+	{
+		href: "/bang-xep-hang",
+		label: "Bảng xếp hạng",
+		roles: STAFF,
+		group: "Theo dõi",
+	},
+	{ href: "/hoc", label: "Việc cần làm", roles: ["student"], group: "Học tập" },
+	{
+		href: "/hoc/khoa-hoc",
+		label: "Khóa học của tôi",
+		roles: ["student"],
+		group: "Học tập",
+	},
+	{
+		href: "/hoc/bao-cao",
+		label: "Báo cáo của tôi",
+		roles: ["student"],
+		group: "Học tập",
+	},
+	{
+		href: "/phu-huynh",
+		label: "Cổng phụ huynh",
+		roles: ["parent"],
+		group: "Học tập",
+	},
+	{ href: "/ho-tro", label: "Hỗ trợ", group: "Hệ thống" },
+	{
+		href: "/quan-tri/usage",
+		label: "Mức dùng",
+		roles: ADMIN_ORG,
+		group: "Hệ thống",
+	},
+	{
+		href: "/quan-tri/log",
+		label: "Quản trị log",
+		roles: ["owner", "it_admin", "admin"],
+		group: "Hệ thống",
+	},
 ];
 
 export function AppShell({
@@ -35,9 +114,15 @@ export function AppShell({
 	children: React.ReactNode;
 }) {
 	const [unread, setUnread] = useState(0);
+	const [role, setRole] = useState<string | null>(null);
 
 	useEffect(() => {
 		let alive = true;
+		apiMe()
+			.then((m) => {
+				if (alive) setRole(m.role);
+			})
+			.catch(() => {});
 		const poll = () =>
 			unreadCount()
 				.then((r) => {
@@ -51,6 +136,15 @@ export function AppShell({
 			clearInterval(id);
 		};
 	}, []);
+
+	// Chưa biết vai trò thì hiện mục chung, tránh nháy menu đầy rồi co lại.
+	const visible = NAV.filter(
+		(n) => !n.roles || (role ? n.roles.includes(role) : false),
+	);
+	const groups = visible.reduce<Record<string, NavItem[]>>((acc, n) => {
+		(acc[n.group] ??= []).push(n);
+		return acc;
+	}, {});
 
 	function logout() {
 		localStorage.removeItem("access_token");
@@ -90,14 +184,21 @@ export function AppShell({
 			</header>
 			<div className="flex flex-1">
 				<aside className="w-56 p-3 border-r border-neutral-200 dark:border-neutral-800">
-					{NAV.map((n) => (
-						<Link
-							key={n.href}
-							href={n.href}
-							className="block px-3 py-2 rounded-lg text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-						>
-							{n.label}
-						</Link>
+					{Object.entries(groups).map(([group, items]) => (
+						<div key={group} className="mb-3">
+							<p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
+								{group}
+							</p>
+							{items.map((n) => (
+								<Link
+									key={n.href}
+									href={n.href}
+									className="block px-3 py-2 rounded-lg text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+								>
+									{n.label}
+								</Link>
+							))}
+						</div>
 					))}
 				</aside>
 				<main className="flex-1 p-6 max-w-5xl">

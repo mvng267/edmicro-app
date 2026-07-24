@@ -44,15 +44,27 @@ async def _seed(session_factory):
             ),
             {"id": student, "t": TID, "un": f"hs-{student[:8]}"},
         )
-        # activity_logs (không RLS) — chèn cho tenant + tenant khác
-        for tid_val, module in ((TID, "ASSIGN"), (TID, "GRADE"), (OTHER_TID, "ASSIGN")):
+        # 2 log của tenant này
+        for module in ("ASSIGN", "GRADE"):
             await s.execute(
                 text(
                     "INSERT INTO activity_logs (tenant_id, actor_id, actor_role, action, module) "
                     "VALUES (:t, :a, 'teacher', 'create', :m)"
                 ),
-                {"t": tid_val, "a": str(uuid.uuid4()), "m": module},
+                {"t": TID, "a": str(uuid.uuid4()), "m": module},
             )
+
+    # 1 log của TENANT KHÁC — phải ghi bằng session của chính nó, vì RLS (migration 0012)
+    # chặn ghi chéo tenant. Dùng để chứng minh /admin/logs không đọc thấy log tenant khác.
+    async with session_factory() as s2, s2.begin():
+        await set_tenant(s2, OTHER_TID)
+        await s2.execute(
+            text(
+                "INSERT INTO activity_logs (tenant_id, actor_id, actor_role, action, module) "
+                "VALUES (:t, :a, 'teacher', 'create', 'ASSIGN')"
+            ),
+            {"t": OTHER_TID, "a": str(uuid.uuid4())},
+        )
     return class_id, student
 
 
@@ -151,3 +163,23 @@ async def test_tickets_and_impersonation(client, session_factory):
     # student KHÔNG impersonate được
     _as("student", student)
     assert (await client.post(f"/api/v1/support/impersonate/{other_student}")).status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_rls_chan_ghi_log_cheo_tenant(session_factory):
+    """Bằng chứng migration 0012: DB tự chặn ghi activity/audit log sang tenant khác.
+
+    Trước khi bật RLS, 2 bảng log không có policy nên chỉ cần quên lọc tenant ở query
+    là lộ log tenant khác — nay Postgres chặn ở tầng dữ liệu.
+    """
+    from sqlalchemy.exc import ProgrammingError
+
+    for table, cols in (
+        ("activity_logs", "(tenant_id, action, module) VALUES (:t, 'create', 'ORG')"),
+        ("audit_logs", "(tenant_id, action, target_type) VALUES (:t, 'delete', 'user')"),
+    ):
+        async with session_factory() as s:
+            await set_tenant(s, TID)  # autobegin transaction
+            with pytest.raises(ProgrammingError, match="row-level security"):
+                await s.execute(text(f"INSERT INTO {table} {cols}"), {"t": OTHER_TID})
+            await s.rollback()

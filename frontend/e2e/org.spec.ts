@@ -53,5 +53,5 @@ test("owner dựng bộ máy rồi học sinh mới đăng nhập được", asy
 	await expect(pwInput).toHaveValue(password);
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
-	await expect(page.getByTestId("role")).toHaveText("student");
+	await expect(page.getByTestId("role")).toHaveText("Học sinh");
 });

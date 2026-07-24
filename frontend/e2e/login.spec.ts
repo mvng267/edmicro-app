@@ -7,7 +7,7 @@ test("owner đăng nhập thành công và thấy dashboard", async ({ page }) =
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
 	await expect(page.getByTestId("greeting")).toBeVisible();
-	await expect(page.getByTestId("role")).toHaveText("owner");
+	await expect(page.getByTestId("role")).toHaveText("Chủ trung tâm");
 });
 
 test("sai mật khẩu hiện thông báo lỗi", async ({ page }) => {
