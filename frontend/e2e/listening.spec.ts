@@ -9,7 +9,9 @@ test("câu nghe có audio: soạn → làm bài → xem lại", async ({ page })
 		Buffer.from("RIFF"),
 		Buffer.from([36, 0, 0, 0]),
 		Buffer.from("WAVEfmt "),
-		Buffer.from([16, 0, 0, 0, 1, 0, 1, 0, 0x44, 0xac, 0, 0, 0x88, 0x58, 1, 0, 2, 0, 16, 0]),
+		Buffer.from([
+			16, 0, 0, 0, 1, 0, 1, 0, 0x44, 0xac, 0, 0, 0x88, 0x58, 1, 0, 2, 0, 16, 0,
+		]),
 		Buffer.from("data"),
 		Buffer.from([0, 0, 0, 0]),
 	]);
@@ -27,7 +29,9 @@ test("câu nghe có audio: soạn → làm bài → xem lại", async ({ page })
 	await expect(page.getByTestId("branch-list")).toContainText(`CN ${stamp}`);
 
 	await page.goto("/org/classes");
-	await page.getByTestId("branch-select").selectOption({ label: `CN ${stamp}` });
+	await page
+		.getByTestId("branch-select")
+		.selectOption({ label: `CN ${stamp}` });
 	await page.getByTestId("class-name").fill(`Lớp ${stamp}`);
 	await page.getByTestId("add-class").click();
 	await expect(page.getByTestId("class-list")).toContainText(`Lớp ${stamp}`);
@@ -73,7 +77,9 @@ test("câu nghe có audio: soạn → làm bài → xem lại", async ({ page })
 		.filter({ hasText: `Bài nghe ${stamp}` })
 		.first();
 	await expect(row).toBeVisible();
-	await page.getByTestId("assign-class").selectOption({ label: `Lớp ${stamp}` });
+	await page
+		.getByTestId("assign-class")
+		.selectOption({ label: `Lớp ${stamp}` });
 	await row.getByRole("button", { name: "Giao cho lớp" }).click();
 	await expect(page.getByText(/Đã giao cho \d+ học sinh/)).toBeVisible();
 
