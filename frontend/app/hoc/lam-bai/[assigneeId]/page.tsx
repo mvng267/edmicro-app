@@ -17,6 +17,7 @@ export default function DoPracticePage() {
 	const router = useRouter();
 	const [attemptId, setAttemptId] = useState("");
 	const [questions, setQuestions] = useState<AttemptQuestion[]>([]);
+	const [practiceName, setPracticeName] = useState("");
 	const [answers, setAnswers] = useState<Record<string, number>>({});
 	const [texts, setTexts] = useState<Record<string, string>>({});
 	const [saved, setSaved] = useState(false);
@@ -30,6 +31,7 @@ export default function DoPracticePage() {
 			.then((r) => {
 				setAttemptId(r.attempt_id);
 				setQuestions(r.practice.questions);
+				setPracticeName(r.practice.name);
 				if (r.deadline_at) setDeadline(new Date(r.deadline_at).getTime());
 			})
 			.catch((e) => setErr(String(e)));
@@ -95,8 +97,25 @@ export default function DoPracticePage() {
 	return (
 		<div className="min-h-screen bg-neutral-100 dark:bg-neutral-950 p-4">
 			<div className="max-w-lg mx-auto flex flex-col gap-4">
-				<div className="flex items-center justify-between">
-					<h1 className="text-lg font-semibold">Làm bài</h1>
+				<div className="flex items-center justify-between gap-2">
+					<div className="min-w-0">
+						<button
+							type="button"
+							onClick={() => router.push("/hoc")}
+							className="text-xs text-neutral-500 hover:underline"
+							data-testid="back-to-hoc"
+						>
+							← Việc cần làm
+						</button>
+						<h1 className="text-lg font-semibold truncate">
+							{practiceName || "Làm bài"}
+						</h1>
+						{questions.length > 0 && (
+							<p className="text-xs text-neutral-500">
+								{questions.length} câu hỏi
+							</p>
+						)}
+					</div>
 					<div className="flex items-center gap-3">
 						{remaining !== null && (
 							<span

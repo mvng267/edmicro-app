@@ -45,7 +45,7 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 	await page.getByTestId("q-option-1").fill("Đáp án B");
 	await page.getByTestId("q-correct-0").check();
 	await page.getByTestId("q-publish").click();
-	await expect(page.getByTestId("q-list")).toContainText("published");
+	await expect(page.getByTestId("q-list")).toContainText(`Câu ${stamp}?`);
 
 	// practice + giao cho lớp
 	await page.goto("/practices");
@@ -110,7 +110,7 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 	// quay lại việc cần làm: trạng thái submitted + có nút Xem kết quả
 	await page.getByTestId("back-hoc").click();
 	await expect(page).toHaveURL(/\/hoc$/);
-	await expect(page.getByTestId("todo-list")).toContainText("submitted");
+	await expect(page.getByTestId("todo-list")).toContainText("Đã nộp");
 	await expect(
 		page.getByTestId("todo-list").getByRole("button", { name: "Xem kết quả" }),
 	).toBeVisible();

@@ -77,6 +77,25 @@ async def login(
     return result
 
 
+@router.get("/tenant-info")
+async def tenant_info(
+    request: Request,
+    session: AsyncSession = Depends(get_session),
+):
+    """Tên trung tâm theo subdomain — cho màn đăng nhập (public, không lộ gì thêm)."""
+    slug = request.scope.get("state", {}).get("tenant_slug")
+    if not slug:
+        raise HTTPException(status_code=400, detail="missing_tenant")
+    name = (
+        await session.execute(
+            text("SELECT name FROM tenants WHERE slug = :s AND status = 'active'"), {"s": slug}
+        )
+    ).scalar_one_or_none()
+    if name is None:
+        raise HTTPException(status_code=404, detail="tenant_not_found")
+    return {"slug": slug, "name": name}
+
+
 class ChangePasswordBody(BaseModel):
     old_password: str
     new_password: str = Field(min_length=8, max_length=128)

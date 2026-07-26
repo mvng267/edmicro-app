@@ -43,7 +43,7 @@ test("bài writing: AI chấm sơ bộ rồi giáo viên chốt điểm", async 
 	await page.getByTestId("q-prompt").fill(`Viết ${stamp} về thành phố của bạn`);
 	await page.getByTestId("q-rubric").fill("IELTS Writing Task 2");
 	await page.getByTestId("q-publish").click();
-	await expect(page.getByTestId("q-list")).toContainText("published");
+	await expect(page.getByTestId("q-list")).toContainText(`Viết ${stamp}`);
 
 	// practice chỉ 1 câu writing + giao lớp
 	await page.goto("/practices");

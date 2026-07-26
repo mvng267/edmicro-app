@@ -20,6 +20,7 @@ import {
 	type QuestionRow,
 	uploadMedia,
 } from "@/lib/api";
+import { Q_STATUS, Q_TYPE } from "@/lib/labels";
 
 export default function ContentPage() {
 	const [questions, setQuestions] = useState<QuestionRow[]>([]);
@@ -277,12 +278,15 @@ export default function ContentPage() {
 						className="p-3 rounded-lg bg-white dark:bg-neutral-900 flex gap-2 items-center flex-wrap"
 					>
 						<Chip>
-							<ChipLabel>{q.type}</ChipLabel>
+							<ChipLabel>{Q_TYPE[q.type] ?? q.type}</ChipLabel>
 						</Chip>
 						<span className="font-medium text-sm">{q.prompt}</span>
 						<span className="text-neutral-500 text-sm">{q.skill}</span>
-						<Chip>
-							<ChipLabel>{q.status}</ChipLabel>
+						<Chip
+							color={q.status === "published" ? "success" : undefined}
+							data-qstatus={q.status}
+						>
+							<ChipLabel>{Q_STATUS[q.status] ?? q.status}</ChipLabel>
 						</Chip>
 						{q.status !== "archived" && (
 							<Button

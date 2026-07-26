@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { apiMe, unreadCount } from "@/lib/api";
+import { ROLE_LABEL } from "@/lib/labels";
 
 // Nhóm vai trò dùng lại cho menu (API vẫn là nơi chặn thật — đây chỉ để đỡ rối màn hình).
 const STAFF = ["owner", "manager", "academic_head", "teacher", "assistant"];
@@ -116,6 +118,7 @@ export function AppShell({
 	const [unread, setUnread] = useState(0);
 	const [role, setRole] = useState<string | null>(null);
 	const [navOpen, setNavOpen] = useState(false);
+	const pathname = usePathname();
 
 	useEffect(() => {
 		let alive = true;
@@ -167,6 +170,14 @@ export function AppShell({
 					☰
 				</button>
 				<span className="font-bold">Edmicro</span>
+				{role && (
+					<span
+						className="hidden sm:inline text-xs rounded-full px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-500"
+						data-testid="header-role"
+					>
+						{ROLE_LABEL[role] ?? role}
+					</span>
+				)}
 				<div className="flex-1" />
 				<Link
 					href="/thong-bao"
@@ -203,16 +214,24 @@ export function AppShell({
 							<p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
 								{group}
 							</p>
-							{items.map((n) => (
-								<Link
-									key={n.href}
-									href={n.href}
-									onClick={() => setNavOpen(false)}
-									className="block px-3 py-2 rounded-lg text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-								>
-									{n.label}
-								</Link>
-							))}
+							{items.map((n) => {
+								const active = pathname === n.href;
+								return (
+									<Link
+										key={n.href}
+										href={n.href}
+										onClick={() => setNavOpen(false)}
+										aria-current={active ? "page" : undefined}
+										className={`block px-3 py-2 rounded-lg text-sm ${
+											active
+												? "bg-primary-100 dark:bg-primary-950 text-primary font-medium"
+												: "text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+										}`}
+									>
+										{n.label}
+									</Link>
+								);
+							})}
 						</div>
 					))}
 				</aside>

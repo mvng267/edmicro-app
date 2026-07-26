@@ -12,15 +12,24 @@ import {
 	Label,
 	TextField,
 } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { apiLogin, tenantSlugFromHost } from "@/lib/api";
+import { apiLogin, tenantInfo, tenantSlugFromHost } from "@/lib/api";
 
 export default function LoginPage() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [centerName, setCenterName] = useState("");
+
+	useEffect(() => {
+		const slug = tenantSlugFromHost();
+		if (slug)
+			tenantInfo(slug)
+				.then((r) => setCenterName(r.name))
+				.catch(() => {});
+	}, []);
 
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault();
@@ -35,8 +44,12 @@ export default function LoginPage() {
 			window.location.href = r.must_change_password
 				? "/doi-mat-khau"
 				: "/dashboard";
-		} catch {
-			setError("Sai tên đăng nhập hoặc mật khẩu");
+		} catch (e) {
+			setError(
+				String(e).includes("too_many_attempts")
+					? "Sai quá nhiều lần — tài khoản tạm khóa, thử lại sau 5 phút"
+					: "Sai tên đăng nhập hoặc mật khẩu",
+			);
 		} finally {
 			setLoading(false);
 		}
@@ -46,7 +59,18 @@ export default function LoginPage() {
 		<main className="min-h-screen grid place-items-center bg-neutral-100 dark:bg-neutral-950 p-4">
 			<Card className="w-full max-w-[420px]">
 				<CardHeader>
-					<CardTitle>Đăng nhập</CardTitle>
+					<CardTitle>
+						{centerName ? (
+							<span data-testid="center-name">{centerName}</span>
+						) : (
+							"Đăng nhập"
+						)}
+					</CardTitle>
+					{centerName && (
+						<p className="text-sm text-neutral-500 mt-1">
+							Đăng nhập vào cổng học tập
+						</p>
+					)}
 				</CardHeader>
 				<CardContent>
 					<form onSubmit={onSubmit} className="flex flex-col gap-4">

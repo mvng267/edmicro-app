@@ -20,6 +20,7 @@ import {
 	type TicketDetail,
 	type TicketRow,
 } from "@/lib/api";
+import { TICKET_STATUS } from "@/lib/labels";
 
 export default function SupportPage() {
 	const [tickets, setTickets] = useState<TicketRow[]>([]);
@@ -102,8 +103,11 @@ export default function SupportPage() {
 							<CardContent className="flex flex-col gap-2">
 								<div className="flex items-center gap-3">
 									<span className="font-medium">{t.subject}</span>
-									<Chip color={t.status === "closed" ? "success" : "warning"}>
-										<ChipLabel>{t.status}</ChipLabel>
+									<Chip
+										color={t.status === "closed" ? "success" : "warning"}
+										data-tstatus={t.status}
+									>
+										<ChipLabel>{TICKET_STATUS[t.status] ?? t.status}</ChipLabel>
 									</Chip>
 									<Button
 										variant="ghost"

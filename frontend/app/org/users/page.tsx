@@ -22,6 +22,7 @@ import {
 	setUserLocked,
 	type UserRow,
 } from "@/lib/api";
+import { ROLE_LABEL } from "@/lib/labels";
 
 const PAGE_SIZE = 20;
 
@@ -204,7 +205,7 @@ export default function UsersPage() {
 					>
 						<span className="font-medium">{u.full_name}</span>
 						<span className="text-neutral-500 text-sm">
-							{u.username} · {u.role}
+							{u.username} · {ROLE_LABEL[u.role] ?? u.role}
 						</span>
 						{u.status === "locked" && (
 							<span className="text-xs rounded px-2 py-0.5 bg-danger-100 dark:bg-danger-950 text-danger">

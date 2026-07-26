@@ -1,12 +1,13 @@
 "use client";
 
-import { Button, Card, CardContent, Chip, ChipLabel } from "@heroui/react";
+import { Button, Card, CardContent } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
 import { PageState } from "@/components/PageState";
 import { myAssignments, type TodoItem } from "@/lib/api";
+import { fmtDue, TODO_STATUS } from "@/lib/labels";
 
 export default function TodoPage() {
 	const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -33,11 +34,27 @@ export default function TodoPage() {
 				{todos.map((t) => (
 					<li key={t.assignee_id}>
 						<Card>
-							<CardContent className="flex gap-3 items-center">
-								<span className="font-medium">{t.practice_name}</span>
-								<Chip>
-									<ChipLabel>{t.status}</ChipLabel>
-								</Chip>
+							<CardContent className="flex flex-row gap-3 items-center flex-wrap">
+								<div className="flex flex-col">
+									<span className="font-medium">{t.practice_name}</span>
+									{t.due_at && (
+										<span
+											className={`text-xs ${
+												t.status === "overdue"
+													? "text-danger font-medium"
+													: "text-neutral-500"
+											}`}
+										>
+											Hạn nộp: {fmtDue(t.due_at)}
+										</span>
+									)}
+								</div>
+								<span
+									className={`text-xs rounded-full px-2 py-1 ${(TODO_STATUS[t.status] ?? TODO_STATUS.not_opened).tone}`}
+									data-status={t.status}
+								>
+									{(TODO_STATUS[t.status] ?? { label: t.status }).label}
+								</span>
 								{t.status !== "submitted" ? (
 									<Button
 										onPress={() => router.push(`/hoc/lam-bai/${t.assignee_id}`)}

@@ -245,13 +245,35 @@ export default function DashboardPage() {
 						)}
 					</div>
 					<div className="flex gap-2 flex-wrap">
-						<Quick href="/cham-bai" label="Chấm bài" />
-						<Quick href="/bao-cao" label="Báo cáo lớp" />
-						<Quick href="/lich-hoc" label="Điểm danh" />
-						<Quick href="/practices" label="Giao bài luyện tập" />
-						<Quick href="/exams" label="Đề thi" />
-						<Quick href="/khoa-hoc" label="Khóa học" />
-						<Quick href="/bang-xep-hang" label="Bảng xếp hạng" />
+						{[
+							"owner",
+							"manager",
+							"academic_head",
+							"teacher",
+							"assistant",
+						].includes(me.role) && (
+							<>
+								<Quick href="/cham-bai" label="Chấm bài" />
+								<Quick href="/bao-cao" label="Báo cáo lớp" />
+								<Quick href="/lich-hoc" label="Điểm danh" />
+								<Quick href="/bang-xep-hang" label="Bảng xếp hạng" />
+							</>
+						)}
+						{[
+							"owner",
+							"manager",
+							"academic_head",
+							"teacher",
+							"content_editor",
+						].includes(me.role) && (
+							<>
+								<Quick href="/content" label="Ngân hàng câu hỏi" />
+								<Quick href="/practices" label="Giao bài luyện tập" />
+								<Quick href="/exams" label="Đề thi" />
+								<Quick href="/khoa-hoc" label="Khóa học" />
+							</>
+						)}
+						<Quick href="/ho-tro" label="Hỗ trợ" />
 					</div>
 				</div>
 			)}

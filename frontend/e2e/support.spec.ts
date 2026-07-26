@@ -27,7 +27,7 @@ test("hỗ trợ: ticket + quản trị log + mức dùng", async ({ page }) => 
 	await page.getByTestId("send-comment").click();
 	await expect(page.getByTestId("comments")).toContainText("Đang xử lý");
 	await page.getByTestId("close-ticket").click();
-	await expect(row).toContainText("closed");
+	await expect(row).toContainText("Đã đóng");
 
 	// quản trị mức dùng
 	await page.goto("/quan-tri/usage");

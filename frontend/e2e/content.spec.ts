@@ -19,7 +19,7 @@ test("tạo và xuất bản câu hỏi trắc nghiệm", async ({ page }) => {
 	await page.getByTestId("q-publish").click();
 
 	// xuất hiện trong danh sách, status published
-	await expect(page.getByTestId("q-list")).toContainText("published");
+	await expect(page.getByTestId("q-list")).toContainText("Đã xuất bản");
 
 	// lọc theo kỹ năng reading vẫn thấy; đổi sang listening thì danh sách khác
 	await page.getByTestId("filter-skill").selectOption("reading");

@@ -68,7 +68,15 @@ export async function apiLogin(
 		headers: { "Content-Type": "application/json", "X-Tenant-Slug": slug },
 		body: JSON.stringify({ username, password }),
 	});
+	if (res.status === 429) throw new Error("too_many_attempts");
 	if (!res.ok) throw new Error("invalid_credentials");
+	return res.json();
+}
+export async function tenantInfo(slug: string): Promise<{ name: string }> {
+	const res = await fetch(`${API_URL}/api/v1/authz/tenant-info`, {
+		headers: { "X-Tenant-Slug": slug },
+	});
+	if (!res.ok) throw new Error("tenant_not_found");
 	return res.json();
 }
 

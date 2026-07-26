@@ -184,3 +184,31 @@ async def test_login_rate_limit(session_factory):
         )
         assert other.status_code == 200
     app.dependency_overrides.clear()
+
+
+@pytest.mark.asyncio
+async def test_tenant_info_public(session_factory):
+    slug = f"ti-{uuid.uuid4().hex[:8]}"
+    tid = str(uuid.uuid4())
+    async with session_factory() as s, s.begin():
+        await set_tenant(s, tid)
+        await s.execute(
+            text("INSERT INTO tenants (id, slug, name) VALUES (:id, :slug, 'Trung tâm TI')"),
+            {"id": tid, "slug": slug},
+        )
+
+    async def _override_session():
+        async with session_factory() as s, s.begin():
+            yield s
+
+    app.dependency_overrides[get_session] = _override_session
+    transport = httpx.ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        r = await client.get("/api/v1/authz/tenant-info", headers={"X-Tenant-Slug": slug})
+        assert r.status_code == 200
+        assert r.json()["name"] == "Trung tâm TI"
+        bad = await client.get(
+            "/api/v1/authz/tenant-info", headers={"X-Tenant-Slug": "khong-ton-tai"}
+        )
+        assert bad.status_code == 404
+    app.dependency_overrides.clear()
