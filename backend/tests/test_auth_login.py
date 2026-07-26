@@ -131,3 +131,56 @@ async def test_change_password_first_login(session_factory):
         assert r2.status_code == 200
         assert r2.json()["must_change_password"] is False
     app.dependency_overrides.clear()
+
+
+@pytest.mark.asyncio
+async def test_login_rate_limit(session_factory):
+    """Sai mật khẩu 5 lần → lần 6 bị 429 (kể cả đúng mật khẩu); user khác không bị vạ lây."""
+    slug = f"rl-{uuid.uuid4().hex[:8]}"
+    tid = str(uuid.uuid4())
+    async with session_factory() as s, s.begin():
+        await set_tenant(s, tid)
+        await s.execute(
+            text("INSERT INTO tenants (id, slug, name) VALUES (:id, :slug, 'RL')"),
+            {"id": tid, "slug": slug},
+        )
+        for un in ("rl-user", "rl-khac"):
+            await s.execute(
+                text(
+                    "INSERT INTO users (id, tenant_id, username, password_hash, role) "
+                    "VALUES (:id, :t, :un, :ph, 'student')"
+                ),
+                {"id": str(uuid.uuid4()), "t": tid, "un": un, "ph": hash_password("dung1234")},
+            )
+
+    async def _override_session():
+        async with session_factory() as s, s.begin():
+            yield s
+
+    app.dependency_overrides[get_session] = _override_session
+    transport = httpx.ASGITransport(app=app)
+    headers = {"X-Tenant-Slug": slug}
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        for _ in range(5):
+            r = await client.post(
+                "/api/v1/authz/login",
+                json={"username": "rl-user", "password": "sai"},
+                headers=headers,
+            )
+            assert r.status_code == 401
+        # lần 6: dù ĐÚNG mật khẩu vẫn 429 (đang bị khóa tạm)
+        blocked = await client.post(
+            "/api/v1/authz/login",
+            json={"username": "rl-user", "password": "dung1234"},
+            headers=headers,
+        )
+        assert blocked.status_code == 429
+
+        # user khác cùng IP vẫn đăng nhập bình thường
+        other = await client.post(
+            "/api/v1/authz/login",
+            json={"username": "rl-khac", "password": "dung1234"},
+            headers=headers,
+        )
+        assert other.status_code == 200
+    app.dependency_overrides.clear()

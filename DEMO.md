@@ -101,7 +101,30 @@ Script dùng thẳng service layer nên mọi hiệu ứng phụ chạy thật: 
 
 ---
 
-## 5. Lưu ý
+## 5. Vận hành & bảo vệ
+
+**Chạy bền (systemd user services — tự lên sau reboot):**
+```bash
+systemctl --user status  edmicro-app-backend edmicro-app-frontend edmicro-app-tunnel
+systemctl --user restart edmicro-app-frontend   # sau khi pnpm build bản mới
+```
+
+**Backup DB tự động:** timer `edmicro-app-backup.timer` chạy **02:00 hằng ngày**, dump về `~/backups/edmicro-app/` (giữ 7 ngày, tự verify bằng `pg_restore --list`).
+```bash
+systemctl --user start edmicro-app-backup.service   # backup ngay
+# khôi phục:
+docker exec -i edmicro-app-postgres-1 pg_restore -U <user> -d <db> --clean < ~/backups/edmicro-app/edmicro-<...>.dump
+```
+
+**Chống dò mật khẩu:** sai 5 lần trong 5 phút (theo IP + tài khoản) → khóa tạm 429; đăng nhập đúng thì tự xóa đếm.
+
+**Giới hạn người xem demo (Cloudflare Access — làm trên dashboard, ~2 phút):**
+1. https://one.dash.cloudflare.com → **Access → Applications → Add an application → Self-hosted**
+2. Domain: `b2b.dalianperfume.com` (toàn bộ path)
+3. Policy *Allow*: Include → **Emails** → thêm email người được xem (vd `mvngcl1@gmail.com`); login method **One-time PIN**
+4. Lưu — từ đó ai vào phải nhập email nhận mã OTP mới thấy trang login của app.
+
+## 6. Lưu ý
 
 - **Điểm TB của hs1 là 50** vì bài viết chưa được GV chốt → câu đó tạm tính 0 và bài ở trạng thái *provisional*. Chốt điểm ở màn **Chấm bài** xong điểm sẽ tự tính lại.
 - **AI chấm writing** đang dùng `FakeGrader` (tất định, không gọi mạng). Muốn dùng Claude thật: set `ANTHROPIC_API_KEY` trong `backend/.env` rồi restart backend.

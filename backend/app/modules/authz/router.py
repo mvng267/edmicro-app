@@ -11,6 +11,38 @@ from app.modules.authz.schemas import LoginRequest, LoginResponse, MeResponse
 
 router = APIRouter(prefix="/api/v1/authz", tags=["auth"])
 
+# ── Rate-limit đăng nhập (chống dò mật khẩu) ─────────────────────────────
+# In-memory theo (IP + username): quá _MAX_FAILS lần sai trong _WINDOW giây → 429.
+# Đủ cho 1 tiến trình uvicorn; scale nhiều worker thì chuyển sang Redis (đã có sẵn hạ tầng).
+_LOGIN_FAILS: dict[str, list[float]] = {}
+_MAX_FAILS = 5
+_WINDOW_SECONDS = 300.0
+
+
+def _client_ip(request: Request) -> str:
+    # Sau Cloudflare tunnel + Next proxy: IP thật nằm ở header
+    return (
+        request.headers.get("cf-connecting-ip")
+        or (request.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+        or (request.client.host if request.client else "unknown")
+    )
+
+
+def _throttle_check(key: str) -> None:
+    import time
+
+    now = time.monotonic()
+    fails = [t for t in _LOGIN_FAILS.get(key, []) if now - t < _WINDOW_SECONDS]
+    _LOGIN_FAILS[key] = fails
+    if len(fails) >= _MAX_FAILS:
+        raise HTTPException(status_code=429, detail="too_many_attempts")
+
+
+def _throttle_fail(key: str) -> None:
+    import time
+
+    _LOGIN_FAILS.setdefault(key, []).append(time.monotonic())
+
 
 async def _tenant_id_from_slug(session: AsyncSession, slug: str) -> str:
     row = (
@@ -32,12 +64,17 @@ async def login(
     slug = request.scope.get("state", {}).get("tenant_slug")
     if not slug:
         raise HTTPException(status_code=400, detail="missing_tenant")
+    throttle_key = f"{_client_ip(request)}|{slug}|{body.username.lower()}"
+    _throttle_check(throttle_key)
     tenant_id = await _tenant_id_from_slug(session, slug)
     await set_tenant(session, tenant_id)
     try:
-        return await service.login(session, body.username, body.password)
+        result = await service.login(session, body.username, body.password)
     except service.InvalidCredentials:
+        _throttle_fail(throttle_key)
         raise HTTPException(status_code=401, detail="invalid_credentials") from None
+    _LOGIN_FAILS.pop(throttle_key, None)  # đăng nhập đúng → xóa đếm
+    return result
 
 
 class ChangePasswordBody(BaseModel):
