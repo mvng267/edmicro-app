@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { toast } from "@/components/Toast";
 import {
 	createAssignment,
 	createPractice,
@@ -21,6 +22,7 @@ import {
 	type Practice,
 	type QuestionRow,
 } from "@/lib/api";
+import { SKILL_LABEL } from "@/lib/labels";
 
 export default function PracticesPage() {
 	const [questions, setQuestions] = useState<QuestionRow[]>([]);
@@ -72,7 +74,7 @@ export default function PracticesPage() {
 		const due = new Date(Date.now() + 7 * 864e5).toISOString();
 		try {
 			const r = await createAssignment(practiceId, classId, due);
-			setMsg(`Đã giao cho ${r.assignee_count} học sinh`);
+			toast(`Đã giao cho ${r.assignee_count} học sinh`);
 		} catch (e) {
 			setErr(String(e));
 		}
@@ -103,7 +105,9 @@ export default function PracticesPage() {
 									<ChipLabel>{q.type}</ChipLabel>
 								</Chip>
 								<span className="font-medium">{q.prompt}</span>
-								<span className="text-neutral-500">{q.skill}</span>
+								<span className="text-neutral-500">
+									{SKILL_LABEL[q.skill ?? ""] ?? q.skill}
+								</span>
 							</li>
 						))}
 					</ul>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@heroui/react";
+import { FileDown } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
@@ -29,7 +30,9 @@ export default function MyReportPage() {
 					}
 					data-testid="my-pdf"
 				>
-					📄 Tải phiếu PDF
+					<span className="flex items-center gap-1.5">
+						<FileDown size={15} /> Tải phiếu PDF
+					</span>
 				</Button>
 			</div>
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}

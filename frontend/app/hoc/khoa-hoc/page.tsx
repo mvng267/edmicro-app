@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card, CardContent, Chip, ChipLabel } from "@heroui/react";
+import { Flame } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
@@ -56,7 +57,8 @@ export default function MyCoursesPage() {
 							{points.total} điểm
 						</span>
 						<span className="text-sm text-neutral-500" data-testid="my-streak">
-							🔥 chuỗi {points.streak} ngày
+							<Flame size={14} className="inline -mt-0.5 text-orange-500" />{" "}
+							chuỗi {points.streak} ngày
 						</span>
 						<div className="flex gap-1 flex-wrap" data-testid="my-badges">
 							{points.badges.map((b) => (
@@ -90,6 +92,12 @@ export default function MyCoursesPage() {
 										>
 											{c.done}/{c.total} bài · {c.progress}%
 										</span>
+										<div className="flex-1 min-w-24 max-w-48 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
+											<div
+												className="h-full bg-primary transition-all"
+												style={{ width: `${c.progress}%` }}
+											/>
+										</div>
 										<Button
 											variant="ghost"
 											className="ml-auto"

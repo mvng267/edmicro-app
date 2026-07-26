@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card, CardContent, Chip, ChipLabel } from "@heroui/react";
+import { FileDown, Flame } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
@@ -69,7 +70,9 @@ export default function ParentPage() {
 						}
 						data-testid="child-pdf"
 					>
-						📄 Tải phiếu PDF
+						<span className="flex items-center gap-1.5">
+							<FileDown size={15} /> Tải phiếu PDF
+						</span>
 					</Button>
 				)}
 			</div>
@@ -86,7 +89,8 @@ export default function ParentPage() {
 							{points.total} điểm
 						</span>
 						<span className="text-sm text-neutral-500">
-							🔥 chuỗi {points.streak} ngày
+							<Flame size={14} className="inline -mt-0.5 text-orange-500" />{" "}
+							chuỗi {points.streak} ngày
 						</span>
 						<div className="flex gap-1 flex-wrap">
 							{points.badges.map((b) => (

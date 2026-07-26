@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { toast } from "@/components/Toast";
 import {
 	type BandRow,
 	createAssignment,
@@ -22,6 +23,7 @@ import {
 	listQuestions,
 	type QuestionRow,
 } from "@/lib/api";
+import { SKILL_LABEL } from "@/lib/labels";
 
 // Bảng quy đổi band mặc định (gợi ý kiểu IELTS theo % đúng) — GV chỉnh khi cần.
 const DEFAULT_SCALE: BandRow[] = [
@@ -93,7 +95,7 @@ export default function ExamsPage() {
 		const due = new Date(Date.now() + 7 * 864e5).toISOString();
 		try {
 			const r = await createAssignment(examId, classId, due);
-			setMsg(`Đã giao cho ${r.assignee_count} học sinh`);
+			toast(`Đã giao cho ${r.assignee_count} học sinh`);
 		} catch (e) {
 			setErr(String(e));
 		}
@@ -134,7 +136,9 @@ export default function ExamsPage() {
 									<ChipLabel>{q.type}</ChipLabel>
 								</Chip>
 								<span className="font-medium">{q.prompt}</span>
-								<span className="text-neutral-500">{q.skill}</span>
+								<span className="text-neutral-500">
+									{SKILL_LABEL[q.skill ?? ""] ?? q.skill}
+								</span>
 							</li>
 						))}
 					</ul>

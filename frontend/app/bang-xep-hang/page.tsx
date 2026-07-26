@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@heroui/react";
+import { Medal } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
@@ -20,8 +21,9 @@ export default function LeaderboardPage() {
 	useEffect(() => {
 		listClasses()
 			.then((cs) => {
-				setClasses(cs);
-				if (cs.length) setClassId(cs[cs.length - 1].id);
+				const sorted = [...cs].sort((a, b) => a.name.localeCompare(b.name));
+				setClasses(sorted);
+				if (sorted.length) setClassId(sorted[0].id);
 			})
 			.catch((e) => setErr(String(e)));
 	}, []);
@@ -68,7 +70,23 @@ export default function LeaderboardPage() {
 									key={r.student_id}
 									className="border-b border-neutral-100 dark:border-neutral-800"
 								>
-									<td className="p-3 font-semibold">{r.rank}</td>
+									<td className="p-3 font-semibold">
+										{r.rank <= 3 ? (
+											<Medal
+												size={18}
+												className={
+													r.rank === 1
+														? "text-yellow-500"
+														: r.rank === 2
+															? "text-neutral-400"
+															: "text-amber-700"
+												}
+												aria-label={`Hạng ${r.rank}`}
+											/>
+										) : (
+											r.rank
+										)}
+									</td>
 									<td className="p-3">{r.full_name}</td>
 									<td className="p-3">{r.points}</td>
 								</tr>

@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "@heroui/react/styles";
 
+/* dark mode theo class .dark trên <html> (nút 🌙 trên header) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
 	--background: #ffffff;
 	--foreground: #171717;
@@ -13,11 +16,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
+/* nút 🌙 là nguồn sự thật duy nhất: JS gắn/bỏ class .dark trên <html>
+   (AppShell đã tự đọc prefers-color-scheme lần đầu) */
+.dark {
+	--background: #0a0a0a;
+	--foreground: #ededed;
 }
 
 body {

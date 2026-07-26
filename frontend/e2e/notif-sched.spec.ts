@@ -38,6 +38,7 @@ test("thông báo giao bài + điểm danh vắng đến học sinh", async ({ p
 
 	// câu hỏi + practice + giao (→ assignment_created)
 	await page.goto("/content");
+	await page.getByTestId("toggle-form").click();
 	await page.getByTestId("q-type").selectOption("mcq_single");
 	await page.getByTestId("q-prompt").fill(`NS ${stamp}?`);
 	await page.getByTestId("q-option-0").fill("A");

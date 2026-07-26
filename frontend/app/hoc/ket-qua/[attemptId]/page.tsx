@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card, CardContent, Chip, ChipLabel } from "@heroui/react";
+import { Check, X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -128,8 +129,20 @@ export default function ResultPage() {
 													}`}
 												>
 													{opt}
-													{correct && " ✓ (đáp án đúng)"}
-													{chosen && !correct && " ✗ (bạn chọn)"}
+													{correct && (
+														<>
+															{" "}
+															<Check size={13} className="inline -mt-0.5" />{" "}
+															(đáp án đúng)
+														</>
+													)}
+													{chosen && !correct && (
+														<>
+															{" "}
+															<X size={13} className="inline -mt-0.5" /> (bạn
+															chọn)
+														</>
+													)}
 												</div>
 											);
 										})}

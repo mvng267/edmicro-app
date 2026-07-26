@@ -155,7 +155,7 @@ export default function DashboardPage() {
 						<Stat
 							label="Điểm tích lũy"
 							value={points?.total ?? "—"}
-							hint={points ? `🔥 chuỗi ${points.streak} ngày` : undefined}
+							hint={points ? `chuỗi ${points.streak} ngày` : undefined}
 							href="/hoc/khoa-hoc"
 						/>
 						<Stat

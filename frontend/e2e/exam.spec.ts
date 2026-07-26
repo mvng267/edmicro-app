@@ -38,6 +38,7 @@ test("đề thi: đồng hồ server + quy đổi band", async ({ page }) => {
 
 	// 2 câu mcq (đáp án đúng = A) publish
 	await page.goto("/content");
+	await page.getByTestId("toggle-form").click();
 	for (const suffix of ["một", "hai"]) {
 		await page.getByTestId("q-type").selectOption("mcq_single");
 		await page.getByTestId("q-prompt").fill(`EQ ${stamp} ${suffix}`);

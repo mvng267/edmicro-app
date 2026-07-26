@@ -9,6 +9,7 @@ test("tạo và xuất bản câu hỏi trắc nghiệm", async ({ page }) => {
 	await expect(page).toHaveURL(/\/dashboard/);
 
 	await page.goto("/content");
+	await page.getByTestId("toggle-form").click();
 	await page.getByTestId("q-type").selectOption("mcq_single");
 	await page.getByTestId("q-skill").selectOption("reading");
 	const stamp = Date.now().toString().slice(-6);

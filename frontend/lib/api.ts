@@ -232,9 +232,15 @@ export interface QuestionRow {
 	topic: string | null;
 	status: string;
 	prompt: string | null;
+	folder_id: string | null;
 }
 export const listQuestions = (
-	filters: { skill?: string; language?: string; status?: string },
+	filters: {
+		skill?: string;
+		language?: string;
+		status?: string;
+		folder_id?: string;
+	},
 	limit = 50,
 	offset = 0,
 ) => {
@@ -250,11 +256,72 @@ export const createQuestion = (payload: {
 	type: string;
 	language: string;
 	skill?: string;
+	folder_id?: string | null;
 	content: Record<string, unknown>;
 	answer_key: Record<string, unknown>;
 }) => req<{ id: string }>("POST", "/api/v1/content/questions", payload);
 export const publishQuestion = (id: string) =>
 	req<{ ok: boolean }>("POST", `/api/v1/content/questions/${id}/publish`);
+
+// ── Thư mục kho câu hỏi (cây) ─────────────────────────────────
+export interface QFolder {
+	id: string;
+	parent_id: string | null;
+	name: string;
+	n_questions: number;
+}
+export const listFolders = () =>
+	req<QFolder[]>("GET", "/api/v1/content/folders");
+export const createFolder = (name: string, parent_id?: string | null) =>
+	req<{ id: string }>("POST", "/api/v1/content/folders", { name, parent_id });
+export const renameFolder = (id: string, name: string) =>
+	req<{ ok: boolean }>("PATCH", `/api/v1/content/folders/${id}`, { name });
+export const deleteFolder = (id: string) =>
+	req<{ deleted: boolean }>("DELETE", `/api/v1/content/folders/${id}`);
+export const moveQuestion = (qid: string, folder_id: string | null) =>
+	req<{ ok: boolean }>("PATCH", `/api/v1/content/questions/${qid}/folder`, {
+		folder_id,
+	});
+
+// ── Sửa câu hỏi (tạo version mới) + AI sinh câu ───────────────
+export interface QuestionDetail extends QuestionRow {
+	version_no: number;
+	content: {
+		prompt: string;
+		options?: string[];
+		rubric?: string;
+		audio_key?: string;
+	};
+	answer_key: { correct_index?: number; blanks?: string[][] } | null;
+	explanation: string | null;
+}
+export const getQuestion = (id: string) =>
+	req<QuestionDetail>("GET", `/api/v1/content/questions/${id}`);
+export const updateQuestion = (
+	id: string,
+	payload: {
+		content: Record<string, unknown>;
+		answer_key: Record<string, unknown>;
+		explanation?: string | null;
+	},
+) =>
+	req<{ version_no: number }>(
+		"PATCH",
+		`/api/v1/content/questions/${id}`,
+		payload,
+	);
+export const aiGenerateQuestions = (payload: {
+	topic: string;
+	skill?: string;
+	qtype?: string;
+	count?: number;
+	folder_id?: string | null;
+}) =>
+	req<{ created: number; question_ids: string[] }>(
+		"POST",
+		"/api/v1/content/ai-generate",
+		payload,
+	);
 
 // ---- PRACTICE + ASSIGN ----
 export interface Practice {

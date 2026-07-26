@@ -26,7 +26,7 @@ export default function GradingQueuePage() {
 			<PageState
 				loading={loading}
 				empty={items.length === 0}
-				emptyText="Không có bài nào chờ chấm. 🎉"
+				emptyText="Không có bài nào chờ chấm."
 			/>
 			{items.length === 0 ? null : (
 				<ul data-testid="grading-queue" className="flex flex-col gap-2">

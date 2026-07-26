@@ -49,6 +49,7 @@ test("câu nghe có audio: soạn → làm bài → xem lại", async ({ page })
 
 	// câu NGHE: đính audio + publish
 	await page.goto("/content");
+	await page.getByTestId("toggle-form").click();
 	await page.getByTestId("q-type").selectOption("mcq_single");
 	await page.getByTestId("q-skill").selectOption("listening");
 	await page.getByTestId("q-prompt").fill(`Nghe ${stamp} và chọn:`);

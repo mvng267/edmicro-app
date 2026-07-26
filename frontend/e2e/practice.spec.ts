@@ -39,6 +39,7 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 
 	// câu hỏi publish
 	await page.goto("/content");
+	await page.getByTestId("toggle-form").click();
 	await page.getByTestId("q-type").selectOption("mcq_single");
 	await page.getByTestId("q-prompt").fill(`Câu ${stamp}?`);
 	await page.getByTestId("q-option-0").fill("Đáp án A");

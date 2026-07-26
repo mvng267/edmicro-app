@@ -4,6 +4,7 @@ import { Button, Card, CardContent, Input } from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { toast } from "@/components/Toast";
 import {
 	type AttendanceRow,
 	type ClassSession,
@@ -79,7 +80,7 @@ export default function SchedulePage() {
 			});
 			setTopic("");
 			await refreshSessions();
-			setMsg("Đã tạo buổi học");
+			toast("Đã tạo buổi học");
 		} catch (e) {
 			setErr(String(e));
 		}
@@ -122,7 +123,7 @@ export default function SchedulePage() {
 				topic: rTopic,
 			});
 			await refreshSessions();
-			setMsg(`Đã sinh ${r.created} buổi học`);
+			toast(`Đã sinh ${r.created} buổi học`);
 		} catch (e) {
 			setErr(String(e));
 		}
@@ -134,7 +135,7 @@ export default function SchedulePage() {
 			await deleteSession(id);
 			if (openId === id) setOpenId("");
 			await refreshSessions();
-			setMsg("Đã xóa buổi học");
+			toast("Đã xóa buổi học");
 		} catch (e) {
 			setErr(String(e));
 		}
@@ -148,7 +149,7 @@ export default function SchedulePage() {
 				status: roster[r.student_id] ?? "present",
 			}));
 			const res = await markAttendance(openId, records);
-			setMsg(`Đã điểm danh (${res.absent} vắng)`);
+			toast(`Đã điểm danh (${res.absent} vắng)`);
 		} catch (e) {
 			setErr(String(e));
 		}

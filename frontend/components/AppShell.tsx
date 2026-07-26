@@ -1,9 +1,12 @@
 "use client";
 
+import { Bell, Menu, Moon, Sun } from "lucide-react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { ToastHost } from "@/components/Toast";
 import { apiMe, unreadCount } from "@/lib/api";
 import { ROLE_LABEL } from "@/lib/labels";
 
@@ -71,7 +74,7 @@ const NAV: NavItem[] = [
 	{
 		href: "/bang-xep-hang",
 		label: "Bảng xếp hạng",
-		roles: STAFF,
+		roles: [...STAFF, "student"],
 		group: "Theo dõi",
 	},
 	{ href: "/hoc", label: "Việc cần làm", roles: ["student"], group: "Học tập" },
@@ -118,7 +121,24 @@ export function AppShell({
 	const [unread, setUnread] = useState(0);
 	const [role, setRole] = useState<string | null>(null);
 	const [navOpen, setNavOpen] = useState(false);
+	const [dark, setDark] = useState(false);
 	const pathname = usePathname();
+
+	useEffect(() => {
+		const saved = localStorage.getItem("theme");
+		const isDark = saved
+			? saved === "dark"
+			: window.matchMedia("(prefers-color-scheme: dark)").matches;
+		setDark(isDark);
+		document.documentElement.classList.toggle("dark", isDark);
+	}, []);
+
+	function toggleDark() {
+		const next = !dark;
+		setDark(next);
+		localStorage.setItem("theme", next ? "dark" : "light");
+		document.documentElement.classList.toggle("dark", next);
+	}
 
 	useEffect(() => {
 		let alive = true;
@@ -167,7 +187,7 @@ export function AppShell({
 					data-testid="nav-toggle"
 					onClick={() => setNavOpen((v) => !v)}
 				>
-					☰
+					<Menu size={20} />
 				</button>
 				<span className="font-bold">Edmicro</span>
 				{role && (
@@ -179,13 +199,22 @@ export function AppShell({
 					</span>
 				)}
 				<div className="flex-1" />
+				<button
+					type="button"
+					onClick={toggleDark}
+					className="text-lg"
+					aria-label="Đổi giao diện sáng/tối"
+					data-testid="dark-toggle"
+				>
+					{dark ? <Sun size={18} /> : <Moon size={18} />}
+				</button>
 				<Link
 					href="/thong-bao"
 					className="relative text-lg"
 					data-testid="notif-bell"
 					aria-label="Thông báo"
 				>
-					🔔
+					<Bell size={18} />
 					{unread > 0 && (
 						<span
 							className="absolute -top-1 -right-2 min-w-4 h-4 px-1 rounded-full bg-danger text-white text-[10px] font-semibold flex items-center justify-center"
@@ -240,6 +269,7 @@ export function AppShell({
 					{children}
 				</main>
 			</div>
+			<ToastHost />
 		</div>
 	);
 }

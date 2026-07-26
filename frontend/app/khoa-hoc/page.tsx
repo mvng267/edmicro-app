@@ -88,7 +88,7 @@ export default function CoursesAdminPage() {
 	return (
 		<AppShell title="Khóa học">
 			<Card className="mb-4">
-				<CardContent className="flex gap-2 items-center">
+				<CardContent className="flex flex-row flex-wrap gap-2 items-center">
 					<Input
 						aria-label="Tên khóa học"
 						placeholder="Tên khóa học"

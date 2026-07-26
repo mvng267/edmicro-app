@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@heroui/react";
+import { FileDown } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -40,7 +41,9 @@ export default function StudentReportPage() {
 					}
 					data-testid="student-pdf"
 				>
-					📄 Tải phiếu PDF gửi phụ huynh
+					<span className="flex items-center gap-1.5">
+						<FileDown size={15} /> Tải phiếu PDF gửi phụ huynh
+					</span>
 				</Button>
 			</div>
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}

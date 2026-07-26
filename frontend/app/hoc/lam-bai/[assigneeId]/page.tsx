@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card, CardContent } from "@heroui/react";
+import { Check, Timer } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -46,7 +47,7 @@ export default function DoPracticePage() {
 			setRemaining(rem);
 			if (rem <= 0) {
 				clearInterval(id);
-				submit();
+				submit(true); // hết giờ: tự nộp, không hỏi
 			}
 		};
 		tick();
@@ -76,8 +77,21 @@ export default function DoPracticePage() {
 		}
 	}
 
-	async function submit() {
+	async function submit(force = false) {
 		if (submittingRef.current) return;
+		// còn câu bỏ trống → hỏi lại (trừ khi tự nộp do hết giờ)
+		if (!force) {
+			const unanswered = questions.filter((q) => {
+				if (q.type === "writing")
+					return !(texts[q.question_version_id] ?? "").trim();
+				return answers[q.question_version_id] === undefined;
+			}).length;
+			if (
+				unanswered > 0 &&
+				!window.confirm(`Còn ${unanswered} câu chưa trả lời — nộp luôn?`)
+			)
+				return;
+		}
 		submittingRef.current = true;
 		try {
 			await submitAttempt(attemptId);
@@ -126,12 +140,13 @@ export default function DoPracticePage() {
 								}`}
 								data-testid="exam-timer"
 							>
-								⏱ {fmt(remaining)}
+								<Timer size={14} className="inline -mt-0.5 mr-1" />
+								{fmt(remaining)}
 							</span>
 						)}
 						{saved && (
 							<span className="text-success-600 text-sm" data-testid="saved">
-								Đã lưu ✓
+								Đã lưu <Check size={14} className="inline -mt-0.5" />
 							</span>
 						)}
 					</div>
@@ -172,7 +187,7 @@ export default function DoPracticePage() {
 						</CardContent>
 					</Card>
 				))}
-				<Button onPress={submit} data-testid="submit-attempt">
+				<Button onPress={() => submit()} data-testid="submit-attempt">
 					Nộp bài
 				</Button>
 			</div>

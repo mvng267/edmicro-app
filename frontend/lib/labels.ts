@@ -31,6 +31,13 @@ export const Q_STATUS: Record<string, string> = {
 	archived: "Đã lưu trữ",
 };
 
+export const SKILL_LABEL: Record<string, string> = {
+	reading: "Đọc",
+	listening: "Nghe",
+	writing: "Viết",
+	speaking: "Nói",
+};
+
 export const ROLE_LABEL: Record<string, string> = {
 	owner: "Chủ trung tâm",
 	manager: "Quản lý học vụ",
