@@ -14,6 +14,7 @@ class QuestionCreate(BaseModel):
     content: dict[str, Any]
     answer_key: dict[str, Any]
     explanation: str | None = None
+    folder_id: str | None = None
 
 
 class QuestionUpdate(BaseModel):
@@ -32,6 +33,7 @@ class QuestionRow(BaseModel):
     topic: str | None
     status: str
     prompt: str | None = None
+    folder_id: str | None = None
 
 
 class QuestionDetail(QuestionRow):

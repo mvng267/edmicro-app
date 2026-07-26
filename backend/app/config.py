@@ -20,9 +20,12 @@ class Settings(BaseSettings):
     minio_bucket: str = "edmicro-media"
     minio_secure: bool = False
 
-    # AI chấm writing: có key thật thì dùng Claude, không thì FakeGrader (dev/test/degrade).
+    # AI (chấm writing + sinh câu hỏi). Ưu tiên endpoint OpenAI-compatible (route-ai)
+    # nếu có ai_base_url+ai_api_key; rồi đến Anthropic; không có gì → FakeGrader.
+    ai_base_url: str = ""
+    ai_api_key: str = ""
     anthropic_api_key: str = ""
-    ai_grader_model: str = "claude-opus-4-8"
+    ai_grader_model: str = "kiro/claude-sonnet-4.5"
     # hạn mức chấm AI mặc định cho tenant mới trong kỳ (lượt writing/tháng).
     ai_writing_quota_default: int = 100
 

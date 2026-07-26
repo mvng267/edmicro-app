@@ -69,8 +69,8 @@ async def create_question(
     await s.execute(
         text(
             "INSERT INTO questions (id, tenant_id, type, language, skill, level, exam_tag, topic, "
-            "difficulty, status, current_version_id, created_by) "
-            "VALUES (:id, :t, :ty, :lang, :sk, :lv, :ex, :tp, :df, 'draft', :vid, :by)"
+            "difficulty, status, current_version_id, created_by, folder_id) "
+            "VALUES (:id, :t, :ty, :lang, :sk, :lv, :ex, :tp, :df, 'draft', :vid, :by, :fold)"
         ),
         {
             "id": qid,
@@ -84,6 +84,7 @@ async def create_question(
             "df": data.get("difficulty"),
             "vid": vid,
             "by": creator,
+            "fold": data.get("folder_id"),
         },
     )
     await _insert_version(s, tenant_id, qid, vid, 1, data, creator)
@@ -167,7 +168,7 @@ async def list_questions(
 ) -> list[dict]:
     sql = (
         "SELECT q.id, q.type, q.language, q.skill, q.level, q.exam_tag, q.topic, q.status, "
-        "v.content->>'prompt' AS prompt "
+        "q.folder_id, v.content->>'prompt' AS prompt "
         "FROM questions q LEFT JOIN question_versions v ON v.id = q.current_version_id "
         "WHERE 1=1"
     )
@@ -176,12 +177,21 @@ async def list_questions(
         if filters.get(col):
             sql += f" AND q.{col} = :{col}"
             p[col] = filters[col]
+    # lọc theo thư mục: 'none' = chưa phân loại; giá trị khác = đúng thư mục đó
+    if filters.get("folder_id") == "none":
+        sql += " AND q.folder_id IS NULL"
+    elif filters.get("folder_id"):
+        sql += " AND q.folder_id = :folder_id"
+        p["folder_id"] = filters["folder_id"]
     if not filters.get("status"):
         # mặc định ẩn câu đã lưu trữ (chỉ hiện khi lọc status=archived tường minh)
         sql += " AND q.status != 'archived'"
     sql += " ORDER BY q.created_at DESC LIMIT :lim OFFSET :off"
     rows = (await s.execute(text(sql), p)).mappings().all()
-    return [{**r, "id": str(r["id"])} for r in rows]
+    return [
+        {**r, "id": str(r["id"]), "folder_id": str(r["folder_id"]) if r["folder_id"] else None}
+        for r in rows
+    ]
 
 
 async def archive_question(s: AsyncSession, qid: str) -> None:
@@ -213,3 +223,95 @@ async def get_question(s: AsyncSession, qid: str) -> dict | None:
         .first()
     )
     return {**row, "id": str(row["id"])} if row else None
+
+
+# ── Cây thư mục kho câu hỏi (SRS CONTENT — tổ chức kho) ────────────────
+
+
+class FolderNotEmpty(Exception):
+    pass
+
+
+async def create_folder(s: AsyncSession, tenant_id: str, name: str, parent_id: str | None) -> str:
+    import uuid as _uuid
+
+    fid = str(_uuid.uuid4())
+    await s.execute(
+        text(
+            "INSERT INTO question_folders (id, tenant_id, parent_id, name) VALUES (:id, :t, :p, :n)"
+        ),
+        {"id": fid, "t": tenant_id, "p": parent_id, "n": name},
+    )
+    return fid
+
+
+async def rename_folder(s: AsyncSession, folder_id: str, name: str) -> None:
+    r = (
+        await s.execute(
+            text("UPDATE question_folders SET name = :n WHERE id = :id"),
+            {"n": name, "id": folder_id},
+        )
+    ).rowcount
+    if r == 0:
+        raise KeyError("not_found")
+
+
+async def delete_folder(s: AsyncSession, folder_id: str) -> None:
+    """Chỉ xóa thư mục RỖNG (không câu hỏi, không thư mục con) — tránh mất dữ liệu."""
+    n_children = (
+        await s.execute(
+            text("SELECT count(*) FROM question_folders WHERE parent_id = :id"),
+            {"id": folder_id},
+        )
+    ).scalar_one()
+    n_questions = (
+        await s.execute(
+            text("SELECT count(*) FROM questions WHERE folder_id = :id"), {"id": folder_id}
+        )
+    ).scalar_one()
+    if n_children or n_questions:
+        raise FolderNotEmpty(f"folder_not_empty:{n_questions}q,{n_children}f")
+    r = (
+        await s.execute(text("DELETE FROM question_folders WHERE id = :id"), {"id": folder_id})
+    ).rowcount
+    if r == 0:
+        raise KeyError("not_found")
+
+
+async def list_folders(s: AsyncSession) -> list[dict]:
+    """Danh sách phẳng kèm số câu — FE tự dựng cây theo parent_id."""
+    rows = (
+        (
+            await s.execute(
+                text(
+                    "SELECT f.id, f.parent_id, f.name, f.sort_order, "
+                    "(SELECT count(*) FROM questions q "
+                    " WHERE q.folder_id = f.id AND q.status != 'archived') AS n_questions "
+                    "FROM question_folders f ORDER BY f.sort_order, f.name"
+                )
+            )
+        )
+        .mappings()
+        .all()
+    )
+    return [
+        {
+            "id": str(r["id"]),
+            "parent_id": str(r["parent_id"]) if r["parent_id"] else None,
+            "name": r["name"],
+            "n_questions": r["n_questions"],
+        }
+        for r in rows
+    ]
+
+
+async def move_question(s: AsyncSession, qid: str, folder_id: str | None) -> None:
+    """Chuyển câu hỏi sang thư mục (None = về Chưa phân loại)."""
+    r = (
+        await s.execute(
+            text("UPDATE questions SET folder_id = :f, updated_at = now() WHERE id = :id"),
+            {"f": folder_id, "id": qid},
+        )
+    ).rowcount
+    if r == 0:
+        raise KeyError("not_found")

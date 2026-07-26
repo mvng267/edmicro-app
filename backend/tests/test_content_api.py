@@ -126,3 +126,66 @@ async def test_archive_and_pagination(client, session_factory):
     # student không archive được
     _as("student")
     assert (await client.post(f"/api/v1/content/questions/{ids[1]}/archive")).status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_folder_tree_crud_and_move(client, session_factory):
+    """Cây thư mục: tạo (cha/con) → đổi tên → gán câu vào → lọc → chặn xóa khi chưa rỗng."""
+    async with session_factory() as s, s.begin():
+        await set_tenant(s, TID)
+        await s.execute(
+            text(
+                "INSERT INTO tenants (id, slug, name) VALUES (:id, :sl, 'FD') "
+                "ON CONFLICT (id) DO NOTHING"
+            ),
+            {"id": TID, "sl": f"fd-{TID[:8]}"},
+        )
+    _as("teacher")
+    # tạo thư mục cha + con
+    root = (await client.post("/api/v1/content/folders", json={"name": "IELTS"})).json()["id"]
+    child = (
+        await client.post("/api/v1/content/folders", json={"name": "Reading", "parent_id": root})
+    ).json()["id"]
+    # đổi tên
+    assert (
+        await client.patch(f"/api/v1/content/folders/{child}", json={"name": "Reading L1"})
+    ).status_code == 200
+    folders = (await client.get("/api/v1/content/folders")).json()
+    by_id = {f["id"]: f for f in folders}
+    assert by_id[child]["name"] == "Reading L1"
+    assert by_id[child]["parent_id"] == root
+
+    # tạo câu TRỰC TIẾP vào thư mục con
+    q = await client.post(
+        "/api/v1/content/questions",
+        json={
+            "type": "mcq_single",
+            "language": "en",
+            "folder_id": child,
+            "content": {"prompt": "Trong thư mục?", "options": ["a", "b"]},
+            "answer_key": {"correct_index": 0},
+        },
+    )
+    qid = q.json()["id"]
+
+    # lọc theo thư mục + đếm
+    in_child = (await client.get(f"/api/v1/content/questions?folder_id={child}")).json()
+    assert [x["id"] for x in in_child] == [qid]
+    folders = (await client.get("/api/v1/content/folders")).json()
+    assert {f["id"]: f["n_questions"] for f in folders}[child] == 1
+
+    # xóa thư mục CHƯA rỗng → 409 (cả cha vì còn con)
+    assert (await client.delete(f"/api/v1/content/folders/{child}")).status_code == 409
+    assert (await client.delete(f"/api/v1/content/folders/{root}")).status_code == 409
+
+    # chuyển câu về "chưa phân loại" → giờ con rỗng, xóa được; rồi xóa cha
+    assert (
+        await client.patch(f"/api/v1/content/questions/{qid}/folder", json={"folder_id": None})
+    ).status_code == 200
+    assert (await client.get("/api/v1/content/questions?folder_id=none")).json()[0]["id"] == qid
+    assert (await client.delete(f"/api/v1/content/folders/{child}")).status_code == 200
+    assert (await client.delete(f"/api/v1/content/folders/{root}")).status_code == 200
+
+    # student không được đụng thư mục
+    _as("student")
+    assert (await client.post("/api/v1/content/folders", json={"name": "X"})).status_code == 403

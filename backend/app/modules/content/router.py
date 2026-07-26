@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.activity_log import log_activity
 from app.core.authn import CurrentUser, get_current_user, get_tenant_session
+from app.modules.content import ai_service
 from app.modules.content import service as svc
 from app.modules.content.schemas import (
     QuestionCreate,
@@ -58,6 +60,7 @@ async def list_questions(
     status: str | None = None,
     exam_tag: str | None = None,
     topic: str | None = None,
+    folder_id: str | None = None,
     limit: int = 50,
     offset: int = 0,
     current: CurrentUser = Depends(get_current_user),
@@ -73,10 +76,127 @@ async def list_questions(
             "status": status,
             "exam_tag": exam_tag,
             "topic": topic,
+            "folder_id": folder_id,
         },
         limit=limit,
         offset=offset,
     )
+
+
+class FolderCreate(BaseModel):
+    name: str
+    parent_id: str | None = None
+
+
+class FolderRename(BaseModel):
+    name: str
+
+
+class QuestionMove(BaseModel):
+    folder_id: str | None = None
+
+
+class AIGenerateBody(BaseModel):
+    topic: str
+    skill: str = "reading"
+    qtype: str = "mcq_single"
+    count: int = 5
+    language: str = "en"
+    folder_id: str | None = None
+
+
+@router.get("/folders")
+async def list_folders(
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    _require_author(current)
+    return await svc.list_folders(s)
+
+
+@router.post("/folders", status_code=201)
+async def create_folder(
+    body: FolderCreate,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    _require_author(current)
+    fid = await svc.create_folder(s, current.tenant_id, body.name, body.parent_id)
+    return {"id": fid}
+
+
+@router.patch("/folders/{folder_id}")
+async def rename_folder(
+    folder_id: str,
+    body: FolderRename,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    _require_author(current)
+    try:
+        await svc.rename_folder(s, folder_id, body.name)
+    except KeyError:
+        raise HTTPException(404, "not_found") from None
+    return {"ok": True}
+
+
+@router.delete("/folders/{folder_id}")
+async def delete_folder(
+    folder_id: str,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    _require_author(current)
+    try:
+        await svc.delete_folder(s, folder_id)
+    except svc.FolderNotEmpty as e:
+        raise HTTPException(409, str(e)) from None
+    except KeyError:
+        raise HTTPException(404, "not_found") from None
+    return {"deleted": True}
+
+
+@router.patch("/questions/{qid}/folder")
+async def move_question(
+    qid: str,
+    body: QuestionMove,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    _require_author(current)
+    try:
+        await svc.move_question(s, qid, body.folder_id)
+    except KeyError:
+        raise HTTPException(404, "not_found") from None
+    return {"ok": True}
+
+
+@router.post("/ai-generate", status_code=201)
+async def ai_generate(
+    body: AIGenerateBody,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    """AI sinh câu hỏi (draft) vào kho/thư mục — GV duyệt rồi xuất bản tay."""
+    _require_author(current)
+    try:
+        ids = await ai_service.generate_questions(
+            s,
+            current.tenant_id,
+            current.user_id,
+            topic=body.topic,
+            skill=body.skill,
+            qtype=body.qtype,
+            count=body.count,
+            language=body.language,
+            folder_id=body.folder_id,
+        )
+    except ai_service.AIUnavailable:
+        raise HTTPException(503, "ai_not_configured") from None
+    except ai_service.AIGenerateFailed as e:
+        raise HTTPException(502, str(e)) from None
+    await _log(s, current, "ai_generate", ids[0], {"count": len(ids), "topic": body.topic})
+    return {"created": len(ids), "question_ids": ids}
 
 
 @router.post("/questions/{qid}/archive", status_code=200)

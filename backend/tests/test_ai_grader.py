@@ -33,8 +33,13 @@ def test_fake_grader_longer_scores_higher():
     assert long.score > short.score
 
 
-def test_get_grader_defaults_to_fake_without_key():
-    # môi trường test không set anthropic_api_key -> Fake
+def test_get_grader_defaults_to_fake_without_key(monkeypatch):
+    from app.config import settings
+
+    # không cấu hình endpoint/key nào -> Fake
+    monkeypatch.setattr(settings, "ai_base_url", "")
+    monkeypatch.setattr(settings, "ai_api_key", "")
+    monkeypatch.setattr(settings, "anthropic_api_key", "")
     assert isinstance(get_grader(), FakeGrader)
 
 
@@ -45,3 +50,97 @@ def test_validate_writing_ok_and_bad():
         validate_content("writing", {"prompt": "  "}, {})
     with pytest.raises(InvalidContent):
         validate_content("writing", {"prompt": "ok", "rubric": 123}, {})
+
+
+def test_openai_compat_grader_parses_json(monkeypatch):
+    """OpenAICompatGrader gọi endpoint OpenAI-compatible và parse JSON (kể cả có ```fence)."""
+    import httpx
+
+    from app.config import settings
+    from app.modules.grading.ai import OpenAICompatGrader, get_grader
+
+    captured = {}
+
+    def fake_post(url, headers=None, json=None, timeout=None):
+        captured["url"] = url
+        captured["model"] = json["model"]
+        body = {
+            "choices": [
+                {
+                    "message": {
+                        "content": '```json\n{"score": 0.72, "feedback": "Ổn, cần mở bài rõ.", '
+                        '"confidence": 0.8}\n```'
+                    }
+                }
+            ]
+        }
+        return httpx.Response(200, json=body, request=httpx.Request("POST", url))
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    monkeypatch.setattr(settings, "ai_base_url", "https://route-ai.example/v1")
+    monkeypatch.setattr(settings, "ai_api_key", "sk-test")
+    monkeypatch.setattr(settings, "ai_grader_model", "kiro/claude-sonnet-4.5")
+
+    assert isinstance(get_grader(), OpenAICompatGrader)  # ưu tiên openai-compat
+    g = OpenAICompatGrader().grade_writing("Đề", "Rubric", "Bài làm")
+    assert g.score == 0.72
+    assert "mở bài" in g.feedback
+    assert captured["url"].endswith("/chat/completions")
+    assert captured["model"] == "kiro/claude-sonnet-4.5"
+
+
+@pytest.mark.asyncio
+async def test_ai_generate_creates_drafts(monkeypatch, session_factory):
+    """AI sinh câu → tạo draft vào kho đúng thư mục; câu lỗi schema bị bỏ qua."""
+    import json as _json
+    import uuid as _uuid
+
+    import httpx
+    from sqlalchemy import text as _text
+
+    from app.config import settings
+    from app.db import set_tenant
+    from app.modules.content import ai_service
+    from app.modules.content import service as content_svc
+
+    tid = str(_uuid.uuid4())
+    payload = [
+        {
+            "type": "mcq_single",
+            "prompt": "Chọn từ đúng?",
+            "options": ["cat", "cut", "cot"],
+            "correct_index": 0,
+            "explanation": "cat = con mèo",
+        },
+        {"type": "mcq_single", "prompt": "Thiếu options nên bị bỏ"},
+    ]
+
+    def fake_post(url, headers=None, json=None, timeout=None):
+        body = {"choices": [{"message": {"content": _json.dumps(payload)}}]}
+        return httpx.Response(200, json=body, request=httpx.Request("POST", url))
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    monkeypatch.setattr(settings, "ai_base_url", "https://route-ai.example/v1")
+    monkeypatch.setattr(settings, "ai_api_key", "sk-test")
+
+    async with session_factory() as s, s.begin():
+        await set_tenant(s, tid)
+        await s.execute(
+            _text("INSERT INTO tenants (id, slug, name) VALUES (:id, :sl, 'AG')"),
+            {"id": tid, "sl": f"ag-{tid[:8]}"},
+        )
+        fid = await content_svc.create_folder(s, tid, "AI sinh", None)
+        ids = await ai_service.generate_questions(
+            s,
+            tid,
+            str(_uuid.uuid4()),
+            topic="Từ vựng động vật",
+            skill="reading",
+            qtype="mcq_single",
+            count=2,
+            folder_id=fid,
+        )
+        assert len(ids) == 1  # câu lỗi schema bị bỏ
+        rows = await content_svc.list_questions(s, {"folder_id": fid})
+        assert rows[0]["id"] == ids[0]
+        assert rows[0]["status"] == "draft"

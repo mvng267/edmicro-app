@@ -50,3 +50,14 @@ async def app_engine(pg_dsn):
 @pytest_asyncio.fixture
 async def session_factory(app_engine):
     return async_sessionmaker(app_engine, expire_on_commit=False)
+
+
+@pytest.fixture(autouse=True)
+def _no_real_ai(monkeypatch):
+    """Test không bao giờ gọi AI thật (.env dev có key route-ai).
+    Test nào cần mock endpoint sẽ tự setattr lại trong thân test."""
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "ai_base_url", "")
+    monkeypatch.setattr(settings, "ai_api_key", "")
+    monkeypatch.setattr(settings, "anthropic_api_key", "")
