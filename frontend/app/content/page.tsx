@@ -11,7 +11,9 @@ import {
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { Pager, PageState } from "@/components/PageState";
 import {
+	archiveQuestion,
 	createQuestion,
 	listQuestions,
 	publishQuestion,
@@ -24,6 +26,9 @@ export default function ContentPage() {
 	const [statusFilter, setStatusFilter] = useState("");
 	const [search, setSearch] = useState("");
 	const [err, setErr] = useState("");
+	const [page, setPage] = useState(0);
+	const [loading, setLoading] = useState(true);
+	const PAGE_SIZE = 20;
 
 	// form state
 	const [type, setType] = useState("mcq_single");
@@ -35,17 +40,35 @@ export default function ContentPage() {
 	const [rubric, setRubric] = useState("");
 
 	async function refresh() {
-		setQuestions(
-			await listQuestions({
-				skill: skillFilter || undefined,
-				status: statusFilter || undefined,
-			}),
-		);
+		setLoading(true);
+		try {
+			setQuestions(
+				await listQuestions(
+					{
+						skill: skillFilter || undefined,
+						status: statusFilter || undefined,
+					},
+					PAGE_SIZE,
+					page * PAGE_SIZE,
+				),
+			);
+		} finally {
+			setLoading(false);
+		}
 	}
-	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh phụ thuộc bộ lọc
+	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh phụ thuộc bộ lọc/trang
 	useEffect(() => {
 		refresh().catch((e) => setErr(String(e)));
-	}, [skillFilter, statusFilter]);
+	}, [skillFilter, statusFilter, page]);
+
+	async function archive(id: string) {
+		try {
+			await archiveQuestion(id);
+			await refresh();
+		} catch (e) {
+			setErr(String(e));
+		}
+	}
 
 	// tìm theo đề bài (lọc phía client trên trang hiện tại)
 	const shown = search
@@ -207,6 +230,7 @@ export default function ContentPage() {
 					<option value="">Mọi trạng thái</option>
 					<option value="draft">Nháp</option>
 					<option value="published">Đã xuất bản</option>
+					<option value="archived">Đã lưu trữ</option>
 				</select>
 				<input
 					placeholder="Tìm theo đề bài…"
@@ -219,11 +243,16 @@ export default function ContentPage() {
 				<span className="text-xs text-neutral-500">{shown.length} câu</span>
 			</div>
 
+			<PageState
+				loading={loading}
+				empty={shown.length === 0}
+				emptyText="Không có câu hỏi nào khớp bộ lọc."
+			/>
 			<ul data-testid="q-list" className="flex flex-col gap-2">
 				{shown.map((q) => (
 					<li
 						key={q.id}
-						className="p-3 rounded-lg bg-white dark:bg-neutral-900 flex gap-2 items-center"
+						className="p-3 rounded-lg bg-white dark:bg-neutral-900 flex gap-2 items-center flex-wrap"
 					>
 						<Chip>
 							<ChipLabel>{q.type}</ChipLabel>
@@ -233,9 +262,24 @@ export default function ContentPage() {
 						<Chip>
 							<ChipLabel>{q.status}</ChipLabel>
 						</Chip>
+						{q.status !== "archived" && (
+							<Button
+								variant="ghost"
+								className="ml-auto"
+								onPress={() => archive(q.id)}
+								data-testid={`archive-${q.id}`}
+							>
+								Lưu trữ
+							</Button>
+						)}
 					</li>
 				))}
 			</ul>
+			<Pager
+				page={page}
+				setPage={setPage}
+				hasMore={questions.length === PAGE_SIZE}
+			/>
 		</AppShell>
 	);
 }

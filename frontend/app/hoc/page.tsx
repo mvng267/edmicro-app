@@ -5,22 +5,30 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { PageState } from "@/components/PageState";
 import { myAssignments, type TodoItem } from "@/lib/api";
 
 export default function TodoPage() {
 	const [todos, setTodos] = useState<TodoItem[]>([]);
 	const [err, setErr] = useState("");
+	const [loading, setLoading] = useState(true);
 	const router = useRouter();
 
 	useEffect(() => {
 		myAssignments()
 			.then(setTodos)
-			.catch((e) => setErr(String(e)));
+			.catch((e) => setErr(String(e)))
+			.finally(() => setLoading(false));
 	}, []);
 
 	return (
 		<AppShell title="Việc cần làm">
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
+			<PageState
+				loading={loading}
+				empty={todos.length === 0}
+				emptyText="Chưa có bài nào được giao. Chờ giáo viên giao bài nhé!"
+			/>
 			<ul data-testid="todo-list" className="flex flex-col gap-2">
 				{todos.map((t) => (
 					<li key={t.assignee_id}>

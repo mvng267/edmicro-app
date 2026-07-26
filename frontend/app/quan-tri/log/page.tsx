@@ -4,7 +4,10 @@ import { Card, CardContent, Chip, ChipLabel } from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { Pager, PageState } from "@/components/PageState";
 import { type ActivityLog, listLogs } from "@/lib/api";
+
+const PAGE_SIZE = 30;
 
 const MODULES = [
 	"",
@@ -21,12 +24,16 @@ export default function LogAdminPage() {
 	const [logs, setLogs] = useState<ActivityLog[]>([]);
 	const [module, setModule] = useState("");
 	const [err, setErr] = useState("");
+	const [page, setPage] = useState(0);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		listLogs({ module: module || undefined })
+		setLoading(true);
+		listLogs({ module: module || undefined }, PAGE_SIZE, page * PAGE_SIZE)
 			.then(setLogs)
-			.catch((e) => setErr(String(e)));
-	}, [module]);
+			.catch((e) => setErr(String(e)))
+			.finally(() => setLoading(false));
+	}, [module, page]);
 
 	return (
 		<AppShell title="Quản trị nhật ký">
@@ -34,7 +41,10 @@ export default function LogAdminPage() {
 				<span className="text-sm text-neutral-500">Module:</span>
 				<select
 					value={module}
-					onChange={(e) => setModule(e.target.value)}
+					onChange={(e) => {
+						setModule(e.target.value);
+						setPage(0);
+					}}
 					data-testid="module-filter"
 					className="border rounded-lg px-2 py-1 text-sm bg-white dark:bg-neutral-900"
 				>
@@ -46,6 +56,11 @@ export default function LogAdminPage() {
 				</select>
 			</div>
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
+			<PageState
+				loading={loading}
+				empty={logs.length === 0}
+				emptyText="Chưa có nhật ký."
+			/>
 			<Card>
 				<CardContent className="p-0 overflow-x-auto">
 					<table className="w-full text-sm" data-testid="log-table">
@@ -83,6 +98,11 @@ export default function LogAdminPage() {
 					</table>
 				</CardContent>
 			</Card>
+			<Pager
+				page={page}
+				setPage={setPage}
+				hasMore={logs.length === PAGE_SIZE}
+			/>
 		</AppShell>
 	);
 }

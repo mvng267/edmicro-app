@@ -168,3 +168,13 @@ async def mark_attendance(
 
 async def session_attendance(s: AsyncSession, session_id: str) -> list[dict]:
     return await session_roster(s, session_id)
+
+
+async def delete_session(s: AsyncSession, session_id: str) -> None:
+    """Xóa buổi học (kèm bản ghi điểm danh của buổi đó)."""
+    await s.execute(text("DELETE FROM attendance WHERE session_id = :id"), {"id": session_id})
+    r = (
+        await s.execute(text("DELETE FROM class_sessions WHERE id = :id"), {"id": session_id})
+    ).rowcount
+    if r == 0:
+        raise KeyError("not_found")

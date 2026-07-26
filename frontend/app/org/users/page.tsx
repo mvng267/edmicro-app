@@ -11,14 +11,19 @@ import {
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { Pager, PageState } from "@/components/PageState";
 import {
 	type Credential,
 	createUser,
 	type Klass,
 	listClasses,
 	listUsers,
+	resetUserPassword,
+	setUserLocked,
 	type UserRow,
 } from "@/lib/api";
+
+const PAGE_SIZE = 20;
 
 export default function UsersPage() {
 	const [users, setUsers] = useState<UserRow[]>([]);
@@ -28,18 +33,52 @@ export default function UsersPage() {
 	const [classId, setClassId] = useState("");
 	const [cred, setCred] = useState<Credential | null>(null);
 	const [err, setErr] = useState("");
-	// bộ lọc danh sách
+	// bộ lọc + phân trang
 	const [q, setQ] = useState("");
 	const [roleFilter, setRoleFilter] = useState("");
+	const [page, setPage] = useState(0);
+	const [loading, setLoading] = useState(true);
+	const [resetPw, setResetPw] = useState<{ name: string; pw: string } | null>(
+		null,
+	);
 
 	async function refresh() {
-		setUsers(await listUsers(q || undefined, roleFilter || undefined));
-		setClasses(await listClasses());
+		setLoading(true);
+		try {
+			setUsers(
+				await listUsers(
+					q || undefined,
+					roleFilter || undefined,
+					PAGE_SIZE,
+					page * PAGE_SIZE,
+				),
+			);
+			setClasses(await listClasses());
+		} finally {
+			setLoading(false);
+		}
 	}
-	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh phụ thuộc bộ lọc
+	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh phụ thuộc bộ lọc/trang
 	useEffect(() => {
 		refresh().catch((e) => setErr(String(e)));
-	}, [q, roleFilter]);
+	}, [q, roleFilter, page]);
+
+	async function doResetPw(u: UserRow) {
+		try {
+			const r = await resetUserPassword(u.id);
+			setResetPw({ name: u.full_name || u.username, pw: r.password });
+		} catch (e) {
+			setErr(String(e));
+		}
+	}
+	async function toggleLock(u: UserRow) {
+		try {
+			await setUserLocked(u.id, u.status !== "locked");
+			await refresh();
+		} catch (e) {
+			setErr(String(e));
+		}
+	}
 
 	async function add() {
 		setErr("");
@@ -117,14 +156,20 @@ export default function UsersPage() {
 					aria-label="Tìm kiếm"
 					data-testid="user-search"
 					value={q}
-					onChange={(e) => setQ(e.target.value)}
+					onChange={(e) => {
+						setQ(e.target.value);
+						setPage(0);
+					}}
 					className="h-9 rounded-lg border px-3 text-sm bg-white dark:bg-neutral-900 min-w-56"
 				/>
 				<select
 					data-testid="user-role-filter"
 					className="h-9 rounded-lg border px-2 bg-white dark:bg-neutral-900 text-sm"
 					value={roleFilter}
-					onChange={(e) => setRoleFilter(e.target.value)}
+					onChange={(e) => {
+						setRoleFilter(e.target.value);
+						setPage(0);
+					}}
 				>
 					<option value="">Mọi vai trò</option>
 					<option value="student">Học sinh</option>
@@ -137,19 +182,59 @@ export default function UsersPage() {
 					{users.length} tài khoản
 				</span>
 			</div>
+			{resetPw && (
+				<Alert status="success" className="mb-3" data-testid="reset-pw-box">
+					<AlertDescription>
+						Mật khẩu mới của <b>{resetPw.name}</b>:{" "}
+						<b data-testid="reset-pw-value">{resetPw.pw}</b> (chỉ hiện một lần —
+						người dùng sẽ phải đổi khi đăng nhập)
+					</AlertDescription>
+				</Alert>
+			)}
+			<PageState
+				loading={loading}
+				empty={users.length === 0}
+				emptyText="Không có tài khoản nào khớp bộ lọc."
+			/>
 			<ul data-testid="user-list" className="flex flex-col gap-2">
 				{users.map((u) => (
 					<li
 						key={u.id}
-						className="p-3 rounded-lg bg-white dark:bg-neutral-900 flex gap-2"
+						className="p-3 rounded-lg bg-white dark:bg-neutral-900 flex gap-2 items-center flex-wrap"
 					>
 						<span className="font-medium">{u.full_name}</span>
 						<span className="text-neutral-500 text-sm">
 							{u.username} · {u.role}
 						</span>
+						{u.status === "locked" && (
+							<span className="text-xs rounded px-2 py-0.5 bg-danger-100 dark:bg-danger-950 text-danger">
+								Đã khóa
+							</span>
+						)}
+						<span className="ml-auto flex gap-1">
+							<Button
+								variant="ghost"
+								onPress={() => doResetPw(u)}
+								data-testid={`reset-${u.id}`}
+							>
+								Reset MK
+							</Button>
+							<Button
+								variant="ghost"
+								onPress={() => toggleLock(u)}
+								data-testid={`lock-${u.id}`}
+							>
+								{u.status === "locked" ? "Mở khóa" : "Khóa"}
+							</Button>
+						</span>
 					</li>
 				))}
 			</ul>
+			<Pager
+				page={page}
+				setPage={setPage}
+				hasMore={users.length === PAGE_SIZE}
+			/>
 		</AppShell>
 	);
 }

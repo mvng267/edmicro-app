@@ -100,6 +100,21 @@ async def mark_attendance(
         raise HTTPException(422, str(e)) from None
 
 
+@router.delete("/sessions/{session_id}", status_code=200)
+async def delete_session(
+    session_id: str,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    class_id = await svc._session_class(s, session_id)
+    await _ensure_class(s, current, str(class_id) if class_id else None)
+    try:
+        await svc.delete_session(s, session_id)
+    except KeyError:
+        raise HTTPException(404, "not_found") from None
+    return {"deleted": True}
+
+
 @router.get("/sessions/{session_id}/attendance")
 async def get_attendance(
     session_id: str,

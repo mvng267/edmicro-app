@@ -5,24 +5,30 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { PageState } from "@/components/PageState";
 import { type GradingQueueItem, gradingQueue } from "@/lib/api";
 
 export default function GradingQueuePage() {
 	const [items, setItems] = useState<GradingQueueItem[]>([]);
 	const [err, setErr] = useState("");
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		gradingQueue()
 			.then(setItems)
-			.catch((e) => setErr(String(e)));
+			.catch((e) => setErr(String(e)))
+			.finally(() => setLoading(false));
 	}, []);
 
 	return (
 		<AppShell title="Chấm bài (hàng đợi)">
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
-			{items.length === 0 ? (
-				<p className="text-sm text-neutral-500">Không có bài nào chờ chấm.</p>
-			) : (
+			<PageState
+				loading={loading}
+				empty={items.length === 0}
+				emptyText="Không có bài nào chờ chấm. 🎉"
+			/>
+			{items.length === 0 ? null : (
 				<ul data-testid="grading-queue" className="flex flex-col gap-2">
 					{items.map((it) => (
 						<li key={it.attempt_id}>

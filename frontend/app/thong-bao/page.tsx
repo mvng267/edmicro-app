@@ -4,6 +4,7 @@ import { Button, Card, CardContent } from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { PageState } from "@/components/PageState";
 import {
 	markAllNotifRead,
 	markNotifRead,
@@ -14,13 +15,16 @@ import {
 export default function NotificationsPage() {
 	const [items, setItems] = useState<Notification[]>([]);
 	const [err, setErr] = useState("");
+	const [loading, setLoading] = useState(true);
 
 	async function load() {
 		setItems(await myNotifications());
 	}
 	// biome-ignore lint/correctness/useExhaustiveDependencies: chỉ load 1 lần khi mở trang
 	useEffect(() => {
-		load().catch((e) => setErr(String(e)));
+		load()
+			.catch((e) => setErr(String(e)))
+			.finally(() => setLoading(false));
 	}, []);
 
 	async function readOne(id: string) {
@@ -40,9 +44,12 @@ export default function NotificationsPage() {
 				</Button>
 			</div>
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
-			{items.length === 0 ? (
-				<p className="text-sm text-neutral-500">Chưa có thông báo.</p>
-			) : (
+			<PageState
+				loading={loading}
+				empty={items.length === 0}
+				emptyText="Chưa có thông báo."
+			/>
+			{items.length === 0 ? null : (
 				<ul data-testid="notif-list" className="flex flex-col gap-2">
 					{items.map((n) => (
 						<li key={n.id}>

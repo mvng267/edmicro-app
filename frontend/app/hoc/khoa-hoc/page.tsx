@@ -4,6 +4,7 @@ import { Button, Card, CardContent, Chip, ChipLabel } from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { PageState } from "@/components/PageState";
 import {
 	type CourseDetail,
 	completeLesson,
@@ -20,6 +21,7 @@ export default function MyCoursesPage() {
 	const [openId, setOpenId] = useState("");
 	const [detail, setDetail] = useState<CourseDetail | null>(null);
 	const [err, setErr] = useState("");
+	const [loading, setLoading] = useState(true);
 
 	async function refresh() {
 		setCourses(await myCourses());
@@ -27,7 +29,9 @@ export default function MyCoursesPage() {
 	}
 	// biome-ignore lint/correctness/useExhaustiveDependencies: chỉ load 1 lần
 	useEffect(() => {
-		refresh().catch((e) => setErr(String(e)));
+		refresh()
+			.catch((e) => setErr(String(e)))
+			.finally(() => setLoading(false));
 	}, []);
 
 	async function open(id: string) {
@@ -67,9 +71,12 @@ export default function MyCoursesPage() {
 
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
 
-			{courses.length === 0 ? (
-				<p className="text-sm text-neutral-500">Chưa có khóa học nào.</p>
-			) : (
+			<PageState
+				loading={loading}
+				empty={courses.length === 0}
+				emptyText="Chưa có khóa học nào được giao cho lớp của bạn."
+			/>
+			{courses.length === 0 ? null : (
 				<ul data-testid="my-course-list" className="flex flex-col gap-2">
 					{courses.map((c) => (
 						<li key={c.id}>

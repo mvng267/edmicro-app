@@ -18,6 +18,7 @@ async def list_logs(
     entity_type: str | None = None,
     actor_id: str | None = None,
     limit: int = 100,
+    offset: int = 0,
     current: CurrentUser = Depends(get_current_user),
     s: AsyncSession = Depends(get_tenant_session),
 ):
@@ -33,4 +34,5 @@ async def list_logs(
             "actor_id": actor_id,
         },
         limit=limit,
+        offset=offset,
     )

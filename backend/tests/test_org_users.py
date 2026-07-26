@@ -114,3 +114,20 @@ async def test_reset_password_changes_login(client):
         headers={"X-Tenant-Slug": SLUG},
     )
     assert ok.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_lock_and_unlock(client):
+    _as("owner")
+    c = await client.post("/api/v1/org/users", json={"full_name": "HS Khóa", "role": "student"})
+    uid = c.json()["id"]
+
+    # khóa → status locked; mở khóa (?locked=false) → active lại
+    assert (await client.post(f"/api/v1/org/users/{uid}/lock")).status_code == 200
+    users = {u["id"]: u for u in (await client.get("/api/v1/org/users?q=HS Khóa")).json()}
+    assert users[uid]["status"] == "locked"
+
+    r = await client.post(f"/api/v1/org/users/{uid}/lock?locked=false")
+    assert r.status_code == 200 and r.json()["locked"] is False
+    users = {u["id"]: u for u in (await client.get("/api/v1/org/users?q=HS Khóa")).json()}
+    assert users[uid]["status"] == "active"

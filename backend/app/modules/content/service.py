@@ -157,21 +157,38 @@ async def publish_question(s: AsyncSession, qid: str) -> None:
     )
 
 
-async def list_questions(s: AsyncSession, filters: dict[str, Any]) -> list[dict]:
+async def list_questions(
+    s: AsyncSession, filters: dict[str, Any], limit: int = 50, offset: int = 0
+) -> list[dict]:
     sql = (
         "SELECT q.id, q.type, q.language, q.skill, q.level, q.exam_tag, q.topic, q.status, "
         "v.content->>'prompt' AS prompt "
         "FROM questions q LEFT JOIN question_versions v ON v.id = q.current_version_id "
         "WHERE 1=1"
     )
-    p: dict[str, Any] = {}
-    for col in ("language", "skill", "level", "status", "exam_tag"):
+    p: dict[str, Any] = {"lim": max(1, min(limit, 200)), "off": max(0, offset)}
+    for col in ("language", "skill", "level", "status", "exam_tag", "topic"):
         if filters.get(col):
             sql += f" AND q.{col} = :{col}"
             p[col] = filters[col]
-    sql += " ORDER BY q.created_at DESC LIMIT 200"
+    if not filters.get("status"):
+        # mặc định ẩn câu đã lưu trữ (chỉ hiện khi lọc status=archived tường minh)
+        sql += " AND q.status != 'archived'"
+    sql += " ORDER BY q.created_at DESC LIMIT :lim OFFSET :off"
     rows = (await s.execute(text(sql), p)).mappings().all()
     return [{**r, "id": str(r["id"])} for r in rows]
+
+
+async def archive_question(s: AsyncSession, qid: str) -> None:
+    """Lưu trữ (ẩn khỏi kho + không giao mới); bài đã giao vẫn giữ version cũ."""
+    r = (
+        await s.execute(
+            text("UPDATE questions SET status = 'archived', updated_at = now() WHERE id = :id"),
+            {"id": qid},
+        )
+    ).rowcount
+    if r == 0:
+        raise KeyError("not_found")
 
 
 async def get_question(s: AsyncSession, qid: str) -> dict | None:

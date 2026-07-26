@@ -45,20 +45,22 @@ async def create_user(
 async def list_users(
     q: str | None = None,
     role: str | None = None,
+    limit: int = 50,
+    offset: int = 0,
     current: CurrentUser = Depends(get_current_user),
     s: AsyncSession = Depends(get_tenant_session),
 ):
     if current.role not in _MANAGE:
         raise HTTPException(403, "forbidden_role")
     sql = "SELECT id, username, full_name, role, status FROM users WHERE 1=1"
-    params: dict = {}
+    params: dict = {"lim": max(1, min(limit, 200)), "off": max(0, offset)}
     if q:
         sql += " AND (username ILIKE :q OR full_name ILIKE :q)"
         params["q"] = f"%{q}%"
     if role:
         sql += " AND role = :r"
         params["r"] = role
-    sql += " ORDER BY created_at DESC LIMIT 200"
+    sql += " ORDER BY created_at DESC LIMIT :lim OFFSET :off"
     rows = (await s.execute(text(sql), params)).mappings().all()
     return [{**r, "id": str(r["id"])} for r in rows]
 
@@ -92,9 +94,11 @@ async def reset_password(
 @router.post("/users/{user_id}/lock", status_code=200)
 async def lock_user(
     user_id: str,
+    locked: bool = True,
     current: CurrentUser = Depends(get_current_user),
     s: AsyncSession = Depends(get_tenant_session),
 ):
+    """Khóa (mặc định) hoặc mở khóa tài khoản với ?locked=false."""
     if current.role not in _MANAGE:
         raise HTTPException(403, "forbidden_role")
     target = await us.get_role(s, user_id)
@@ -102,17 +106,17 @@ async def lock_user(
         raise HTTPException(404, "not_found")
     if target in us.MANAGEMENT_ROLES and current.role != "owner":
         raise HTTPException(403, "only_owner_for_management")
-    await us.set_locked(s, user_id, True)
+    await us.set_locked(s, user_id, locked)
     await log_audit(
         s,
         tenant_id=current.tenant_id,
         actor_id=current.user_id,
         actor_role=current.role,
-        action="lock_user",
+        action="lock_user" if locked else "unlock_user",
         target_type="user",
         target_id=user_id,
     )
-    return {"ok": True}
+    return {"ok": True, "locked": locked}
 
 
 @router.put("/users/{user_id}/role", status_code=200)

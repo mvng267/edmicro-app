@@ -159,3 +159,32 @@ async def test_session_rbac_other_teacher(client, session_factory):
             json={"class_id": class_id, "starts_at": start, "ends_at": end},
         )
     ).status_code == 201
+
+
+@pytest.mark.asyncio
+async def test_delete_session(client, session_factory):
+    class_id, _students, teacher = await _seed(session_factory)
+    start = (datetime.now(UTC) + timedelta(days=2)).isoformat()
+    end = (datetime.now(UTC) + timedelta(days=2, hours=2)).isoformat()
+    _as("teacher", teacher)
+    sid = (
+        await client.post(
+            "/api/v1/sessions",
+            json={"class_id": class_id, "starts_at": start, "ends_at": end},
+        )
+    ).json()["id"]
+    # điểm danh trước để chắc xóa kèm attendance không vướng FK
+    s1 = _students[0]
+    await client.post(
+        f"/api/v1/sessions/{sid}/attendance",
+        json={"records": [{"student_id": s1, "status": "present"}]},
+    )
+
+    # teacher lớp khác không xóa được
+    _as("teacher", str(uuid.uuid4()))
+    assert (await client.delete(f"/api/v1/sessions/{sid}")).status_code == 403
+
+    _as("teacher", teacher)
+    assert (await client.delete(f"/api/v1/sessions/{sid}")).status_code == 200
+    ids = [x["id"] for x in (await client.get(f"/api/v1/sessions?class_id={class_id}")).json()]
+    assert sid not in ids

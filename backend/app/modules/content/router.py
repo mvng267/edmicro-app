@@ -57,6 +57,9 @@ async def list_questions(
     level: str | None = None,
     status: str | None = None,
     exam_tag: str | None = None,
+    topic: str | None = None,
+    limit: int = 50,
+    offset: int = 0,
     current: CurrentUser = Depends(get_current_user),
     s: AsyncSession = Depends(get_tenant_session),
 ):
@@ -69,8 +72,27 @@ async def list_questions(
             "level": level,
             "status": status,
             "exam_tag": exam_tag,
+            "topic": topic,
         },
+        limit=limit,
+        offset=offset,
     )
+
+
+@router.post("/questions/{qid}/archive", status_code=200)
+async def archive_question(
+    qid: str,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    """Lưu trữ câu hỏi: ẩn khỏi kho, không giao mới; bài đã giao giữ nguyên version cũ."""
+    _require_author(current)
+    try:
+        await svc.archive_question(s, qid)
+    except KeyError:
+        raise HTTPException(404, "not_found") from None
+    await _log(s, current, "archive", qid, {})
+    return {"archived": True}
 
 
 @router.get("/questions/{qid}", response_model=QuestionDetail)

@@ -8,6 +8,7 @@ import {
 	type AttendanceRow,
 	type ClassSession,
 	createSession,
+	deleteSession,
 	getAttendance,
 	type Klass,
 	listClasses,
@@ -85,6 +86,18 @@ export default function SchedulePage() {
 		const init: Record<string, string> = {};
 		for (const r of rows) init[r.student_id] = r.status ?? "present";
 		setRoster(init);
+	}
+
+	async function removeSession(id: string) {
+		if (!confirm("Xóa buổi học này (kèm điểm danh)?")) return;
+		try {
+			await deleteSession(id);
+			if (openId === id) setOpenId("");
+			await refreshSessions();
+			setMsg("Đã xóa buổi học");
+		} catch (e) {
+			setErr(String(e));
+		}
 	}
 
 	async function saveAttendance() {
@@ -168,14 +181,22 @@ export default function SchedulePage() {
 										{se.starts_at.slice(0, 16).replace("T", " ")}
 									</span>
 									<span className="text-sm text-neutral-500">{se.topic}</span>
-									<Button
-										variant="ghost"
-										className="ml-auto"
-										onPress={() => openAttendance(se.id)}
-										data-testid={`take-${se.id}`}
-									>
-										Điểm danh
-									</Button>
+									<span className="ml-auto flex gap-1">
+										<Button
+											variant="ghost"
+											onPress={() => openAttendance(se.id)}
+											data-testid={`take-${se.id}`}
+										>
+											Điểm danh
+										</Button>
+										<Button
+											variant="ghost"
+											onPress={() => removeSession(se.id)}
+											data-testid={`del-${se.id}`}
+										>
+											Xóa
+										</Button>
+									</span>
 								</div>
 
 								{openId === se.id && (

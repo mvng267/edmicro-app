@@ -80,3 +80,49 @@ async def test_activity_log_on_create(client, session_factory):
                 )
             ).scalar_one()
     assert n >= 1
+
+
+@pytest.mark.asyncio
+async def test_archive_and_pagination(client, session_factory):
+    """Lưu trữ ẩn câu khỏi kho mặc định; pagination limit/offset hoạt động."""
+    async with session_factory() as s, s.begin():
+        await set_tenant(s, TID)
+        await s.execute(
+            text(
+                "INSERT INTO tenants (id, slug, name) VALUES (:id, :sl, 'AR') "
+                "ON CONFLICT (id) DO NOTHING"
+            ),
+            {"id": TID, "sl": f"ar-{TID[:8]}"},
+        )
+    _as("teacher")
+    tag = uuid.uuid4().hex[:6]
+    ids = []
+    for i in range(3):
+        r = await client.post(
+            "/api/v1/content/questions",
+            json={
+                "type": "mcq_single",
+                "language": "en",
+                "topic": f"pg-{tag}",
+                "content": {"prompt": f"PG {tag} {i}?", "options": ["a", "b"]},
+                "answer_key": {"correct_index": 0},
+            },
+        )
+        ids.append(r.json()["id"])
+
+    # pagination: limit=2 → 2 câu; offset=2 → 1 câu còn lại
+    base = f"/api/v1/content/questions?topic=pg-{tag}"
+    assert len((await client.get(f"{base}&limit=2")).json()) == 2
+    assert len((await client.get(f"{base}&limit=2&offset=2")).json()) == 1
+
+    # archive câu đầu → biến khỏi danh sách mặc định, chỉ hiện khi lọc status=archived
+    assert (await client.post(f"/api/v1/content/questions/{ids[0]}/archive")).status_code == 200
+    remain = (await client.get(base)).json()
+    assert len(remain) == 2
+    assert all(x["id"] != ids[0] for x in remain)
+    archived = (await client.get(f"{base}&status=archived")).json()
+    assert [x["id"] for x in archived] == [ids[0]]
+
+    # student không archive được
+    _as("student")
+    assert (await client.post(f"/api/v1/content/questions/{ids[1]}/archive")).status_code == 403

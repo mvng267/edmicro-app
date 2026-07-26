@@ -117,12 +117,26 @@ export interface Credential {
 	password: string;
 	full_name: string;
 }
-export const listUsers = (q?: string, role?: string) => {
+export const listUsers = (
+	q?: string,
+	role?: string,
+	limit = 50,
+	offset = 0,
+) => {
 	const p = new URLSearchParams();
 	if (q) p.set("q", q);
 	if (role) p.set("role", role);
+	p.set("limit", String(limit));
+	p.set("offset", String(offset));
 	return req<UserRow[]>("GET", `/api/v1/org/users?${p.toString()}`);
 };
+export const resetUserPassword = (id: string) =>
+	req<{ password: string }>("POST", `/api/v1/org/users/${id}/reset-password`);
+export const setUserLocked = (id: string, locked: boolean) =>
+	req<{ ok: boolean; locked: boolean }>(
+		"POST",
+		`/api/v1/org/users/${id}/lock?locked=${locked}`,
+	);
 export const createUser = (payload: {
 	full_name: string;
 	role: string;
@@ -173,15 +187,19 @@ export interface QuestionRow {
 	status: string;
 	prompt: string | null;
 }
-export const listQuestions = (filters: {
-	skill?: string;
-	language?: string;
-	status?: string;
-}) => {
+export const listQuestions = (
+	filters: { skill?: string; language?: string; status?: string },
+	limit = 50,
+	offset = 0,
+) => {
 	const p = new URLSearchParams();
 	for (const [k, v] of Object.entries(filters)) if (v) p.set(k, v);
+	p.set("limit", String(limit));
+	p.set("offset", String(offset));
 	return req<QuestionRow[]>("GET", `/api/v1/content/questions?${p.toString()}`);
 };
+export const archiveQuestion = (id: string) =>
+	req<{ archived: boolean }>("POST", `/api/v1/content/questions/${id}/archive`);
 export const createQuestion = (payload: {
 	type: string;
 	language: string;
@@ -445,6 +463,8 @@ export interface AttendanceRow {
 }
 export const getAttendance = (sessionId: string) =>
 	req<AttendanceRow[]>("GET", `/api/v1/sessions/${sessionId}/attendance`);
+export const deleteSession = (sessionId: string) =>
+	req<{ deleted: boolean }>("DELETE", `/api/v1/sessions/${sessionId}`);
 export const markAttendance = (
 	sessionId: string,
 	records: { student_id: string; status: string; note?: string }[],
@@ -565,9 +585,15 @@ export interface ActivityLog {
 	entity_label: string | null;
 	at: string;
 }
-export const listLogs = (filters: { module?: string }) => {
+export const listLogs = (
+	filters: { module?: string },
+	limit = 50,
+	offset = 0,
+) => {
 	const p = new URLSearchParams();
 	if (filters.module) p.set("module", filters.module);
+	p.set("limit", String(limit));
+	p.set("offset", String(offset));
 	return req<ActivityLog[]>("GET", `/api/v1/admin/logs?${p.toString()}`);
 };
 export interface Usage {

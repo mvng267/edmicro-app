@@ -9,13 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def list_activity(
-    s: AsyncSession, tenant_id: str, filters: dict[str, Any], limit: int = 100
+    s: AsyncSession, tenant_id: str, filters: dict[str, Any], limit: int = 100, offset: int = 0
 ) -> list[dict]:
     sql = (
         "SELECT id, actor_id, actor_role, action, module, entity_type, entity_id, "
         "entity_label, diff, at FROM activity_logs WHERE tenant_id = :tenant"
     )
-    p: dict[str, Any] = {"tenant": tenant_id, "lim": min(limit, 500)}
+    p: dict[str, Any] = {"tenant": tenant_id, "lim": min(limit, 500), "off": max(0, offset)}
     for col in ("module", "actor_role", "entity_type"):
         if filters.get(col):
             sql += f" AND {col} = :{col}"
@@ -23,7 +23,7 @@ async def list_activity(
     if filters.get("actor_id"):
         sql += " AND actor_id = :actor_id"
         p["actor_id"] = filters["actor_id"]
-    sql += " ORDER BY at DESC LIMIT :lim"
+    sql += " ORDER BY at DESC LIMIT :lim OFFSET :off"
     rows = (await s.execute(text(sql), p)).mappings().all()
     return [
         {
