@@ -21,6 +21,8 @@ import {
 export default function ContentPage() {
 	const [questions, setQuestions] = useState<QuestionRow[]>([]);
 	const [skillFilter, setSkillFilter] = useState("");
+	const [statusFilter, setStatusFilter] = useState("");
+	const [search, setSearch] = useState("");
 	const [err, setErr] = useState("");
 
 	// form state
@@ -33,12 +35,24 @@ export default function ContentPage() {
 	const [rubric, setRubric] = useState("");
 
 	async function refresh() {
-		setQuestions(await listQuestions({ skill: skillFilter || undefined }));
+		setQuestions(
+			await listQuestions({
+				skill: skillFilter || undefined,
+				status: statusFilter || undefined,
+			}),
+		);
 	}
-	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh phụ thuộc skillFilter
+	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh phụ thuộc bộ lọc
 	useEffect(() => {
 		refresh().catch((e) => setErr(String(e)));
-	}, [skillFilter]);
+	}, [skillFilter, statusFilter]);
+
+	// tìm theo đề bài (lọc phía client trên trang hiện tại)
+	const shown = search
+		? questions.filter((x) =>
+				(x.prompt ?? "").toLowerCase().includes(search.toLowerCase()),
+			)
+		: questions;
 
 	async function save(publish: boolean) {
 		setErr("");
@@ -184,10 +198,29 @@ export default function ContentPage() {
 					<option value="writing">Viết</option>
 					<option value="speaking">Nói</option>
 				</select>
+				<select
+					data-testid="filter-status"
+					className="h-9 rounded-lg border px-2 bg-transparent text-sm"
+					value={statusFilter}
+					onChange={(e) => setStatusFilter(e.target.value)}
+				>
+					<option value="">Mọi trạng thái</option>
+					<option value="draft">Nháp</option>
+					<option value="published">Đã xuất bản</option>
+				</select>
+				<input
+					placeholder="Tìm theo đề bài…"
+					aria-label="Tìm câu hỏi"
+					data-testid="q-search"
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+					className="h-9 rounded-lg border px-3 text-sm bg-transparent min-w-52"
+				/>
+				<span className="text-xs text-neutral-500">{shown.length} câu</span>
 			</div>
 
 			<ul data-testid="q-list" className="flex flex-col gap-2">
-				{questions.map((q) => (
+				{shown.map((q) => (
 					<li
 						key={q.id}
 						className="p-3 rounded-lg bg-white dark:bg-neutral-900 flex gap-2 items-center"

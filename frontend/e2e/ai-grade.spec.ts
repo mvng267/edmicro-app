@@ -18,7 +18,9 @@ test("bài writing: AI chấm sơ bộ rồi giáo viên chốt điểm", async 
 	await expect(page.getByTestId("branch-list")).toContainText(`CN ${stamp}`);
 
 	await page.goto("/org/classes");
-	await page.getByTestId("branch-select").selectOption({ label: `CN ${stamp}` });
+	await page
+		.getByTestId("branch-select")
+		.selectOption({ label: `CN ${stamp}` });
 	await page.getByTestId("class-name").fill(`Lớp ${stamp}`);
 	await page.getByTestId("add-class").click();
 	await expect(page.getByTestId("class-list")).toContainText(`Lớp ${stamp}`);
@@ -59,7 +61,9 @@ test("bài writing: AI chấm sơ bộ rồi giáo viên chốt điểm", async 
 		.filter({ hasText: `Bài viết ${stamp}` })
 		.first();
 	await expect(row).toBeVisible();
-	await page.getByTestId("assign-class").selectOption({ label: `Lớp ${stamp}` });
+	await page
+		.getByTestId("assign-class")
+		.selectOption({ label: `Lớp ${stamp}` });
 	await row.getByRole("button", { name: "Giao cho lớp" }).click();
 	await expect(page.getByText(/Đã giao cho \d+ học sinh/)).toBeVisible();
 
@@ -72,6 +76,12 @@ test("bài writing: AI chấm sơ bộ rồi giáo viên chốt điểm", async 
 	await expect(u).toHaveValue(username);
 	await page.getByLabel("Mật khẩu").fill(password);
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
+	// mật khẩu tạm → hệ thống bắt đổi mật khẩu trước khi vào app
+	await expect(page).toHaveURL(/\/doi-mat-khau/);
+	await page.getByLabel("Mật khẩu hiện tại").fill(password);
+	await page.getByLabel("Mật khẩu mới", { exact: true }).fill("MatKhauMoi123");
+	await page.getByLabel("Nhập lại mật khẩu mới").fill("MatKhauMoi123");
+	await page.getByRole("button", { name: "Đổi mật khẩu và vào học" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
 
 	await page.goto("/hoc");

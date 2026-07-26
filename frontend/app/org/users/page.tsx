@@ -28,14 +28,18 @@ export default function UsersPage() {
 	const [classId, setClassId] = useState("");
 	const [cred, setCred] = useState<Credential | null>(null);
 	const [err, setErr] = useState("");
+	// bộ lọc danh sách
+	const [q, setQ] = useState("");
+	const [roleFilter, setRoleFilter] = useState("");
 
 	async function refresh() {
-		setUsers(await listUsers());
+		setUsers(await listUsers(q || undefined, roleFilter || undefined));
 		setClasses(await listClasses());
 	}
+	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh phụ thuộc bộ lọc
 	useEffect(() => {
 		refresh().catch((e) => setErr(String(e)));
-	}, []);
+	}, [q, roleFilter]);
 
 	async function add() {
 		setErr("");
@@ -107,6 +111,32 @@ export default function UsersPage() {
 				</CardContent>
 			</Card>
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
+			<div className="flex gap-2 mb-3 flex-wrap items-center">
+				<input
+					placeholder="Tìm theo tên / tài khoản…"
+					aria-label="Tìm kiếm"
+					data-testid="user-search"
+					value={q}
+					onChange={(e) => setQ(e.target.value)}
+					className="h-9 rounded-lg border px-3 text-sm bg-white dark:bg-neutral-900 min-w-56"
+				/>
+				<select
+					data-testid="user-role-filter"
+					className="h-9 rounded-lg border px-2 bg-white dark:bg-neutral-900 text-sm"
+					value={roleFilter}
+					onChange={(e) => setRoleFilter(e.target.value)}
+				>
+					<option value="">Mọi vai trò</option>
+					<option value="student">Học sinh</option>
+					<option value="teacher">Giáo viên</option>
+					<option value="assistant">Trợ giảng</option>
+					<option value="manager">Quản lý</option>
+					<option value="parent">Phụ huynh</option>
+				</select>
+				<span className="text-xs text-neutral-500">
+					{users.length} tài khoản
+				</span>
+			</div>
 			<ul data-testid="user-list" className="flex flex-col gap-2">
 				{users.map((u) => (
 					<li

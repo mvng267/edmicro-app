@@ -23,6 +23,7 @@ export default function ClassesPage() {
 		setBranches(await listBranches());
 		setClasses(await listClasses());
 	}
+	// biome-ignore lint/correctness/useExhaustiveDependencies: chỉ load 1 lần
 	useEffect(() => {
 		refresh().catch((e) => setErr(String(e)));
 	}, []);

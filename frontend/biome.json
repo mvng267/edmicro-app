@@ -1,0 +1,14 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.5/schema.json",
+	"files": {
+		"includes": [
+			"app/**",
+			"components/**",
+			"lib/**",
+			"e2e/**",
+			"!app/globals.css"
+		]
+	},
+	"formatter": { "enabled": true },
+	"linter": { "enabled": true }
+}

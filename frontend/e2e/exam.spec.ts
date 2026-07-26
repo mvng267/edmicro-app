@@ -18,7 +18,9 @@ test("đề thi: đồng hồ server + quy đổi band", async ({ page }) => {
 	await expect(page.getByTestId("branch-list")).toContainText(`CN ${stamp}`);
 
 	await page.goto("/org/classes");
-	await page.getByTestId("branch-select").selectOption({ label: `CN ${stamp}` });
+	await page
+		.getByTestId("branch-select")
+		.selectOption({ label: `CN ${stamp}` });
 	await page.getByTestId("class-name").fill(`Lớp ${stamp}`);
 	await page.getByTestId("add-class").click();
 	await expect(page.getByTestId("class-list")).toContainText(`Lớp ${stamp}`);
@@ -43,7 +45,9 @@ test("đề thi: đồng hồ server + quy đổi band", async ({ page }) => {
 		await page.getByTestId("q-option-1").fill("Sai");
 		await page.getByTestId("q-correct-0").check();
 		await page.getByTestId("q-publish").click();
-		await expect(page.getByTestId("q-list")).toContainText(`EQ ${stamp} ${suffix}`);
+		await expect(page.getByTestId("q-list")).toContainText(
+			`EQ ${stamp} ${suffix}`,
+		);
 	}
 
 	// tạo ĐỀ THI 1 phút gồm 2 câu + giao lớp
@@ -65,7 +69,9 @@ test("đề thi: đồng hồ server + quy đổi band", async ({ page }) => {
 		.filter({ hasText: `Đề ${stamp}` })
 		.first();
 	await expect(erow).toBeVisible();
-	await page.getByTestId("assign-class").selectOption({ label: `Lớp ${stamp}` });
+	await page
+		.getByTestId("assign-class")
+		.selectOption({ label: `Lớp ${stamp}` });
 	await erow.getByRole("button", { name: "Giao cho lớp" }).click();
 	await expect(page.getByText(/Đã giao cho \d+ học sinh/)).toBeVisible();
 
@@ -78,6 +84,12 @@ test("đề thi: đồng hồ server + quy đổi band", async ({ page }) => {
 	await expect(u).toHaveValue(username);
 	await page.getByLabel("Mật khẩu").fill(password);
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
+	// mật khẩu tạm → hệ thống bắt đổi mật khẩu trước khi vào app
+	await expect(page).toHaveURL(/\/doi-mat-khau/);
+	await page.getByLabel("Mật khẩu hiện tại").fill(password);
+	await page.getByLabel("Mật khẩu mới", { exact: true }).fill("MatKhauMoi123");
+	await page.getByLabel("Nhập lại mật khẩu mới").fill("MatKhauMoi123");
+	await page.getByRole("button", { name: "Đổi mật khẩu và vào học" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
 
 	await page.goto("/hoc");

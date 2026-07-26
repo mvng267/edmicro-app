@@ -13,15 +13,15 @@ import { useEffect, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import {
 	type Branch,
-	type Klass,
-	type Practice,
-	type QuestionRow,
 	createAssignment,
 	createPractice,
+	type Klass,
 	listBranches,
 	listClasses,
 	listPractices,
 	listQuestions,
+	type Practice,
+	type QuestionRow,
 } from "@/lib/api";
 
 export default function PracticesPage() {

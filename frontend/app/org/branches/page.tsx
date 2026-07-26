@@ -18,6 +18,7 @@ export default function BranchesPage() {
 			setErr(String(e));
 		}
 	}
+	// biome-ignore lint/correctness/useExhaustiveDependencies: chỉ load 1 lần
 	useEffect(() => {
 		refresh();
 	}, []);

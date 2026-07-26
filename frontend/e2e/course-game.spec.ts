@@ -17,7 +17,9 @@ test("khóa học: hoàn thành bài → tiến độ + điểm", async ({ page 
 	await expect(page.getByTestId("branch-list")).toContainText(`CN ${stamp}`);
 
 	await page.goto("/org/classes");
-	await page.getByTestId("branch-select").selectOption({ label: `CN ${stamp}` });
+	await page
+		.getByTestId("branch-select")
+		.selectOption({ label: `CN ${stamp}` });
 	await page.getByTestId("class-name").fill(`Lớp ${stamp}`);
 	await page.getByTestId("add-class").click();
 	await expect(page.getByTestId("class-list")).toContainText(`Lớp ${stamp}`);
@@ -46,7 +48,9 @@ test("khóa học: hoàn thành bài → tiến độ + điểm", async ({ page 
 	await page.getByTestId("lesson-title").fill(`Bài ${stamp}`);
 	await page.getByTestId("add-lesson").click();
 	await expect(page.getByTestId("assign-class")).toBeVisible();
-	await page.getByTestId("assign-class").selectOption({ label: `Lớp ${stamp}` });
+	await page
+		.getByTestId("assign-class")
+		.selectOption({ label: `Lớp ${stamp}` });
 	await page.getByTestId("assign-course").click();
 	await expect(page.getByText("Đã giao khóa cho lớp")).toBeVisible();
 
@@ -59,6 +63,12 @@ test("khóa học: hoàn thành bài → tiến độ + điểm", async ({ page 
 	await expect(u).toHaveValue(username);
 	await page.getByLabel("Mật khẩu").fill(password);
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
+	// mật khẩu tạm → hệ thống bắt đổi mật khẩu trước khi vào app
+	await expect(page).toHaveURL(/\/doi-mat-khau/);
+	await page.getByLabel("Mật khẩu hiện tại").fill(password);
+	await page.getByLabel("Mật khẩu mới", { exact: true }).fill("MatKhauMoi123");
+	await page.getByLabel("Nhập lại mật khẩu mới").fill("MatKhauMoi123");
+	await page.getByRole("button", { name: "Đổi mật khẩu và vào học" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
 
 	// HS: khóa học của tôi → điểm 0, tiến độ 0 → hoàn thành bài

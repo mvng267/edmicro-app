@@ -65,6 +65,11 @@ export interface Me {
 	role: string;
 }
 export const apiMe = () => req<Me>("GET", "/api/v1/authz/me");
+export const changePassword = (old_password: string, new_password: string) =>
+	req<{ changed: boolean }>("POST", "/api/v1/authz/change-password", {
+		old_password,
+		new_password,
+	});
 
 // ---- ORG ----
 export interface Branch {

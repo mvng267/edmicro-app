@@ -115,6 +115,7 @@ export function AppShell({
 }) {
 	const [unread, setUnread] = useState(0);
 	const [role, setRole] = useState<string | null>(null);
+	const [navOpen, setNavOpen] = useState(false);
 
 	useEffect(() => {
 		let alive = true;
@@ -141,10 +142,11 @@ export function AppShell({
 	const visible = NAV.filter(
 		(n) => !n.roles || (role ? n.roles.includes(role) : false),
 	);
-	const groups = visible.reduce<Record<string, NavItem[]>>((acc, n) => {
-		(acc[n.group] ??= []).push(n);
-		return acc;
-	}, {});
+	const groups: Record<string, NavItem[]> = {};
+	for (const n of visible) {
+		if (!groups[n.group]) groups[n.group] = [];
+		groups[n.group].push(n);
+	}
 
 	function logout() {
 		localStorage.removeItem("access_token");
@@ -154,7 +156,16 @@ export function AppShell({
 
 	return (
 		<div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-950">
-			<header className="h-14 flex items-center gap-4 px-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+			<header className="h-14 flex items-center gap-4 px-4 sm:px-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+				<button
+					type="button"
+					className="md:hidden text-xl"
+					aria-label="Mở menu"
+					data-testid="nav-toggle"
+					onClick={() => setNavOpen((v) => !v)}
+				>
+					☰
+				</button>
 				<span className="font-bold">Edmicro</span>
 				<div className="flex-1" />
 				<Link
@@ -182,8 +193,11 @@ export function AppShell({
 					Đăng xuất
 				</button>
 			</header>
-			<div className="flex flex-1">
-				<aside className="w-56 p-3 border-r border-neutral-200 dark:border-neutral-800">
+			<div className="flex flex-1 flex-col md:flex-row">
+				{/* Mobile: menu là panel gập/mở qua nút ☰; desktop: sidebar cố định */}
+				<aside
+					className={`${navOpen ? "block" : "hidden"} md:block w-full md:w-56 p-3 border-b md:border-b-0 md:border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 md:bg-transparent`}
+				>
 					{Object.entries(groups).map(([group, items]) => (
 						<div key={group} className="mb-3">
 							<p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
@@ -193,6 +207,7 @@ export function AppShell({
 								<Link
 									key={n.href}
 									href={n.href}
+									onClick={() => setNavOpen(false)}
 									className="block px-3 py-2 rounded-lg text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800"
 								>
 									{n.label}
@@ -201,7 +216,7 @@ export function AppShell({
 						</div>
 					))}
 				</aside>
-				<main className="flex-1 p-6 max-w-5xl">
+				<main className="flex-1 p-4 sm:p-6 max-w-5xl">
 					<h1 className="text-xl font-semibold mb-4">{title}</h1>
 					{children}
 				</main>

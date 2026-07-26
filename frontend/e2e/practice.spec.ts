@@ -79,6 +79,12 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 	await expect(u).toHaveValue(username);
 	await page.getByLabel("Mật khẩu").fill(password);
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
+	// mật khẩu tạm → hệ thống bắt đổi mật khẩu trước khi vào app
+	await expect(page).toHaveURL(/\/doi-mat-khau/);
+	await page.getByLabel("Mật khẩu hiện tại").fill(password);
+	await page.getByLabel("Mật khẩu mới", { exact: true }).fill("MatKhauMoi123");
+	await page.getByLabel("Nhập lại mật khẩu mới").fill("MatKhauMoi123");
+	await page.getByRole("button", { name: "Đổi mật khẩu và vào học" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
 
 	// việc cần làm → làm bài
@@ -127,7 +133,9 @@ test("giao bài practice, học sinh làm và nộp", async ({ page }) => {
 	await expect(page).toHaveURL(/\/dashboard/);
 
 	await page.goto("/bao-cao");
-	await page.getByTestId("class-select").selectOption({ label: `Lớp ${stamp}` });
+	await page
+		.getByTestId("class-select")
+		.selectOption({ label: `Lớp ${stamp}` });
 	await expect(page.getByTestId("class-avg")).toHaveText("100");
 	await expect(page.getByTestId("completion-rate")).toHaveText("100%");
 	const srow = page

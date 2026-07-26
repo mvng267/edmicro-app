@@ -52,6 +52,12 @@ test("owner dựng bộ máy rồi học sinh mới đăng nhập được", asy
 	await pwInput.fill(password);
 	await expect(pwInput).toHaveValue(password);
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
+	// mật khẩu tạm → hệ thống bắt đổi mật khẩu trước khi vào app
+	await expect(page).toHaveURL(/\/doi-mat-khau/);
+	await page.getByLabel("Mật khẩu hiện tại").fill(password);
+	await page.getByLabel("Mật khẩu mới", { exact: true }).fill("MatKhauMoi123");
+	await page.getByLabel("Nhập lại mật khẩu mới").fill("MatKhauMoi123");
+	await page.getByRole("button", { name: "Đổi mật khẩu và vào học" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
 	await expect(page.getByTestId("role")).toHaveText("Học sinh");
 });

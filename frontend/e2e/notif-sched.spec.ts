@@ -18,7 +18,9 @@ test("thông báo giao bài + điểm danh vắng đến học sinh", async ({ p
 	await expect(page.getByTestId("branch-list")).toContainText(`CN ${stamp}`);
 
 	await page.goto("/org/classes");
-	await page.getByTestId("branch-select").selectOption({ label: `CN ${stamp}` });
+	await page
+		.getByTestId("branch-select")
+		.selectOption({ label: `CN ${stamp}` });
 	await page.getByTestId("class-name").fill(`Lớp ${stamp}`);
 	await page.getByTestId("add-class").click();
 	await expect(page.getByTestId("class-list")).toContainText(`Lớp ${stamp}`);
@@ -59,20 +61,27 @@ test("thông báo giao bài + điểm danh vắng đến học sinh", async ({ p
 		.filter({ hasText: `Bài ${stamp}` })
 		.first();
 	await expect(row).toBeVisible();
-	await page.getByTestId("assign-class").selectOption({ label: `Lớp ${stamp}` });
+	await page
+		.getByTestId("assign-class")
+		.selectOption({ label: `Lớp ${stamp}` });
 	await row.getByRole("button", { name: "Giao cho lớp" }).click();
 	await expect(page.getByText(/Đã giao cho \d+ học sinh/)).toBeVisible();
 
 	// LỊCH HỌC: tạo buổi + điểm danh HS VẮNG (→ attendance_absent)
 	await page.goto("/lich-hoc");
-	await page.getByTestId("class-select").selectOption({ label: `Lớp ${stamp}` });
+	await page
+		.getByTestId("class-select")
+		.selectOption({ label: `Lớp ${stamp}` });
 	await page.getByTestId("session-start").fill("2026-08-01T18:00");
 	await page.getByTestId("session-end").fill("2026-08-01T20:00");
 	await page.getByTestId("session-topic").fill(`Buổi ${stamp}`);
 	await page.getByTestId("add-session").click();
 	await expect(page.getByTestId("session-list")).toContainText(`Buổi ${stamp}`);
 	await page.getByRole("button", { name: "Điểm danh" }).first().click();
-	await page.locator('select[data-testid^="att-"]').first().selectOption("absent");
+	await page
+		.locator('select[data-testid^="att-"]')
+		.first()
+		.selectOption("absent");
 	await page.getByTestId("save-attendance").click();
 	await expect(page.getByText(/Đã điểm danh/)).toBeVisible();
 
@@ -85,6 +94,12 @@ test("thông báo giao bài + điểm danh vắng đến học sinh", async ({ p
 	await expect(u).toHaveValue(username);
 	await page.getByLabel("Mật khẩu").fill(password);
 	await page.getByRole("button", { name: "Đăng nhập" }).click();
+	// mật khẩu tạm → hệ thống bắt đổi mật khẩu trước khi vào app
+	await expect(page).toHaveURL(/\/doi-mat-khau/);
+	await page.getByLabel("Mật khẩu hiện tại").fill(password);
+	await page.getByLabel("Mật khẩu mới", { exact: true }).fill("MatKhauMoi123");
+	await page.getByLabel("Nhập lại mật khẩu mới").fill("MatKhauMoi123");
+	await page.getByRole("button", { name: "Đổi mật khẩu và vào học" }).click();
 	await expect(page).toHaveURL(/\/dashboard/);
 
 	await page.goto("/hoc");
@@ -92,6 +107,10 @@ test("thông báo giao bài + điểm danh vắng đến học sinh", async ({ p
 
 	await page.getByTestId("notif-bell").click();
 	await expect(page).toHaveURL(/\/thong-bao/);
-	await expect(page.getByTestId("notif-list")).toContainText("Bài mới được giao");
-	await expect(page.getByTestId("notif-list")).toContainText("Điểm danh: vắng mặt");
+	await expect(page.getByTestId("notif-list")).toContainText(
+		"Bài mới được giao",
+	);
+	await expect(page.getByTestId("notif-list")).toContainText(
+		"Điểm danh: vắng mặt",
+	);
 });

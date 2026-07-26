@@ -31,7 +31,10 @@ export default function LoginPage() {
 			const r = await apiLogin(slug, username, password);
 			localStorage.setItem("access_token", r.access_token);
 			localStorage.setItem("refresh_token", r.refresh_token);
-			window.location.href = "/dashboard";
+			// Mật khẩu tạm (cấp lần đầu / vừa reset) → bắt đổi trước khi vào app
+			window.location.href = r.must_change_password
+				? "/doi-mat-khau"
+				: "/dashboard";
 		} catch {
 			setError("Sai tên đăng nhập hoặc mật khẩu");
 		} finally {
