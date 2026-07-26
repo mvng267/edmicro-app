@@ -54,7 +54,7 @@ async def generate_questions(
         f"Chủ đề: {topic}."
     )
     try:
-        data = chat_json(_SYSTEM, user, max_tokens=3000)
+        data = chat_json(_SYSTEM, user, max_tokens=6000)
     except Exception as e:  # noqa: BLE001 — mạng/parse lỗi → báo FE, không 500 thô
         raise AIGenerateFailed(f"ai_error:{type(e).__name__}") from e
     if not isinstance(data, list):

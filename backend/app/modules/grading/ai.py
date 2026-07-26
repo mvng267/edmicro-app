@@ -112,16 +112,42 @@ def chat_json(system: str, user: str, *, max_tokens: int = 2048) -> dict | list:
             "model": settings.ai_grader_model,
             "temperature": 0,
             "max_tokens": max_tokens,
+            # route-ai mặc định stream SSE kể cả khi không yêu cầu → phải tắt tường minh
+            "stream": False,
             "messages": [
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
         },
-        timeout=90.0,
+        timeout=120.0,
     )
     resp.raise_for_status()
-    raw = resp.json()["choices"][0]["message"]["content"]
+    if "text/event-stream" in resp.headers.get("content-type", ""):
+        raw = _join_sse(resp.text)
+    else:
+        raw = resp.json()["choices"][0]["message"]["content"]
     return _extract_json(raw)
+
+
+def _join_sse(text: str) -> str:
+    """Ghép delta.content từ các dòng `data: {...}` khi server vẫn trả SSE."""
+    import json as _json
+
+    parts: list[str] = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line.startswith("data:"):
+            continue
+        payload = line[5:].strip()
+        if payload == "[DONE]":
+            break
+        try:
+            chunk = _json.loads(payload)
+            delta = chunk["choices"][0].get("delta", {})
+            parts.append(delta.get("content") or "")
+        except (ValueError, KeyError, IndexError):
+            continue
+    return "".join(parts)
 
 
 class OpenAICompatGrader:
