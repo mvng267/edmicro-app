@@ -7,6 +7,7 @@ import { AppShell } from "@/components/AppShell";
 import {
 	type AttendanceRow,
 	type ClassSession,
+	createRecurringSessions,
 	createSession,
 	deleteSession,
 	getAttendance,
@@ -35,6 +36,13 @@ export default function SchedulePage() {
 	const [rosterRows, setRosterRows] = useState<AttendanceRow[]>([]);
 	const [err, setErr] = useState("");
 	const [msg, setMsg] = useState("");
+	// lịch lặp hằng tuần
+	const [rWeekdays, setRWeekdays] = useState<Set<number>>(new Set([0, 2]));
+	const [rStart, setRStart] = useState("18:00");
+	const [rDur, setRDur] = useState("90");
+	const [rFrom, setRFrom] = useState("");
+	const [rTo, setRTo] = useState("");
+	const [rTopic, setRTopic] = useState("");
 
 	useEffect(() => {
 		listClasses()
@@ -86,6 +94,38 @@ export default function SchedulePage() {
 		const init: Record<string, string> = {};
 		for (const r of rows) init[r.student_id] = r.status ?? "present";
 		setRoster(init);
+	}
+
+	function toggleWeekday(d: number) {
+		setRWeekdays((prev) => {
+			const next = new Set(prev);
+			if (next.has(d)) next.delete(d);
+			else next.add(d);
+			return next;
+		});
+	}
+
+	async function addRecurring() {
+		setErr("");
+		if (!rFrom || !rTo || rWeekdays.size === 0) {
+			setErr("Chọn thứ trong tuần + khoảng ngày");
+			return;
+		}
+		try {
+			const r = await createRecurringSessions({
+				class_id: classId,
+				weekdays: [...rWeekdays],
+				start_time: rStart,
+				duration_minutes: Number(rDur),
+				from_date: rFrom,
+				to_date: rTo,
+				topic: rTopic,
+			});
+			await refreshSessions();
+			setMsg(`Đã sinh ${r.created} buổi học`);
+		} catch (e) {
+			setErr(String(e));
+		}
 	}
 
 	async function removeSession(id: string) {
@@ -165,6 +205,86 @@ export default function SchedulePage() {
 					<Button onPress={addSession} data-testid="add-session">
 						Tạo buổi
 					</Button>
+				</CardContent>
+			</Card>
+
+			<Card className="mb-4">
+				<CardContent className="flex flex-col gap-2">
+					<p className="text-sm font-medium">
+						Lịch lặp hằng tuần (tự sinh buổi học)
+					</p>
+					<div className="flex gap-1 flex-wrap">
+						{["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((lbl, d) => (
+							<button
+								key={lbl}
+								type="button"
+								onClick={() => toggleWeekday(d)}
+								data-testid={`wd-${d}`}
+								className={`px-3 py-1.5 rounded-lg text-sm border ${
+									rWeekdays.has(d)
+										? "bg-primary text-white border-primary"
+										: "bg-white dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700"
+								}`}
+							>
+								{lbl}
+							</button>
+						))}
+					</div>
+					<div className="flex gap-2 flex-wrap items-end">
+						<label className="text-sm flex flex-col gap-1">
+							Giờ bắt đầu
+							<input
+								type="time"
+								value={rStart}
+								onChange={(e) => setRStart(e.target.value)}
+								data-testid="rec-start"
+								className="border rounded-lg px-2 py-1 bg-white dark:bg-neutral-900"
+							/>
+						</label>
+						<label className="text-sm flex flex-col gap-1">
+							Số phút
+							<input
+								value={rDur}
+								onChange={(e) => setRDur(e.target.value)}
+								data-testid="rec-dur"
+								className="border rounded-lg px-2 py-1 w-20 bg-white dark:bg-neutral-900"
+							/>
+						</label>
+						<label className="text-sm flex flex-col gap-1">
+							Từ ngày
+							<input
+								type="date"
+								value={rFrom}
+								onChange={(e) => setRFrom(e.target.value)}
+								data-testid="rec-from"
+								className="border rounded-lg px-2 py-1 bg-white dark:bg-neutral-900"
+							/>
+						</label>
+						<label className="text-sm flex flex-col gap-1">
+							Đến ngày
+							<input
+								type="date"
+								value={rTo}
+								onChange={(e) => setRTo(e.target.value)}
+								data-testid="rec-to"
+								className="border rounded-lg px-2 py-1 bg-white dark:bg-neutral-900"
+							/>
+						</label>
+						<Input
+							aria-label="Chủ đề lịch lặp"
+							placeholder="Chủ đề (tuỳ chọn)"
+							className="min-w-40"
+							value={rTopic}
+							onChange={(e) => setRTopic(e.target.value)}
+							data-testid="rec-topic"
+						/>
+						<Button onPress={addRecurring} data-testid="add-recurring">
+							Sinh buổi học
+						</Button>
+					</div>
+					<p className="text-xs text-neutral-500">
+						Giờ theo múi giờ Việt Nam. Tối đa 100 buổi mỗi lần sinh.
+					</p>
 				</CardContent>
 			</Card>
 

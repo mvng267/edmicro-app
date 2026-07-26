@@ -39,6 +39,19 @@ async function req<T>(
 	return res.status === 204 ? (undefined as T) : res.json();
 }
 
+/** Tải file PDF (kèm token) rồi lưu xuống máy. */
+export async function downloadPdf(path: string, filename: string) {
+	const res = await fetch(`${API_URL}${path}`, { headers: authHeaders() });
+	if (!res.ok) throw new Error(`error_${res.status}`);
+	const blob = await res.blob();
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement("a");
+	a.href = url;
+	a.download = filename;
+	a.click();
+	URL.revokeObjectURL(url);
+}
+
 // ---- Auth ----
 export interface LoginResult {
 	access_token: string;
@@ -463,6 +476,16 @@ export interface AttendanceRow {
 }
 export const getAttendance = (sessionId: string) =>
 	req<AttendanceRow[]>("GET", `/api/v1/sessions/${sessionId}/attendance`);
+export const createRecurringSessions = (payload: {
+	class_id: string;
+	weekdays: number[];
+	start_time: string;
+	duration_minutes: number;
+	from_date: string;
+	to_date: string;
+	topic?: string;
+	online_link?: string;
+}) => req<{ created: number }>("POST", "/api/v1/sessions/recurring", payload);
 export const deleteSession = (sessionId: string) =>
 	req<{ deleted: boolean }>("DELETE", `/api/v1/sessions/${sessionId}`);
 export const markAttendance = (

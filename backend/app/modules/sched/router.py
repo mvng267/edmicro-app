@@ -24,6 +24,17 @@ class SessionCreate(BaseModel):
     online_link: str | None = None
 
 
+class RecurringCreate(BaseModel):
+    class_id: str
+    weekdays: list[int]  # 0=Thứ 2 … 6=Chủ nhật
+    start_time: str  # "18:00"
+    duration_minutes: int
+    from_date: str  # "YYYY-MM-DD"
+    to_date: str
+    topic: str = ""
+    online_link: str | None = None
+
+
 class AttendanceRecord(BaseModel):
     student_id: str
     status: str = "present"
@@ -61,6 +72,20 @@ async def create_session(
     await _ensure_class(s, current, body.class_id)
     sid = await svc.create_session(s, current.tenant_id, body.model_dump())
     return {"id": sid}
+
+
+@router.post("/sessions/recurring", status_code=201)
+async def create_recurring(
+    body: RecurringCreate,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    """Sinh buổi học lặp hằng tuần trong khoảng ngày (giờ Việt Nam)."""
+    await _ensure_class(s, current, body.class_id)
+    try:
+        return await svc.create_recurring(s, current.tenant_id, body.model_dump())
+    except ValueError as e:
+        raise HTTPException(422, str(e)) from None
 
 
 @router.get("/sessions")

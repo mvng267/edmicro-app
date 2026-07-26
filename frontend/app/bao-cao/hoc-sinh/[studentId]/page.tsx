@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
 import { StudentReportView } from "@/components/StudentReportView";
-import { type StudentReport, studentReport } from "@/lib/api";
+import { downloadPdf, type StudentReport, studentReport } from "@/lib/api";
 
 export default function StudentReportPage() {
 	const params = useParams<{ studentId: string }>();
@@ -22,14 +22,27 @@ export default function StudentReportPage() {
 
 	return (
 		<AppShell title="Báo cáo học sinh">
-			<Button
-				variant="ghost"
-				onPress={() => router.push("/bao-cao")}
-				data-testid="back-class"
-				className="mb-3"
-			>
-				← Về báo cáo lớp
-			</Button>
+			<div className="flex gap-2 mb-3">
+				<Button
+					variant="ghost"
+					onPress={() => router.push("/bao-cao")}
+					data-testid="back-class"
+				>
+					← Về báo cáo lớp
+				</Button>
+				<Button
+					variant="ghost"
+					onPress={() =>
+						downloadPdf(
+							`/api/v1/reports/students/${params.studentId}/pdf`,
+							"bao-cao-hoc-tap.pdf",
+						).catch(() => {})
+					}
+					data-testid="student-pdf"
+				>
+					📄 Tải phiếu PDF gửi phụ huynh
+				</Button>
+			</div>
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
 			{report && <StudentReportView report={report} />}
 		</AppShell>

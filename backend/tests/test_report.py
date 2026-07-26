@@ -214,3 +214,23 @@ async def test_class_report(scenario, session_factory):
         assert by_id[scenario["s2"]]["avg_score"] is None
     finally:
         await s.__aexit__(None, None, None)
+
+
+@pytest.mark.asyncio
+async def test_student_report_pdf(scenario, client):
+    """PDF báo cáo: staff tải được (magic %PDF), student tự tải; student KHÁC bị chặn."""
+    s1, s2 = scenario["s1"], scenario["s2"]
+
+    _as("owner", str(uuid.uuid4()))
+    r = await client.get(f"/api/v1/reports/students/{s1}/pdf")
+    assert r.status_code == 200
+    assert r.headers["content-type"] == "application/pdf"
+    assert r.content[:4] == b"%PDF"
+    assert len(r.content) > 1000
+
+    _as("student", s1)
+    assert (await client.get("/api/v1/me/report/pdf")).content[:4] == b"%PDF"
+
+    # teacher không dạy lớp → 403
+    _as("teacher", str(uuid.uuid4()))
+    assert (await client.get(f"/api/v1/reports/students/{s2}/pdf")).status_code == 403

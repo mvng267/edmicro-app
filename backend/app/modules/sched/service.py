@@ -170,6 +170,54 @@ async def session_attendance(s: AsyncSession, session_id: str) -> list[dict]:
     return await session_roster(s, session_id)
 
 
+async def create_recurring(s: AsyncSession, tenant_id: str, data: dict[str, Any]) -> dict:
+    """Sinh buổi học lặp hằng tuần (SRS SCHED FR-SCHED-01, US-SCHED-01).
+
+    data: class_id, weekdays [0=T2..6=CN], start_time "HH:MM", duration_minutes,
+    from_date/to_date "YYYY-MM-DD", topic, online_link.
+    Giờ nhập hiểu theo múi giờ Việt Nam (v2: cấu hình timezone per tenant).
+    Trần 100 buổi/lần để tránh sinh nhầm cả nghìn bản ghi.
+    """
+    from datetime import date, datetime, time, timedelta
+    from zoneinfo import ZoneInfo
+
+    tz = ZoneInfo("Asia/Ho_Chi_Minh")
+    weekdays = {int(w) for w in data["weekdays"]}
+    if not weekdays or not weekdays.issubset(set(range(7))):
+        raise ValueError("weekdays_invalid")
+    hh, mm = str(data["start_time"]).split(":")
+    start_t = time(int(hh), int(mm))
+    duration = int(data["duration_minutes"])
+    if duration <= 0:
+        raise ValueError("duration_must_be_positive")
+    d0 = date.fromisoformat(str(data["from_date"]))
+    d1 = date.fromisoformat(str(data["to_date"]))
+    if d1 < d0:
+        raise ValueError("date_range_invalid")
+
+    created: list[str] = []
+    d = d0
+    while d <= d1:
+        if d.weekday() in weekdays:
+            if len(created) >= 100:
+                raise ValueError("too_many_sessions_max_100")
+            starts = datetime.combine(d, start_t, tzinfo=tz)
+            sid = await create_session(
+                s,
+                tenant_id,
+                {
+                    "class_id": data["class_id"],
+                    "starts_at": starts,
+                    "ends_at": starts + timedelta(minutes=duration),
+                    "topic": data.get("topic", ""),
+                    "online_link": data.get("online_link"),
+                },
+            )
+            created.append(sid)
+        d += timedelta(days=1)
+    return {"created": len(created), "session_ids": created}
+
+
 async def delete_session(s: AsyncSession, session_id: str) -> None:
     """Xóa buổi học (kèm bản ghi điểm danh của buổi đó)."""
     await s.execute(text("DELETE FROM attendance WHERE session_id = :id"), {"id": session_id})

@@ -53,6 +53,18 @@ async def child_report(
     return await report.student_report(s, student_id)
 
 
+@router.get("/me/children/{student_id}/report.pdf")
+async def child_report_pdf(
+    student_id: str,
+    current: CurrentUser = Depends(get_current_user),
+    s: AsyncSession = Depends(get_tenant_session),
+):
+    from app.modules.report.router import render_student_pdf
+
+    await _ensure_own_child(s, current, student_id)
+    return await render_student_pdf(s, student_id)
+
+
 @router.get("/me/children/{student_id}/points")
 async def child_points(
     student_id: str,

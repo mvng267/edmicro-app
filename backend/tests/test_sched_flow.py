@@ -188,3 +188,54 @@ async def test_delete_session(client, session_factory):
     assert (await client.delete(f"/api/v1/sessions/{sid}")).status_code == 200
     ids = [x["id"] for x in (await client.get(f"/api/v1/sessions?class_id={class_id}")).json()]
     assert sid not in ids
+
+
+@pytest.mark.asyncio
+async def test_recurring_sessions(client, session_factory):
+    """Lịch lặp T2+T4 trong 2 tuần → 4 buổi, đúng thứ + giờ VN; range sai → 422."""
+    class_id, _students, teacher = await _seed(session_factory)
+    _as("teacher", teacher)
+    # 2026-08-03 là thứ 2 → khoảng 03..14/08 có T2 (3,10) + T4 (5,12) = 4 buổi
+    r = await client.post(
+        "/api/v1/sessions/recurring",
+        json={
+            "class_id": class_id,
+            "weekdays": [0, 2],
+            "start_time": "18:00",
+            "duration_minutes": 90,
+            "from_date": "2026-08-03",
+            "to_date": "2026-08-14",
+            "topic": "Lịch lặp",
+        },
+    )
+    assert r.status_code == 201, r.text
+    assert r.json()["created"] == 4
+
+    sessions = (await client.get(f"/api/v1/sessions?class_id={class_id}")).json()
+    recur = [x for x in sessions if x["topic"] == "Lịch lặp"]
+    assert len(recur) == 4
+    # so sánh theo instant, quy về giờ VN (DB có thể trả UTC)
+    from zoneinfo import ZoneInfo
+
+    vn = ZoneInfo("Asia/Ho_Chi_Minh")
+    local = sorted(datetime.fromisoformat(x["starts_at"]).astimezone(vn) for x in recur)
+    assert [d.strftime("%Y-%m-%d") for d in local] == [
+        "2026-08-03",
+        "2026-08-05",
+        "2026-08-10",
+        "2026-08-12",
+    ]
+    assert all(d.hour == 18 and d.minute == 0 for d in local)
+
+    bad = await client.post(
+        "/api/v1/sessions/recurring",
+        json={
+            "class_id": class_id,
+            "weekdays": [9],
+            "start_time": "18:00",
+            "duration_minutes": 90,
+            "from_date": "2026-08-03",
+            "to_date": "2026-08-04",
+        },
+    )
+    assert bad.status_code == 422

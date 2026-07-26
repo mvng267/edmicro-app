@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, Chip, ChipLabel } from "@heroui/react";
+import { Button, Card, CardContent, Chip, ChipLabel } from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
@@ -9,6 +9,7 @@ import {
 	type Child,
 	childPoints,
 	childReport,
+	downloadPdf,
 	myChildren,
 	type PointsSummary,
 	type StudentReport,
@@ -57,6 +58,20 @@ export default function ParentPage() {
 						</option>
 					))}
 				</select>
+				{sel && (
+					<Button
+						variant="ghost"
+						onPress={() =>
+							downloadPdf(
+								`/api/v1/me/children/${sel}/report.pdf`,
+								"bao-cao-hoc-tap.pdf",
+							).catch(() => {})
+						}
+						data-testid="child-pdf"
+					>
+						📄 Tải phiếu PDF
+					</Button>
+				)}
 			</div>
 
 			{err && <p className="text-danger text-sm mb-2">{err}</p>}
