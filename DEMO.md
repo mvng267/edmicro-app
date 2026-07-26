@@ -34,7 +34,7 @@ Tất cả dùng chung tenant `b2b`. Mật khẩu để đơn giản cho demo �
 - Lớp: **IELTS 6.0 — Lớp A** (hs1, hs2, hs3) · **TOEIC Cơ bản — Lớp B** (hs3)
 - `teacher` + `assistant` được gán dạy **cả 2 lớp**; `parent` liên kết với `hs1`
 
-**Nội dung** — 6 câu hỏi đã xuất bản: 4 trắc nghiệm (3 reading + 1 listening), 1 điền từ, 1 **writing** (có rubric IELTS)
+**Nội dung** — 7 câu hỏi đã xuất bản: 4 trắc nghiệm, 1 điền từ, 1 **writing** (rubric IELTS), 1 **câu NGHE có audio thật** (bài "Luyện nghe — Bài 1" đã giao lớp IELTS — đăng nhập `hs2`/`hs3` để làm và nghe)
 
 **Đã giao cho lớp IELTS**
 | Loại | Tên | Ghi chú |

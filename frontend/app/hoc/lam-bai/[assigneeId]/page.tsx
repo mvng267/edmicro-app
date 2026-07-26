@@ -4,6 +4,7 @@ import { Button, Card, CardContent } from "@heroui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import { AudioPlayer } from "@/components/AudioPlayer";
 import {
 	type AttemptQuestion,
 	saveAnswer,
@@ -123,6 +124,9 @@ export default function DoPracticePage() {
 							<p className="font-medium">
 								Câu {qi + 1}. {q.content.prompt}
 							</p>
+							{q.content.audio_key && (
+								<AudioPlayer mediaKey={q.content.audio_key} />
+							)}
 							{q.type === "writing" ? (
 								<textarea
 									className="min-h-32 rounded-lg border p-2 text-sm bg-white dark:bg-neutral-900"

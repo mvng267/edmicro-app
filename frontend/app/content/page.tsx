@@ -18,6 +18,7 @@ import {
 	listQuestions,
 	publishQuestion,
 	type QuestionRow,
+	uploadMedia,
 } from "@/lib/api";
 
 export default function ContentPage() {
@@ -38,6 +39,7 @@ export default function ContentPage() {
 	const [correct, setCorrect] = useState(0);
 	const [blankAnswer, setBlankAnswer] = useState("");
 	const [rubric, setRubric] = useState("");
+	const [audioFile, setAudioFile] = useState<File | null>(null);
 
 	async function refresh() {
 		setLoading(true);
@@ -82,6 +84,11 @@ export default function ContentPage() {
 		try {
 			let content: Record<string, unknown>;
 			let answer_key: Record<string, unknown>;
+			// audio đính kèm (câu nghe): upload trước, gắn key vào content
+			let audio_key: string | undefined;
+			if (audioFile) {
+				audio_key = (await uploadMedia(audioFile)).key;
+			}
 			if (type === "mcq_single") {
 				content = { prompt, options: options.filter((o) => o.trim()) };
 				answer_key = { correct_index: correct };
@@ -92,6 +99,7 @@ export default function ContentPage() {
 				content = { prompt };
 				answer_key = { blanks: [blankAnswer.split("|").map((s) => s.trim())] };
 			}
+			if (audio_key) content.audio_key = audio_key;
 			const { id } = await createQuestion({
 				type,
 				language: "en",
@@ -104,6 +112,7 @@ export default function ContentPage() {
 			setOptions(["", ""]);
 			setBlankAnswer("");
 			setRubric("");
+			setAudioFile(null);
 			await refresh();
 		} catch (e) {
 			setErr(String(e));
@@ -195,6 +204,19 @@ export default function ContentPage() {
 							onChange={(e) => setBlankAnswer(e.target.value)}
 						/>
 					)}
+					<label className="text-sm flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
+						🎧 Audio (câu nghe, tuỳ chọn):
+						<input
+							type="file"
+							accept="audio/*"
+							data-testid="q-audio"
+							onChange={(e) => setAudioFile(e.target.files?.[0] ?? null)}
+							className="text-sm"
+						/>
+						{audioFile && (
+							<span className="text-xs text-neutral-500">{audioFile.name}</span>
+						)}
+					</label>
 					<div className="flex gap-2">
 						<Button onPress={() => save(false)} data-testid="q-save-draft">
 							Lưu nháp

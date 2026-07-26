@@ -188,6 +188,31 @@ export const importCommit = (jobId: string) =>
 		`/api/v1/org/users/import/${jobId}/commit`,
 	);
 
+// ---- MEDIA (audio câu nghe) ----
+export async function uploadMedia(file: File): Promise<{ key: string }> {
+	const fd = new FormData();
+	fd.append("file", file);
+	const token = localStorage.getItem("access_token");
+	const res = await fetch(`${API_URL}/api/v1/media`, {
+		method: "POST",
+		headers: {
+			"X-Tenant-Slug": tenantSlugFromHost(),
+			...(token ? { Authorization: `Bearer ${token}` } : {}),
+		},
+		body: fd,
+	});
+	if (!res.ok) throw new Error(`upload_failed_${res.status}`);
+	return res.json();
+}
+/** Tải audio (kèm token) → blob URL cho thẻ <audio>. */
+export async function mediaBlobUrl(key: string): Promise<string> {
+	const res = await fetch(`${API_URL}/api/v1/media/${key}`, {
+		headers: authHeaders(),
+	});
+	if (!res.ok) throw new Error(`media_${res.status}`);
+	return URL.createObjectURL(await res.blob());
+}
+
 // ---- CONTENT ----
 export interface QuestionRow {
 	id: string;
@@ -269,7 +294,7 @@ export const myAssignments = () =>
 export interface AttemptQuestion {
 	question_version_id: string;
 	type: string;
-	content: { prompt: string; options?: string[] };
+	content: { prompt: string; options?: string[]; audio_key?: string };
 	sort_order: number;
 }
 export interface AttemptStart {
@@ -300,7 +325,7 @@ export const submitAttempt = (attemptId: string) =>
 export interface ReviewItem {
 	sort_order: number;
 	type: string;
-	content: { prompt: string; options?: string[] };
+	content: { prompt: string; options?: string[]; audio_key?: string };
 	answer_key: { correct_index?: number; blanks?: string[][] } | null;
 	explanation: string | null;
 	your_answer: { selected?: number; blanks?: string[]; text?: string } | null;

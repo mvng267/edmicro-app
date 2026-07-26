@@ -4,6 +4,7 @@ import { Button, Card, CardContent, Chip, ChipLabel } from "@heroui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { AudioPlayer } from "@/components/AudioPlayer";
 import { type AttemptResult, getResult } from "@/lib/api";
 
 export default function ResultPage() {
@@ -108,6 +109,9 @@ export default function ResultPage() {
 												<ChipLabel>{r.is_correct ? "Đúng" : "Sai"}</ChipLabel>
 											</Chip>
 										</div>
+										{r.content.audio_key && (
+											<AudioPlayer mediaKey={r.content.audio_key} />
+										)}
 										{(r.content.options ?? []).map((opt, oi) => {
 											const chosen = r.your_answer?.selected === oi;
 											const correct = r.answer_key?.correct_index === oi;

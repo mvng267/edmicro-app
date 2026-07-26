@@ -11,6 +11,7 @@ from app.modules.game.router import router as game_router
 from app.modules.grading.router import router as grading_router
 from app.modules.health.router import router as health_router
 from app.modules.logadmin.router import router as logadmin_router
+from app.modules.media.router import router as media_router
 from app.modules.notify.router import router as notify_router
 from app.modules.org.import_router import router as org_import_router
 from app.modules.org.router import router as org_router
@@ -50,5 +51,6 @@ app.include_router(course_router)
 app.include_router(game_router)
 app.include_router(parent_router)
 app.include_router(logadmin_router)
+app.include_router(media_router)
 app.include_router(usage_router)
 app.include_router(support_router)

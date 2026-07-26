@@ -22,6 +22,11 @@ def validate_content(qtype: str, content: dict[str, Any], answer_key: dict[str, 
     if qtype not in SUPPORTED_TYPES:
         raise InvalidContent(f"unsupported_type:{qtype}")
 
+    # audio đính kèm (câu nghe): key trả về từ POST /media, đi kèm content sang màn làm bài
+    audio_key = content.get("audio_key")
+    if audio_key is not None and not isinstance(audio_key, str):
+        raise InvalidContent("audio_key_must_be_string")
+
     if qtype == "mcq_single":
         prompt = content.get("prompt")
         options = content.get("options")

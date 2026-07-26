@@ -11,6 +11,15 @@ class Settings(BaseSettings):
     jwt_access_ttl_seconds: int = 900
     jwt_refresh_ttl_seconds: int = 2592000
 
+    # Lưu file media (audio nghe/nói...) — MinIO local, sau đổi S3/R2 chỉ bằng config.
+    # storage_backend: "minio" | "memory" (memory chỉ cho test).
+    storage_backend: str = "minio"
+    minio_endpoint: str = "127.0.0.1:9010"
+    minio_access_key: str = "minioadmin"
+    minio_secret_key: str = "minioadmin"
+    minio_bucket: str = "edmicro-media"
+    minio_secure: bool = False
+
     # AI chấm writing: có key thật thì dùng Claude, không thì FakeGrader (dev/test/degrade).
     anthropic_api_key: str = ""
     ai_grader_model: str = "claude-opus-4-8"
